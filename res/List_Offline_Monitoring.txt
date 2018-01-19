@@ -1,0 +1,18 @@
+List for offline monitoring:
+(Here is the list of things that we need for the offline monitoring of the data quality)
+
+1. Reconstructed spectrometer quantities (hsdelta, hsxptar, hsyptar, hsytar, ssdelta, ssxptar, ssyptar, ssytar).
+
+2. Missing energy(Em), Missing momentum (Pm), Pm parallel to q-vector (Pm_par), Pm perp to q-vector (Pm_per), inv. mass W, four momentum transfer squared (Q^2).
+See https://github.com/ for code to calculate these quantities.
+
+3. Script to compare the spectrometer quantities and Em to the same quantities simulated by SIMC for each kinematic setting.
+Set of cuts needed for any such comparison
+ a) cuts on each of the spectrometer quantities defining good acceptance, same cuts should be applied to SIMC.
+ b) PID cuts for electrons in HMS (hcer_npe, hcal_tot_energy, hcal_e1, hsbeta)
+ c) PID cuts for protons in SHMS (scer_npe, scal_tot_energy, scal_e1, ssbeta)
+d) cointime cut
+
+4. Script to calculate coincidence yield from data using all cuts a--d and subtracting out the accidental coincidences (by averaging over the side peaks of the cointime spectrum).
+
+5. Running count of background subtracted coincidence yield for each kinematic setting.
