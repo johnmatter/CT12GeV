@@ -1,4 +1,4 @@
-Color Transparency Experiment in Hall-C at Lab
+Color Transparency Experiment in Hall-C at JLab
 ==================================================
 
 This repo is meant to contain codes for offline analysis for the color transparency experiment at 12 GeV in Hall C. 
