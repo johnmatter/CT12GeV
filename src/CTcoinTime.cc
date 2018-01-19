@@ -21,10 +21,8 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 {
     TString fileName = ROOT_FILE_PATH;
     fileName += "coin_replay_production_";
-    //fileName += "ep_";
     fileName += runNumber;
     fileName += "_";
-    //if(analyzedEvents != -1)
     fileName += analyzedEvents;
     fileName += ".root";
 
@@ -72,7 +70,9 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     TH1D *h1HcointimeROC1 = new TH1D("HMS ROC1 Corrected Coin Time","HMS ROC1 Corrected Coin Time; cointime [ns]", 400, -60, 60);
     TH1D *h1HcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 400, -100, 150);
 
+    // Momentum and beta
     Double_t PgtrP;
+    Double_t PgtrdP;
     Double_t HgtrP;
     Double_t PgtrBetaMes;    
     Double_t HgtrBetaMes;        
@@ -97,7 +97,18 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     Double_t PhodfpHitsTime;
     Double_t HhodfpHitsTime;
 
-    //Focal Plane coord
+    // Foal plane coords
+    Double_t PdcXfp;
+    Double_t PdcXpfp;
+    Double_t PdcYfp;
+    Double_t PdcYpfp;
+
+    Double_t HdcXfp;
+    Double_t HdcXpfp;
+    Double_t HdcYfp;
+    Double_t HdcYpfp;
+ 
+    //Track coord
     Double_t HgtrX;
     Double_t HgtrTh;
     Double_t HgtrY;
@@ -143,6 +154,16 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     tree->SetBranchAddress("H.gtr.y", &HgtrY);
     tree->SetBranchAddress("H.gtr.ph", &HgtrPh);
     
+    tree->SetBranchAddress("H.dc.x_fp", &HgtrX);
+    tree->SetBranchAddress("H.dc.xp_fp", &HgtrTh);
+    tree->SetBranchAddress("H.dc.y_fp", &HgtrY);
+    tree->SetBranchAddress("H.dc.yp_fp", &HgtrPh);    
+
+    tree->SetBranchAddress("P.dc.x_fp", &PdcXfp);
+    tree->SetBranchAddress("P.dc.xp_fp", &PdcXpfp);
+    tree->SetBranchAddress("P.dc.y_fp", &PdcYfp);
+    tree->SetBranchAddress("P.dc.yp_fp", &PdcYpfp);    
+
     tree->SetBranchAddress("T.coin.pTRIG1_ROC1_tdcTimeRaw", &TcoinpTRIG1_ROC1_tdcTimeRaw);
     tree->SetBranchAddress("T.coin.pTRIG4_ROC1_tdcTimeRaw", &TcoinpTRIG4_ROC1_tdcTimeRaw);
     tree->SetBranchAddress("T.coin.pTRIG1_ROC2_tdcTimeRaw", &TcoinpTRIG1_ROC2_tdcTimeRaw);
@@ -198,11 +219,6 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     TH1D *h1HhodoStartTime = (TH1D*)gDirectory->Get("HMShodoStartTime");
     h1PhodoStartTime->GetXaxis()->SetTitle("SHMS hodo start time [ns]");
     h1HhodoStartTime->GetXaxis()->SetTitle("HMS hodo start time [ns]");
-    //Naivele correction for path length and focal length by eye
-    // Double_t pROC1Offset = 320;
-    // Double_t pROC2Offset = 320;
-    // Double_t hROC1Offset = -2915;
-    // Double_t hROC2Offset = -3600;
 
     Double_t pOffset = 4.0; //9.5 + 10;  // in ns
     Double_t hOffset = 335;
@@ -271,14 +287,11 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 	if(PhodStatus == 0 || HhodStatus ==0)
 	    continue;
 
-	DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;
+	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
 	
 	PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);
 	HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);
 	
-	// if(totEvents < 20)
-	//     cout << PgtrPc << "\t" << HgtrPc <<"\t"<< PgtrBetaMes<<endl;
-
 	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
 	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / speedOfLight*HgtrBetaCalc + (HhodoStartTimeMean - HhodfpHitsTime); 
 	
@@ -287,10 +300,6 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 	HMScorrCoinTimeROC1 = (TcoinhTRIG1_ROC1_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinhTRIG4_ROC1_tdcTimeRaw*0.1 - HMScoinCorr) - hOffset;
 	HMScorrCoinTimeROC2 = (TcoinhTRIG1_ROC2_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinhTRIG4_ROC2_tdcTimeRaw*0.1 - HMScoinCorr) - hOffset;
        	
-	// Printing for debugging
-	// if(totEvents<20)
-	//     cout << "SHMS: "<<SHMScoinCorr<<" HMS: "<<HMScoinCorr <<" Delta Path Length: "<<DeltaHMSpathLength <<" pStatus: " << PhodStatus <<" HStatus: "<<HhodStatus <<endl;
-
 	//------ Fill the hostograms -------
 	h1PgtrBetaMes->Fill(PgtrBetaMes);	
 	h1HgtrBetaMes->Fill(HgtrBetaMes);
