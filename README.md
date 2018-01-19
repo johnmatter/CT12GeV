@@ -5,19 +5,21 @@ This repo is meant to contain codes for offline analysis in the color transparen
 
 Instruction:
 --------------
-* Compile the make file inside libCT directory typing "make" from that directory.
+* Compile the make file inside libCT directory typing `make` from that directory.
 * Before you try it you MUST do the following:
-      1. Put the following command into your ~/.bashrc file:
 
-           ```
-	      if [ -f /path/to/libCT/bin/thisCT.sh ]; then
+Put the following command into your `~/.bashrc` file:
 
-	      . /path/to/libCT/bin/thisCT.(c)sh
+```
+if [ -f /path/to/libCT/bin/thisCT.(c)sh ]; then
 
-	      fi
-           ```
+. /path/to/libCT/bin/thisCT.(c)sh
 
-	  2. Now copy the rootlogon.C file in the directory 'macros' under ROOT installation directory.  
+fi
+```
+The above syntax is for `sh` shell. If you used `csh` shell, modify the syntax accordingly.
+
+Now copy the rootlogon.C file in the directory 'macros' under ROOT installation directory.  
 	  
-* Now from a new terminal start root doing "root -l".
-* For a list of available options Type "Help()"
+* Now from a new terminal start root doing `root -l`.
+* For a list of available options Type `Help()`
