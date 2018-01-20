@@ -7,8 +7,15 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-//#define ROOT_FILE_PATH "/work/hallc/e1206107/hallc_replay/ROOTfiles/"
-#define ROOT_FILE_PATH "/home/latif/HCANA/hallc_replay/ROOTfiles/"
+//-- For CT work directory --
+#define ROOT_FILE_PATH "/work/hallc/e1206107/hallc_replay/ROOTfiles/"
+
+// -- on cdaql1 ---
+//#define ROOT_FILE_PATH "/net/cdaq/cdaql3data/cdaq/hallc-online/ROOTfiles/"
+
+//#define FILE_PREFIX "ep_"
+#define FILE_PREFIX "coin_replay_production_"
+
 #define SOURCE_PATH "src/"
 
 #endif

@@ -28,50 +28,87 @@ class CTRun: public TObject
     Int_t fRunCounter;
 public:
 
-    //------------- All Branch/Leaf variables ---------------------------
-    //Golden Track Quantities
-    Double_t fP_gtr_p;
-    Double_t fP_gtr_beta;    
-    Double_t fH_gtr_beta;        
-    Double_t fH_gtr_p;
-    
-    //Calorimeter
-    Double_t fP_cal_eprtracknorm;
-    Double_t fP_cal_rtottracknorm;
-    Double_t fP_hgcer_npeSum;
+    //==========================================================================
+    //                      All branch/Leaf Variables
+    //==========================================================================
+    //------------ Kinematics ----------------------------
+    //SHMS
+    Double_t fP_kin_Primary_W;
+    Double_t fP_kin_Primary_Q2;
+    Double_t fP_kin_Primary_nu;
 
+    //HMS
+    Double_t fH_kin_secondary_pmiss;
+    Double_t fH_kin_secondary_pmiss_x;
+    Double_t fH_kin_secondary_emiss;
+    
+    //------------- Golden Track Quantities -----------------
+    //SHMS
+    Double_t fP_gtr_p;
+    Double_t fP_gtr_dp;
+    Double_t fP_gtr_beta;
+    //HMS
+    Double_t fH_gtr_p;
+    Double_t fH_gtr_dp;
+    Double_t fH_gtr_beta;
+
+    // --------- Drift Chamber ----------------
+    //SHMS
+    Double_t fP_dc_x_fp;
+    Double_t fP_dc_xp_fp;
+    Double_t fP_dc_y_fp;
+    Double_t fP_dc_yp_fp;
+
+    //HMS
+    Double_t fH_dc_x_fp;
+    Double_t fH_dc_xp_fp;
+    Double_t fH_dc_y_fp;
+    Double_t fH_dc_yp_fp;
+
+    //------------ Cerenkov Counter ----------
+    //SHMS
+    Double_t fP_hgcer_npeSum;
+    
+    //HMS
+    Double_t fH_cer_npeSum;
+    
+    //------------ Hodoscope ---------------
+    //SHMS
+    Double_t fP_hod_goodstarttime;
+    Double_t fP_hod_starttime;
+    Double_t fP_hod_fpHitsTime;
+
+    //HMS
+    Double_t fH_hod_goodstarttime;    
+    Double_t fH_hod_starttime;
+    Double_t fH_hod_fpHitsTime;
+
+    //--------- Calorimeter ---------------
+    //SHMS
+    Double_t fP_cal_eprtracknorm;
+    Double_t fP_cal_etottracknorm;
+
+    //HMS
     Double_t fH_cal_eprtracknorm;
     Double_t fH_cal_etottracknorm;
-    Double_t fH_cer_npeSum;
-
-    //Hodoscope start time 
-    Double_t HhodStartTime;
-    Double_t PhodStartTime;
-    Double_t PhodStatus;
-    Double_t HhodStatus;
-    
-    Double_t PhodfpHitsTime;
-    Double_t HhodfpHitsTime;
-
-    //Focal Plane coord
-    Double_t HgtrX;
-    Double_t HgtrTh;
-    Double_t HgtrY;
-    Double_t HgtrPh;
         
-    //Trigger 
-    Double_t TcoinpTRIG1_ROC1_tdcTimeRaw;
-    Double_t TcoinpTRIG4_ROC1_tdcTimeRaw;
-    Double_t TcoinpTRIG1_ROC2_tdcTimeRaw;
-    Double_t TcoinpTRIG4_ROC2_tdcTimeRaw;
-    
-    Double_t TcoinhTRIG1_ROC1_tdcTimeRaw;
-    Double_t TcoinhTRIG4_ROC1_tdcTimeRaw;
-    Double_t TcoinhTRIG1_ROC2_tdcTimeRaw;
-    Double_t TcoinhTRIG4_ROC2_tdcTimeRaw;
-        
+    //--------- Trigger ----------------
+    //SHMS
+    Double_t fT_coin_pTRIG1_ROC1_tdcTimeRaw;
+    Double_t fT_coin_pTRIG4_ROC1_tdcTimeRaw;
+    Double_t fT_coin_pTRIG1_ROC2_tdcTimeRaw;
+    Double_t fT_coin_pTRIG4_ROC2_tdcTimeRaw;
+
+    //HMS
+    Double_t fT_coin_hTRIG1_ROC1_tdcTimeRaw;
+    Double_t fT_coin_hTRIG4_ROC1_tdcTimeRaw;
+    Double_t fT_coin_hTRIG1_ROC2_tdcTimeRaw;
+    Double_t fT_coin_hTRIG4_ROC2_tdcTimeRaw;
+
+    //----------- Event Type ---------------
     //Int_t EvtType;
     Double_t EvtType;  // GetLeaf()->GetValue() returns double only
+    //==========================================================================
 
 
     
@@ -87,6 +124,7 @@ public:
     TTree* GetTree();
     TChain* GetChain();
     Int_t GetRunNumber();
+    void ActivateCTBranches();
     
     ClassDef(CTRun,0)
 };
