@@ -33,14 +33,14 @@ public:
     //==========================================================================
     //------------ Kinematics ----------------------------
     //SHMS
-    Double_t fP_kin_Primary_W;
-    Double_t fP_kin_Primary_Q2;
-    Double_t fP_kin_Primary_nu;
+    Double_t fP_kin_secondary_pmiss;
+    Double_t fP_kin_secondary_pmiss_x;
+    Double_t fP_kin_secondary_emiss;
 
     //HMS
-    Double_t fH_kin_secondary_pmiss;
-    Double_t fH_kin_secondary_pmiss_x;
-    Double_t fH_kin_secondary_emiss;
+    Double_t fH_kin_primary_W;
+    Double_t fH_kin_primary_Q2;
+    Double_t fH_kin_primary_nu;
     
     //------------- Golden Track Quantities -----------------
     //SHMS

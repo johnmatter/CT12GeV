@@ -27,7 +27,7 @@ int Help()
     }
     cout << "\n\n\t\t=========================================================================" <<endl;
 
-    cout << "\t\t|\t\t\t   Functions/Classes inside libCT        \t\t|" <<endl;
+    cout << "\t\t|\t\t\t   Functions/Classes inside libCT       \t|" <<endl;
     cout << "\t\t=========================================================================" <<endl;
     while(getline(myFile,str))       
 	cout << str <<endl;

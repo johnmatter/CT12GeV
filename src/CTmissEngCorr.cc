@@ -1,8 +1,10 @@
 // Filename: CTkinDistRun.cc
-// Description: Look at some Kinematc distributions (without cut) by looping over each event using CTRun class
+// Description:  Missing eng correlation
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Thu Jan  4 17:03:26 2018 (-0500)
 // URL: jlab.org/~latif
+
+// Check 2023-2052
 
 #include <iostream>
 #include <TFile.h>
@@ -15,21 +17,26 @@
 #include "CTRun.h"
 using namespace std;
 
-void CTkinDistRun(Int_t runNumber)
+void CTmissEngCorr(Int_t firstRun, Int_t lastRun)
 {
-    CTRun *ct = new CTRun(runNumber);
+    CTRun *ct;
+    if(lastRun != -1)
+      ct = new CTRun(firstRun, lastRun);
+    else
+      ct = new CTRun(firstRun);
+
     if(!ct->fRunExist)
 	return;
     
     TH1D *h1HgtrBeta = new TH1D("H.gtr.beta", "H.gtr.beta; ", 500, 0, 2);
     TH1D *h1HkinPrimaryW = new TH1D("H.kin.primary.W", "H.kin.primary.W", 500, 0, 5);
-    TH1D *h1HkinPrimaryQ2 = new TH1D("H.kin.primary.Q2", "H.kin.primary.Q2", 500, -1, 10);
+    TH1D *h1HkinPrimaryQ2 = new TH1D("H.kin.primary.Q2", "H.kin.primary.Q2", 500, 5, 10);
     TH1D *h1HkinPrimaryNu = new TH1D("H.kin.primary.nu", "H.kin.primary.nu", 500, 0, 2);
 
     TH1D *h1PgtrBeta = new TH1D("P.gtr.beta", "P.gtr.beta", 500, 0, 2);
-    TH1D *h1PkinSecondaryPmiss = new TH1D("P.kin.secondary.pmiss", "P.kin.secondary.pmiss", 500, -10, 10);
-    TH1D *h1PkinSecondaryPmiss_x = new TH1D("P.kin.secondary.pmiss_x", "P.kin.secondary.pmiss_x", 500, -10, 10);
-    TH1D *h1PkinSecondaryEmiss = new TH1D("P.kin.secondary.emiss", "P.kin.secondary.emiss", 500, -10, 10);
+    TH1D *h1PkinSecondaryPmiss = new TH1D("P.kin.secondary.pmiss", "P.kin.secondary.pmiss", 500, -2, 2);
+    TH1D *h1PkinSecondaryPmiss_x = new TH1D("P.kin.secondary.pmiss_x", "P.kin.secondary.pmiss_x", 500, -2, 2);
+    TH1D *h1PkinSecondaryEmiss = new TH1D("P.kin.secondary.emiss", "P.kin.secondary.emiss", 500, -1, 2);
     
     TTree * tree = ct->GetTree();
 
@@ -40,6 +47,10 @@ void CTkinDistRun(Int_t runNumber)
     tree->SetBranchStatus("H.kin.primary.*",1);
     tree->SetBranchStatus("P.gtr.*",1);
     tree->SetBranchStatus("H.gtr.*",1);
+    tree->SetBranchStatus("P.hgcer.*",1);
+    tree->SetBranchStatus("H.cer.*",1);
+    tree->SetBranchStatus("P.cal.*",1);
+    tree->SetBranchStatus("H.cal.*",1);
 
     Int_t nEvents = tree->GetEntries();
 
@@ -50,6 +61,14 @@ void CTkinDistRun(Int_t runNumber)
 
 	tree->GetEntry(event);
 
+	if( !(ct->fP_gtr_beta > 0.5 && ct->fP_gtr_beta < 1.5                             // proton beta cut
+	      && ct->fH_gtr_beta > 0.5 &&  ct->fH_gtr_beta < 1.5                         // e beta cut
+	      && ct->fH_cer_npeSum > 0.1 && ct->fP_hgcer_npeSum < 0.1                    // Cerenkov counter cut for e- and proton
+	      && ct->fH_cal_etottracknorm > 0.8 && ct->fH_cal_etottracknorm < 1.5        // HMS Calorimeter cut 
+	      && ct->fH_cal_eprtracknorm > 0.2) 	                                 // HMS calorimeter cut       
+	)
+	continue;
+	
 	h1PgtrBeta->Fill(ct->fP_gtr_beta);
 	h1HgtrBeta->Fill(ct->fH_gtr_beta);
 	h1HkinPrimaryW->Fill(ct->fH_kin_primary_W);

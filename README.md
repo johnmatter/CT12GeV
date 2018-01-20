@@ -5,9 +5,10 @@ This repo is meant to contain codes for offline analysis for the color transpare
 
 Instruction:
 --------------
-
 * Modify `src/Constants.h` file to reflect correct data file path.
+
 * Compile from the top level directory by typing `make`.
+
 * Before you try it, do the following:
 
 Put the following command into your `~/.bashrc` file:
@@ -30,4 +31,7 @@ source bin/thisCT.(c)sh
 * Now copy the rootlogon.C file in the directory 'macros' under ROOT installation directory.  
 	  
 * Now from a new terminal start root doing `root -l`.
+
 * For a list of available options Type `Help()`
+
+* If you are running on `cdaql1`, setup environment first of all as: `source setup.csh`

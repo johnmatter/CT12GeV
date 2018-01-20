@@ -56,6 +56,7 @@ void CTRun::Init()
 	fFileName = ROOT_FILE_PATH;
 	fFileName += FILE_PREFIX;
 	fFileName += run;
+	fFileName += FILE_SUFFIX;
 	fFileName +=  ".root";
 
 	runNotFound = gSystem->AccessPathName(fFileName);
@@ -139,14 +140,15 @@ void CTRun::SetBranchAddressCT()
    //=============================== Set branch addresses.==================
     //------------ Kinematics ----------------------------
     //SHMS
-    fChain->SetBranchAddress("P.kin.primary.W", &fP_kin_Primary_W);
-    fChain->SetBranchAddress("P.kin.primary.Q2", &fP_kin_Primary_Q2);
-    fChain->SetBranchAddress("P.kin.primary.nu", &fP_kin_Primary_nu);
+    fChain->SetBranchAddress("P.kin.secondary.pmiss", &fP_kin_secondary_pmiss);
+    fChain->SetBranchAddress("P.kin.secondary.pmiss_x", &fP_kin_secondary_pmiss_x);
+    fChain->SetBranchAddress("P.kin.secondary.emiss", &fP_kin_secondary_emiss);
 
     //HMS
-    fChain->SetBranchAddress("H.kin.secondary.pmiss", &fH_kin_secondary_pmiss);
-    fChain->SetBranchAddress("H.kin.secondary.pmiss_x", &fH_kin_secondary_pmiss_x);
-    fChain->SetBranchAddress("H.kin.secondary.emiss", &fH_kin_secondary_emiss);
+    fChain->SetBranchAddress("H.kin.primary.W", &fH_kin_primary_W);
+    fChain->SetBranchAddress("H.kin.primary.Q2", &fH_kin_primary_Q2);
+    fChain->SetBranchAddress("H.kin.primary.nu", &fH_kin_primary_nu);
+
 
     //------------ Golden Track Quantities ----------------
     //SHMS 
