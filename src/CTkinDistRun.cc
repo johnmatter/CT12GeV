@@ -35,11 +35,16 @@ void CTkinDistRun(Int_t runNumber)
 
     //Optional:Disable unnecessary branches and enable required ones to speed up analysis for larger file
     //You do not need this if file is already skimmed while running replay
-    tree->SetBranchStatus("*",0);
-    tree->SetBranchStatus("P.kin.secondary.*",1);
+    tree->SetBranchStatus("*",0);                 // Disable all branches
+    tree->SetBranchStatus("P.kin.secondary.*",1); // Enable P.kin.secondary.*
     tree->SetBranchStatus("H.kin.primary.*",1);
     tree->SetBranchStatus("P.gtr.*",1);
     tree->SetBranchStatus("H.gtr.*",1);
+    tree->SetBranchStatus("P.hgcer.*",1);
+    tree->SetBranchStatus("H.cer.*",1);
+    tree->SetBranchStatus("P.cal.*",1);
+    tree->SetBranchStatus("H.cal.*",1);
+
 
     Int_t nEvents = tree->GetEntries();
 
@@ -49,6 +54,15 @@ void CTkinDistRun(Int_t runNumber)
 	    cout << (Int_t)(100*event/nEvents) <<" % Done"<< endl;
 
 	tree->GetEntry(event);
+
+	// PID Cut
+	if( !(ct->fP_gtr_beta > 0.5 && ct->fP_gtr_beta < 1.5                             // proton beta cut
+	      && ct->fH_gtr_beta > 0.5 &&  ct->fH_gtr_beta < 1.5                         // e beta cut
+	      && ct->fH_cer_npeSum > 0.1 && ct->fP_hgcer_npeSum < 0.1                    // Cerenkov counter cut for e- and proton
+	      && ct->fH_cal_etottracknorm > 0.8 && ct->fH_cal_etottracknorm < 1.5        // HMS Calorimeter cut 
+	      && ct->fH_cal_eprtracknorm > 0.2) 	                                 // HMS calorimeter cut       
+	)
+	continue;
 
 	h1PgtrBeta->Fill(ct->fP_gtr_beta);
 	h1HgtrBeta->Fill(ct->fH_gtr_beta);

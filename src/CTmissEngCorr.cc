@@ -4,13 +4,14 @@
 // Created: Thu Jan  4 17:03:26 2018 (-0500)
 // URL: jlab.org/~latif
 
-// Check 2023-2052
+// Check 2047-2049
 
 #include <iostream>
 #include <TFile.h>
 #include <TTree.h>
 #include <TString.h>
 #include <TH1D.h>
+#include <TH2D.h>
 #include <TCanvas.h>
 #include <TSystem.h>
 #include "Constants.h"
@@ -28,15 +29,12 @@ void CTmissEngCorr(Int_t firstRun, Int_t lastRun)
     if(!ct->fRunExist)
 	return;
     
-    TH1D *h1HgtrBeta = new TH1D("H.gtr.beta", "H.gtr.beta; ", 500, 0, 2);
-    TH1D *h1HkinPrimaryW = new TH1D("H.kin.primary.W", "H.kin.primary.W", 500, 0, 5);
-    TH1D *h1HkinPrimaryQ2 = new TH1D("H.kin.primary.Q2", "H.kin.primary.Q2", 500, 5, 10);
-    TH1D *h1HkinPrimaryNu = new TH1D("H.kin.primary.nu", "H.kin.primary.nu", 500, 0, 2);
-
-    TH1D *h1PgtrBeta = new TH1D("P.gtr.beta", "P.gtr.beta", 500, 0, 2);
-    TH1D *h1PkinSecondaryPmiss = new TH1D("P.kin.secondary.pmiss", "P.kin.secondary.pmiss", 500, -2, 2);
-    TH1D *h1PkinSecondaryPmiss_x = new TH1D("P.kin.secondary.pmiss_x", "P.kin.secondary.pmiss_x", 500, -2, 2);
     TH1D *h1PkinSecondaryEmiss = new TH1D("P.kin.secondary.emiss", "P.kin.secondary.emiss", 500, -1, 2);
+
+    TH2D *h2PmissEngVsPgtrP = new TH2D("missEngVsPgtrP","missEngVsPgtrP;  P.gtr.p[GeV/c]; miss eng [GeV];", 100, 3.0, 8.0, 100,-1, 2);
+    TH2D *h2PmissEngVsPgtrdP = new TH2D("missEngVsPgtrdP","missEngVsPgtrdP; P.gtr.dp[GeV/c]; miss eng [GeV]", 100, -10.0, 10.0, 100,-1, 2);
+    TH2D *h2HmissEngVsPgtrP = new TH2D("missEngVsHgtrP","missEngVsHgtrP;  H.gtr.p[GeV/c]; miss eng [GeV];", 100, 1.8, 2.4, 100,-1, 2);
+    TH2D *h2HmissEngVsPgtrdP = new TH2D("missEngVsHgtrdP","missEngVsHgtrdP; H.gtr.dp[GeV/c]; miss eng [GeV]", 100, -7.0, 7.0, 100,-1, 2);
     
     TTree * tree = ct->GetTree();
 
@@ -61,6 +59,7 @@ void CTmissEngCorr(Int_t firstRun, Int_t lastRun)
 
 	tree->GetEntry(event);
 
+	// PID Cut
 	if( !(ct->fP_gtr_beta > 0.5 && ct->fP_gtr_beta < 1.5                             // proton beta cut
 	      && ct->fH_gtr_beta > 0.5 &&  ct->fH_gtr_beta < 1.5                         // e beta cut
 	      && ct->fH_cer_npeSum > 0.1 && ct->fP_hgcer_npeSum < 0.1                    // Cerenkov counter cut for e- and proton
@@ -69,24 +68,23 @@ void CTmissEngCorr(Int_t firstRun, Int_t lastRun)
 	)
 	continue;
 	
-	h1PgtrBeta->Fill(ct->fP_gtr_beta);
-	h1HgtrBeta->Fill(ct->fH_gtr_beta);
-	h1HkinPrimaryW->Fill(ct->fH_kin_primary_W);
-	h1HkinPrimaryQ2->Fill(ct->fH_kin_primary_Q2);
-	h1PkinSecondaryPmiss->Fill(ct->fP_kin_secondary_pmiss);
 	h1PkinSecondaryEmiss->Fill(ct->fP_kin_secondary_emiss);
+        h2PmissEngVsPgtrP->Fill(ct->fP_gtr_p, ct->fP_kin_secondary_emiss);
+        h2PmissEngVsPgtrdP->Fill(ct->fP_gtr_dp, ct->fP_kin_secondary_emiss);
+        h2HmissEngVsPgtrP->Fill(ct->fH_gtr_p, ct->fP_kin_secondary_emiss);
+        h2HmissEngVsPgtrdP->Fill(ct->fH_gtr_dp, ct->fP_kin_secondary_emiss);
     }
 
     TCanvas *c1 = new TCanvas("c1","c1"); 
-    h1PgtrBeta->Draw();
-    TCanvas *c2 = new TCanvas("c2","c2"); 
-    h1HgtrBeta->Draw();
-    TCanvas *c3 = new TCanvas("c3","c3"); 
-    h1HkinPrimaryW->Draw();
-    TCanvas *c4 = new TCanvas("c4","c4"); 
-    h1HkinPrimaryQ2->Draw();
-    TCanvas *c5 = new TCanvas("c5","c5"); 
-    h1PkinSecondaryPmiss->Draw();    
-    TCanvas *c6 = new TCanvas("c6","c6"); 
     h1PkinSecondaryEmiss->Draw();
+    TCanvas *c2 = new TCanvas("c2","c2");
+    c2->Divide(2,2); 
+    c2->cd(1);
+    h2PmissEngVsPgtrP->Draw("colz");    
+    c2->cd(2);
+    h2PmissEngVsPgtrdP->Draw("colz");    
+    c2->cd(3);
+    h2HmissEngVsPgtrP->Draw("colz");    
+    c2->cd(4);
+    h2HmissEngVsPgtrdP->Draw("colz");    
 }
