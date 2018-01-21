@@ -1,5 +1,5 @@
-// Filename: CTcoinTimeExtended.cc
-// Description: Calculate coincidence time
+// Filename: CTcoinTimeReport.cc
+// Description: Calculate coincidence time and make report with comparison
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Thu Jan  4 17:03:26 2018 (-0500)
 // URL: jlab.org/~latif
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
+void CTcoinTimeReport(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 {
     TString fileName = ROOT_FILE_PATH;
     fileName += "coin_replay_production_";
@@ -70,11 +70,12 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 300, -15, 15);
     TH1D *h1HcointimeROC1 = new TH1D("HMS ROC1 Corrected Coin Time","HMS ROC1 Corrected Coin Time; cointime [ns]", 400, -60, 60);
     TH1D *h1HcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 400, -100, 150);
-    TH2D *h2PcoinTimeVsXfp = new TH2D("coinTimeVsXfp","coinTime Vs Xfp; Xfp; coinTime",100,-30,30,100,-20,20);
-    TH2D *h2PcoinTimeVsXpfp = new TH2D("coinTimeVsXpfp","coinTime Vs Xpfp;Xpfp; coinTime",100,-0.5,0.5,100,-20,20);
-    TH2D *h2PcoinTimeVsYfp = new TH2D("coinTimeVsYfp","coinTime Vs Yfp; Yfp; coinTime",100,-40,40,100,-20,20);
-    TH2D *h2PcoinTimeVsYpfp = new TH2D("coinTimeVsYpfp","coinTimeVsYpfp; Ypfp; coinTime",100,-0.5,0.5,100,-20,20);
-    TH2D *h2PcoinTimeVsdP = new TH2D("coinTimeVsdP","coinTimeVsdP; dP; coinTime",100,-12,12,100,-20,20);
+    TH2D *h2PcoinTimeVsXfp = new TH2D("coinTimeVsXfp","coinTime Vs Xfp; Xfp; coinTime [ns]",100,-30,30,100,-20,20);
+    TH2D *h2PcoinTimeVsXpfp = new TH2D("coinTimeVsXpfp","coinTime Vs Xpfp;Xpfp; coinTime [ns]",100,-0.2,0.2,100,-20,20);
+    TH2D *h2PcoinTimeVsYfp = new TH2D("coinTimeVsYfp","coinTime Vs Yfp; Yfp; coinTime [ns]",100,-40,40,100,-20,20);
+    TH2D *h2PcoinTimeVsYpfp = new TH2D("coinTimeVsYpfp","coinTime VsYpfp; Ypfp; coinTime [ns]",100,-0.1,0.1,100,-20,20);
+    TH2D *h2PcoinTimeVsdP = new TH2D("coinTimeVsdP","coinTime Vs delta; SHMS dP; coinTime [ns]",100,-20,20,100,-20,20);
+    TH2D *h2HcoinTimeVsdP = new TH2D("coinTimeVsdP","coinTime Vs delta; HMS dP;  coinTime [ns]",100,-12,12,100,-20,20);
 
     Double_t PgtrP;
     Double_t HgtrP;
@@ -131,7 +132,7 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     tree->SetBranchAddress("P.gtr.p", &PgtrP);    
     tree->SetBranchAddress("P.gtr.dp", &PgtrdP);            
     tree->SetBranchAddress("H.gtr.p", &HgtrP); 
-   tree->SetBranchAddress("H.gtr.dp", &HgtrdP);            
+    tree->SetBranchAddress("H.gtr.dp", &HgtrdP);            
     tree->SetBranchAddress("P.gtr.beta", &PgtrBetaMes);        
     tree->SetBranchAddress("H.gtr.beta", &HgtrBetaMes);
 
@@ -213,7 +214,7 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     h1PhodoStartTime->GetXaxis()->SetTitle("SHMS hodo start time [ns]");
     h1HhodoStartTime->GetXaxis()->SetTitle("HMS hodo start time [ns]");
 
-    Double_t pOffset = 4.0; //9.5 + 10;  // in ns
+    Double_t pOffset = 1.5;          // in ns
     Double_t hOffset = 335;
     Double_t speedOfLight = 29.9792; // in cm/ns
     
@@ -318,7 +319,8 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
 	h2PcoinTimeVsXpfp->Fill(PdcXpfp, SHMScorrCoinTimeROC1);
 	h2PcoinTimeVsYfp->Fill(PdcYfp, SHMScorrCoinTimeROC1);
 	h2PcoinTimeVsYpfp->Fill( PdcYpfp,SHMScorrCoinTimeROC1);
-	h2PcoinTimeVsdP->Fill(HgtrdP,SHMScorrCoinTimeROC1);
+	h2PcoinTimeVsdP->Fill(PgtrdP,SHMScorrCoinTimeROC1);
+	h2HcoinTimeVsdP->Fill(HgtrdP,SHMScorrCoinTimeROC1);
 
 	++totEvents;
     }
@@ -334,6 +336,7 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     h1PgtrBetaMes->Draw();
     c1->cd(4);
     h1HgtrBetaMes->Draw();
+    c1->Print("CoinTimeReport.pdf(","pdf");
     
     TCanvas *c2 = new TCanvas("c2", "Coincidence Time");
     c2->Divide(2,1);
@@ -345,6 +348,7 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     // h1HcointimeROC1->Draw();
     // c2->cd(4);
     // h1HcointimeROC2->Draw();
+    c2->Print("CoinTimeReport.pdf","pdf");
 
     TCanvas *c3 = new TCanvas("c3", "Focal Plane Hit Time");
     c3->Divide(2,1);
@@ -352,6 +356,7 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     h1PhodfpHitsTime->Draw();
     c3->cd(2);
     h1HhodfpHitsTime->Draw();
+    c3->Print("CoinTimeReport.pdf","pdf");
 
     TCanvas *c4 = new TCanvas("c4","c4");
     c4->Divide(2,2);
@@ -363,7 +368,13 @@ void CTcoinTimeExtended(Int_t runNumber,  TString shms_particle, Int_t analyzedE
     h2PcoinTimeVsYfp->Draw("colz");
     c4->cd(4);
     h2PcoinTimeVsYpfp->Draw("colz");
+    c4->Print("CoinTimeReport.pdf","pdf");
 
     TCanvas *c5 = new TCanvas("c5","c5");
     h2PcoinTimeVsdP->Draw("colz");
+    c5->Print("CoinTimeReport.pdf","pdf");
+
+    TCanvas *c6 = new TCanvas("c6","c6");
+    h2HcoinTimeVsdP->Draw("colz");
+    c6->Print("CoinTimeReport.pdf)","pdf");
 }

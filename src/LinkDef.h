@@ -18,8 +18,8 @@
 
 
 
-//--------- Following are functions are for testing/temporary and will be depricated ----------------------
-#pragma link C++ function CTcoinTimeExtended;        // Calculate coincidence time  with correlation
+//--------- Following functions are for testing/temporary and will be depricated ----------------------
+#pragma link C++ function CTcoinTimeReport;          // Calculate coincidence time  with correlation
 #pragma link C++ function CTcoinTimeRaw;             // Calculate raw coincidence time
 
 

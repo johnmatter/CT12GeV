@@ -216,7 +216,7 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     h1PhodoStartTime->GetXaxis()->SetTitle("SHMS hodo start time [ns]");
     h1HhodoStartTime->GetXaxis()->SetTitle("HMS hodo start time [ns]");
 
-    Double_t pOffset = 4.0; //9.5 + 10;  // in ns
+    Double_t pOffset = 1.5;  // in ns
     Double_t hOffset = 335;
     Double_t speedOfLight = 29.9792; // in cm/ns
     
