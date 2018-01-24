@@ -179,7 +179,7 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     Int_t nEvents = tree->GetEntries();
     cout << "Number of events: "<< nEvents <<endl;
 
-    if(analyzedEvents != -1 && analyzedEvents <= nEvents)
+    if(analyzedEvents > 0 && analyzedEvents <= nEvents)
 	nEvents = analyzedEvents;
     
     TCut evtCut;
