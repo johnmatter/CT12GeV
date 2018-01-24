@@ -27,6 +27,19 @@ class CTRun: public TObject
     TChain *fChain;
     Int_t fRunCounter;
 public:
+    
+    CTRun(Int_t runNumber);
+    CTRun();
+    CTRun(Int_t firstRun, Int_t lastRun);
+    ~CTRun();
+
+    Bool_t fRunExist;
+    
+    void Print();
+    TTree* GetTree();
+    TChain* GetChain();
+    Int_t GetRunNumber();
+    void ActivateCTBranches();
 
     //==========================================================================
     //                      All branch/Leaf Variables
@@ -109,23 +122,7 @@ public:
     //Int_t EvtType;
     Double_t EvtType;  // GetLeaf()->GetValue() returns double only
     //==========================================================================
-
-
-    
-    
-    CTRun(Int_t runNumber);
-    CTRun();
-    CTRun(Int_t firstRun, Int_t lastRun);
-    ~CTRun();
-
-    Bool_t fRunExist;
-    
-    void Print();
-    TTree* GetTree();
-    TChain* GetChain();
-    Int_t GetRunNumber();
-    void ActivateCTBranches();
-    
+           
     ClassDef(CTRun,0)
 };
 
