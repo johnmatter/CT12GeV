@@ -17,29 +17,41 @@
 
 class CTRun: public TObject
 {
-    TString fFileName;   
+    TString fFileName;
+    TString fSimcFileName;
     Int_t fRunNumber;
     Int_t fLastRun;
     Int_t fFirstRun;
     void Init();
+    void Init(TString file_name);
     void SetBranchAddressCT();
+    void SetBranchAddressSimc();
     TFile *fFile;
+    TFile *fSimcFile;
     TChain *fChain;
+    TChain *fSimcChain;
     Int_t fRunCounter;
+    Int_t fSimcFileCounter;
 public:
     
     CTRun(Int_t runNumber);
+    CTRun(TString fileName);
     CTRun();
     CTRun(Int_t firstRun, Int_t lastRun);
     ~CTRun();
 
     Bool_t fRunExist;
+    Bool_t fSimcExist;
     
     void Print();
     TTree* GetTree();
     TChain* GetChain();
+    TTree* GetSimcTree();
+    TChain* GetSimcChain();
+
     Int_t GetRunNumber();
     void ActivateCTBranches();
+    void AddSimc(TString SimcFileName, Int_t makeFirend = -1); //Set makeFriend to any value other than -1 to add as friend
 
     //==========================================================================
     //                      All branch/Leaf Variables

@@ -21,7 +21,6 @@ CTRun::CTRun(int runNumber)
     fRunNumber = runNumber;
     fFirstRun = runNumber;
     fLastRun = runNumber;
-    fRunCounter = 0;
     Init();
 }
 
@@ -31,10 +30,14 @@ CTRun::CTRun(int firstRun, int lastRun)
     fRunNumber = -1;
     fFirstRun = firstRun;
     fLastRun = lastRun;
-    fRunCounter = 0;
     Init();
 }
 
+CTRun::CTRun(TString fileName)
+{
+    fRunNumber = -1;
+    Init(fileName);
+}
 
 CTRun::CTRun()
 {
@@ -42,15 +45,19 @@ CTRun::CTRun()
 }
 CTRun::~CTRun()
 {
-    fFile->Close();
+    //fFile->Close();
 }
 
 void CTRun::Init()
 {
+    fRunCounter = 0;
+    fSimcFileCounter = 0;
+    fSimcExist = kFALSE;
+    fRunExist = kFALSE;
+
     fChain = new TChain("ct_chain","CT Chain");
 
     Bool_t runNotFound = kTRUE;
-    fRunExist = kFALSE;
     for(Int_t run = fFirstRun; run <= fLastRun; ++run)
     {
 	fFileName = ROOT_FILE_PATH;
@@ -77,6 +84,38 @@ void CTRun::Init()
     SetBranchAddressCT();
     fRunExist = kTRUE;
 }
+
+
+void CTRun::Init(TString file_name)
+{
+    fRunCounter = 0;
+    fSimcFileCounter = 0;
+    fSimcExist = kFALSE;
+    fRunExist = kFALSE;
+
+    fChain = new TChain("ct_chain","CT Chain");
+
+    Bool_t runNotFound = kTRUE;    
+    fFileName = file_name;
+
+    runNotFound = gSystem->AccessPathName(fFileName);
+    if(runNotFound)
+    {	    
+	cout << "Requested file: " << fFileName << " does NOT exist" <<endl;
+	return;	
+    }
+    fFileName +=  "/T";	
+    fChain->Add(fFileName);
+    ++fRunCounter;
+    cout << "Adding the file:"<< fFileName <<endl;
+    if(fRunCounter < 1)
+	return;
+
+    SetBranchAddressCT();
+    fRunExist = kTRUE;
+}
+
+
 
 void CTRun::Print()
 {
@@ -106,6 +145,49 @@ Int_t CTRun::GetRunNumber()
     return fRunNumber;
 }
 
+void CTRun::AddSimc(TString SimcFileName, Int_t makeFirend)
+{
+    fSimcChain = new TChain("simc_chain","Simc Chain");
+    Bool_t runNotFound = kTRUE;    
+    fSimcFileName = SimcFileName;
+
+    fSimcFileName = ROOT_FILE_PATH;
+    fSimcFileName += SimcFileName;
+    runNotFound = gSystem->AccessPathName(fSimcFileName);
+    if(runNotFound)
+    {	    
+	cout << "Requested file: " << fSimcFileName << " does NOT exist" <<endl;
+	return;	
+    }
+    fSimcFileName += "/h666"; 
+    fSimcChain->Add(fSimcFileName);
+    ++fSimcFileCounter;
+
+    if(fSimcFileCounter == 1)
+    {
+	SetBranchAddressSimc();
+	fSimcExist = kTRUE;
+	if(fRunExist && makeFirend != -1)
+	    fChain->AddFriend(fSimcChain);
+    }
+}
+
+TChain* CTRun::GetSimcChain()
+{
+    if(!fRunExist)
+	return NULL;
+    return fSimcChain;
+}
+
+
+TTree* CTRun::GetSimcTree()
+{
+    if(!fRunExist)
+	return NULL;
+    return (TTree*)fSimcChain;
+}
+
+
 void CTRun::ActivateCTBranches()
 {
     fChain->SetBranchStatus("*",0);
@@ -133,6 +215,13 @@ void CTRun::ActivateCTBranches()
     fChain->SetBranchStatus("T.coin.hTRIG*",1);
 }
 
+
+void CTRun::SetBranchAddressSimc()
+{
+
+
+    
+}
 
 // For the buffer fCTEventData
 void CTRun::SetBranchAddressCT()
