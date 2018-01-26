@@ -9,6 +9,8 @@
 #include "TString.h"
 #include "TH1F.h"
 #include "TSystem.h"
+#include "TCut.h"
+#include "TEventList.h"
 #include "Constants.h"
 #include "CTRun.h"
 
@@ -187,6 +189,30 @@ TTree* CTRun::GetSimcTree()
     return (TTree*)fSimcChain;
 }
 
+void CTRun::DefinePBetaCut(Double_t min, Double_t max)
+{
+    fPBetaMin = min;
+    fPBetaMax = max;
+}
+
+void CTRun::DefineHBetaCut(Double_t min, Double_t max)
+{
+    fHBetaMin = min;
+    fHBetaMax = max;
+}
+
+void CTRun::ApplyCut()
+{
+    fCTcut = "P.gtr.beta >=";
+    fCTcut += fPBetaMin;
+    fCTcut += " && P.gtr.beta <=";
+    fCTcut += fPBetaMax;
+
+    fChain->Draw(">>list_temp1",fCTcut,"eventlist");
+    fCTEvents = (TEventList*)gDirectory->Get("list_temp1");
+    
+    fChain->SetEventList(fCTEvents);
+}
 
 void CTRun::ActivateCTBranches()
 {

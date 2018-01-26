@@ -32,6 +32,15 @@ class CTRun: public TObject
     TChain *fSimcChain;
     Int_t fRunCounter;
     Int_t fSimcFileCounter;
+    TEventList * fCTEvents;
+    
+    //---Cut values ----
+    //beta cut
+    Double_t fPBetaMin;
+    Double_t fPBetaMax;
+    Double_t fHBetaMin;
+    Double_t fHBetaMax;
+    
 public:
     
     CTRun(Int_t runNumber);
@@ -42,6 +51,7 @@ public:
 
     Bool_t fRunExist;
     Bool_t fSimcExist;
+    TString fCTcut;
     
     void Print();
     TTree* GetTree();
@@ -52,7 +62,9 @@ public:
     Int_t GetRunNumber();
     void ActivateCTBranches();
     void AddSimc(TString SimcFileName, Int_t makeFirend = -1); //Set makeFriend to any value other than -1 to add as friend
-
+    void DefinePBetaCut(Double_t min, Double_t max);
+    void DefineHBetaCut(Double_t min, Double_t max);
+    void ApplyCut();
     //==========================================================================
     //                      All branch/Leaf Variables
     //==========================================================================
