@@ -203,6 +203,8 @@ void CTRun::DefineHBetaCut(Double_t min, Double_t max)
 
 void CTRun::ApplyCut()
 {
+    fChain->SetEventList(0); // Unset previously set event list
+    
     fCTcut = "P.gtr.beta >=";
     fCTcut += fPBetaMin;
     fCTcut += " && P.gtr.beta <=";
