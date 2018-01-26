@@ -40,6 +40,25 @@ class CTRun: public TObject
     Double_t fPBetaMax;
     Double_t fHBetaMin;
     Double_t fHBetaMax;
+
+    //Cerenkov Counter cut
+    Double_t fPCerMin;
+    Double_t fPCerMax;
+    Double_t fHCerMin;
+    Double_t fHCerMax;
+
+    // Calorimeter Cut
+    Double_t fPCalMin;
+    Double_t fPCalMax;
+    Double_t fHCalMin;
+    Double_t fHCalMax;
+
+    //Pre-shower counter
+    Double_t fPPreShMin;
+    Double_t fPPreShMax;
+    Double_t fHPreShMin;
+    Double_t fHPreShMax;
+
     
 public:
     
@@ -61,9 +80,20 @@ public:
 
     Int_t GetRunNumber();
     void ActivateCTBranches();
-    void AddSimc(TString SimcFileName, Int_t makeFirend = -1); //Set makeFriend to any value other than -1 to add as friend
-    void DefinePBetaCut(Double_t min, Double_t max);
-    void DefineHBetaCut(Double_t min, Double_t max);
+    void AddSimc(TString SimcFileName, Int_t makeFriend = -1); //Set makeFriend to any value other than -1 to add as friend
+
+    //max = -1 means set no upper bound
+    //min = -1 means set no lower bound
+    void DefinePBetaCut(Double_t min = -1, Double_t max = -1); 
+    void DefineHBetaCut(Double_t min = -1, Double_t max = -1);
+    void DefinePCerCut(Double_t min = -1, Double_t max =-1);
+    void DefineHCerCut(Double_t min = -1, Double_t max = -1);
+    void DefinePCalCut(Double_t min = -1, Double_t max =-1);
+    void DefineHCalCut(Double_t min = -1, Double_t max = -1);
+    void DefinePPreShCut(Double_t min = -1, Double_t max =-1);
+    void DefineHPreShCut(Double_t min = -1, Double_t max = -1);
+
+    
     void ApplyCut();
     //==========================================================================
     //                      All branch/Leaf Variables

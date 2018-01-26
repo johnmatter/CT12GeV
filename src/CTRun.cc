@@ -147,7 +147,7 @@ Int_t CTRun::GetRunNumber()
     return fRunNumber;
 }
 
-void CTRun::AddSimc(TString SimcFileName, Int_t makeFirend)
+void CTRun::AddSimc(TString SimcFileName, Int_t makeFriend)
 {
     fSimcChain = new TChain("simc_chain","Simc Chain");
     Bool_t runNotFound = kTRUE;    
@@ -169,7 +169,7 @@ void CTRun::AddSimc(TString SimcFileName, Int_t makeFirend)
     {
 	SetBranchAddressSimc();
 	fSimcExist = kTRUE;
-	if(fRunExist && makeFirend != -1)
+	if(fRunExist && makeFriend != -1)
 	    fChain->AddFriend(fSimcChain);
     }
 }
@@ -201,15 +201,137 @@ void CTRun::DefineHBetaCut(Double_t min, Double_t max)
     fHBetaMax = max;
 }
 
+void CTRun::DefinePCerCut(Double_t min, Double_t max)
+{
+    fPCerMax = max;
+    fPCerMin = min;
+}
+
+void CTRun::DefineHCerCut(Double_t max, Double_t min)
+{
+    fHCerMax = max;
+    fHCerMin = min;
+}
+
+void CTRun::DefinePCalCut(Double_t min, Double_t max)
+{
+    fPCalMax = max;
+    fPCalMin = min;
+}
+
+void CTRun::DefineHCalCut(Double_t max, Double_t min)
+{
+    fHCalMax = max;
+    fHCalMin = min;
+}
+
+void CTRun::DefinePPreShCut(Double_t min, Double_t max)
+{
+    fPPreShMax = max;
+    fPPreShMin = min;
+}
+
+void CTRun::DefineHPreShCut(Double_t max, Double_t min)
+{
+    fHPreShMax = max;
+    fHPreShMin = min;
+}
+
+
 void CTRun::ApplyCut()
 {
     fChain->SetEventList(0); // Unset previously set event list
-    
-    fCTcut = "P.gtr.beta >=";
-    fCTcut += fPBetaMin;
-    fCTcut += " && P.gtr.beta <=";
-    fCTcut += fPBetaMax;
 
+    fCTcut = " 1 ";
+
+    //--------- Beta Cut -------------------
+    if(fPBetaMin != -1)
+    {
+	fCTcut += " && P.gtr.beta >=";
+	fCTcut += fPBetaMin;
+    }
+    if(fPBetaMax != -1)
+    {
+	fCTcut += " && P.gtr.beta <=";
+	fCTcut += fPBetaMax;
+    }
+    if(fHBetaMin != -1)
+    {
+	fCTcut += " && H.gtr.beta >=";
+	fCTcut += fHBetaMin;
+    }
+    if(fHBetaMax != -1)
+    {
+	fCTcut += " && H.gtr.beta <=";
+	fCTcut += fHBetaMax;
+    }
+
+    //--------- Cerenkov Counter Cut -----------
+    if(fPCerMin != -1)
+    {
+	fCTcut += "P.hgcer.npeSum >=";
+	fCTcut += fPCerMin;
+    }
+    if(fPCerMax != -1)
+    {
+	fCTcut += " && P.hgcer.npeSum <=";
+	fCTcut += fPCerMax;
+    }
+    if(fHCerMin != -1)
+    {
+	fCTcut += " && H.cer.npeSum >=";
+	fCTcut += fHCerMin;
+    }
+    if(fHCerMax != -1)
+    {
+	fCTcut += " && H.cer.npeSum <=";
+	fCTcut += fHCerMax;
+    }
+
+    //--------- Calorimeter Cut -----------
+    if(fPCalMin != -1)
+    {
+	fCTcut += "P.cal.etottracknorm >=";
+	fCTcut += fPCalMin;
+    }
+    if(fPCalMax != -1)
+    {
+	fCTcut += " && P.cal.etottracknorm <=";
+	fCTcut += fPCalMax;
+    }
+    if(fHCalMin != -1)
+    {
+	fCTcut += " && H.cal.etottracknorm >=";
+	fCTcut += fHCalMin;
+    }
+    if(fHCalMax != -1)
+    {
+	fCTcut += " && H.cal.etottracknorm <=";
+	fCTcut += fHCalMax;
+    }
+
+    //--------- Preshower Cut -----------
+    if(fPPreShMin != -1)
+    {
+	fCTcut += "P.cal.eprtracknorm >=";
+	fCTcut += fPPreShMin;
+    }
+    if(fPPreShMax != -1)
+    {
+	fCTcut += " && P.cal.eprtracknorm <=";
+	fCTcut += fPPreShMax;
+    }
+    if(fHPreShMin != -1)
+    {
+	fCTcut += " && H.cal.eprtracknorm >=";
+	fCTcut += fHPreShMin;
+    }
+    if(fHPreShMax != -1)
+    {
+	fCTcut += " && H.cal.eprtracknorm <=";
+	fCTcut += fHPreShMax;
+    }
+   
     fChain->Draw(">>list_temp1",fCTcut,"eventlist");
     fCTEvents = (TEventList*)gDirectory->Get("list_temp1");
     
