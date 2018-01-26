@@ -57,6 +57,31 @@ void CTRun::Init()
     fSimcExist = kFALSE;
     fRunExist = kFALSE;
 
+    //---Cut values ----
+    //beta cut
+    fPBetaMin = -1;
+    fPBetaMax = -1;
+    fHBetaMin = -1;
+    fHBetaMax = -1;
+
+    //Cerenkov Counter cut
+    fPCerMin = -1;
+    fPCerMax = -1;
+    fHCerMin = -1;
+    fHCerMax = -1;
+
+    // Calorimeter Cut
+    fPCalMin = -1;
+    fPCalMax = -1;
+    fHCalMin = -1;
+    fHCalMax = -1;
+
+    //Pre-shower counter
+    fPPreShMin = -1;
+    fPPreShMax = -1;
+    fHPreShMin = -1;
+    fHPreShMax = -1;
+
     fChain = new TChain("ct_chain","CT Chain");
 
     Bool_t runNotFound = kTRUE;
@@ -95,6 +120,31 @@ void CTRun::Init(TString file_name)
     fSimcExist = kFALSE;
     fRunExist = kFALSE;
 
+    //---Cut values ----
+    //beta cut
+    fPBetaMin = -1;
+    fPBetaMax = -1;
+    fHBetaMin = -1;
+    fHBetaMax = -1;
+
+    //Cerenkov Counter cut
+    fPCerMin = -1;
+    fPCerMax = -1;
+    fHCerMin = -1;
+    fHCerMax = -1;
+
+    // Calorimeter Cut
+    fPCalMin = -1;
+    fPCalMax = -1;
+    fHCalMin = -1;
+    fHCalMax = -1;
+
+    //Pre-shower counter
+    fPPreShMin = -1;
+    fPPreShMax = -1;
+    fHPreShMin = -1;
+    fHPreShMax = -1;
+    
     fChain = new TChain("ct_chain","CT Chain");
 
     Bool_t runNotFound = kTRUE;    
@@ -207,7 +257,7 @@ void CTRun::DefinePCerCut(Double_t min, Double_t max)
     fPCerMin = min;
 }
 
-void CTRun::DefineHCerCut(Double_t max, Double_t min)
+void CTRun::DefineHCerCut(Double_t min, Double_t max)
 {
     fHCerMax = max;
     fHCerMin = min;
@@ -219,7 +269,7 @@ void CTRun::DefinePCalCut(Double_t min, Double_t max)
     fPCalMin = min;
 }
 
-void CTRun::DefineHCalCut(Double_t max, Double_t min)
+void CTRun::DefineHCalCut(Double_t min, Double_t max)
 {
     fHCalMax = max;
     fHCalMin = min;
@@ -231,7 +281,7 @@ void CTRun::DefinePPreShCut(Double_t min, Double_t max)
     fPPreShMin = min;
 }
 
-void CTRun::DefineHPreShCut(Double_t max, Double_t min)
+void CTRun::DefineHPreShCut(Double_t min, Double_t max)
 {
     fHPreShMax = max;
     fHPreShMin = min;
@@ -241,7 +291,8 @@ void CTRun::DefineHPreShCut(Double_t max, Double_t min)
 void CTRun::ApplyCut()
 {
     fChain->SetEventList(0); // Unset previously set event list
-
+    fCTcut.Clear();
+    
     fCTcut = " 1 ";
 
     //--------- Beta Cut -------------------
@@ -269,7 +320,7 @@ void CTRun::ApplyCut()
     //--------- Cerenkov Counter Cut -----------
     if(fPCerMin != -1)
     {
-	fCTcut += "P.hgcer.npeSum >=";
+	fCTcut += "&& P.hgcer.npeSum >=";
 	fCTcut += fPCerMin;
     }
     if(fPCerMax != -1)
@@ -291,7 +342,7 @@ void CTRun::ApplyCut()
     //--------- Calorimeter Cut -----------
     if(fPCalMin != -1)
     {
-	fCTcut += "P.cal.etottracknorm >=";
+	fCTcut += "&& P.cal.etottracknorm >=";
 	fCTcut += fPCalMin;
     }
     if(fPCalMax != -1)
@@ -313,7 +364,7 @@ void CTRun::ApplyCut()
     //--------- Preshower Cut -----------
     if(fPPreShMin != -1)
     {
-	fCTcut += "P.cal.eprtracknorm >=";
+	fCTcut += "&& P.cal.eprtracknorm >=";
 	fCTcut += fPPreShMin;
     }
     if(fPPreShMax != -1)
@@ -331,7 +382,9 @@ void CTRun::ApplyCut()
 	fCTcut += " && H.cal.eprtracknorm <=";
 	fCTcut += fHPreShMax;
     }
-   
+
+    cout << "Applied Cut: "<< fCTcut<<endl;
+    
     fChain->Draw(">>list_temp1",fCTcut,"eventlist");
     fCTEvents = (TEventList*)gDirectory->Get("list_temp1");
     

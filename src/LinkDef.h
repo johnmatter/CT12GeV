@@ -7,6 +7,7 @@
 #pragma link C++ function CTpidCut;                  // Make some Kinematic distribution plots by looping over event by event with cut
 #pragma link C++ function CTcoinTime;                // Calculate coincidence time
 #pragma link C++ function CTmissEngCorr;             // Missing Energy Correlation
+#pragma link C++ function CTdemoDraw;                // Demo Draw Using CTRun class
 
 
 #pragma link C++ function Plot_Data_Simc_eSHMS;      // Compare SIMC with data e in SHMS

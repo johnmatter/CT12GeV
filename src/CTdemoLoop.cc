@@ -1,5 +1,5 @@
-// Filename: CTkinDistRun.cc
-// Description: Look at some Kinematc distributions (without cut) by looping over each event using CTRun class
+// Filename: CTdemoLoop.cc
+// Description: Demo
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Thu Jan  4 17:03:26 2018 (-0500)
 // URL: jlab.org/~latif
@@ -11,15 +11,25 @@
 #include <TH1D.h>
 #include <TCanvas.h>
 #include <TSystem.h>
+#include <TEventList.h>
 #include "Constants.h"
 #include "CTRun.h"
 using namespace std;
 
-void CTkinDistRun(Int_t runNumber)
+void CTdemoLoop(Int_t runNumber)
 {
     CTRun *ct = new CTRun(runNumber);
     if(!ct->fRunExist)
 	return;
+    
+    ct->DefinePBetaCut(0.5,1.5);   // proton beta cut
+    ct->DefineHBetaCut(0.5,1.5);   // e beta cut
+    ct->DefinePCerCut(-1,0.1);     // Cerenkov counter cut for e- and proton
+    ct->DefineHCerCut(0.1);        // HMS Calorimeter cut 
+    ct->DefineHCalCut(0.8,1.5);    // HMS calorimeter cut       
+    ct->DefineHPreShCut(0.2);      // HMS Pre-shower cut
+
+    ct->ApplyCut();
     
     TH1D *h1HgtrBeta = new TH1D("H.gtr.beta", "H.gtr.beta; ", 500, 0, 2);
     TH1D *h1HkinPrimaryW = new TH1D("H.kin.primary.W", "H.kin.primary.W", 500, 0, 5);
@@ -32,36 +42,16 @@ void CTkinDistRun(Int_t runNumber)
     TH1D *h1PkinSecondaryEmiss = new TH1D("P.kin.secondary.emiss", "P.kin.secondary.emiss", 500, -10, 10);
     
     TTree * tree = ct->GetTree();
-
-    //Optional:Disable unnecessary branches and enable required ones to speed up analysis for larger file
-    //You do not need this if file is already skimmed while running replay
-    tree->SetBranchStatus("*",0);                 // Disable all branches
-    tree->SetBranchStatus("P.kin.secondary.*",1); // Enable P.kin.secondary.*
-    tree->SetBranchStatus("H.kin.primary.*",1);
-    tree->SetBranchStatus("P.gtr.*",1);
-    tree->SetBranchStatus("H.gtr.*",1);
-    tree->SetBranchStatus("P.hgcer.*",1);
-    tree->SetBranchStatus("H.cer.*",1);
-    tree->SetBranchStatus("P.cal.*",1);
-    tree->SetBranchStatus("H.cal.*",1);
-
-    Int_t nEvents = tree->GetEntries();
-
-    for (Int_t event = 0; event < nEvents; ++ event)
+    TEventList *list = ct->fCTEvents;
+    Int_t nEvents = list->GetN();
+    Int_t event = 0;
+    for (Int_t index = 0; index < nEvents; ++index)
     {
+	event = list->GetEntry(index);
 	if(event%5000 == 0)
 	    cout << (Int_t)(100*event/nEvents) <<" % Done"<< endl;
 
 	tree->GetEntry(event);
-
-	// PID Cut
-	if( !(ct->fP_gtr_beta > 0.5 && ct->fP_gtr_beta < 1.5                             // proton beta cut
-	      && ct->fH_gtr_beta > 0.5 &&  ct->fH_gtr_beta < 1.5                         // e beta cut
-	      && ct->fH_cer_npeSum > 0.1 && ct->fP_hgcer_npeSum < 0.1                    // Cerenkov counter cut for e- and proton
-	      && ct->fH_cal_etottracknorm > 0.8 && ct->fH_cal_etottracknorm < 1.5        // HMS Calorimeter cut 
-	      && ct->fH_cal_eprtracknorm > 0.2) 	                                 // HMS calorimeter cut       
-	)
-	continue;
 
 	h1PgtrBeta->Fill(ct->fP_gtr_beta);
 	h1HgtrBeta->Fill(ct->fH_gtr_beta);

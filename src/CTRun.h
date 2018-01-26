@@ -32,7 +32,6 @@ class CTRun: public TObject
     TChain *fSimcChain;
     Int_t fRunCounter;
     Int_t fSimcFileCounter;
-    TEventList * fCTEvents;
     
     //---Cut values ----
     //beta cut
@@ -71,6 +70,7 @@ public:
     Bool_t fRunExist;
     Bool_t fSimcExist;
     TString fCTcut;
+    TEventList * fCTEvents;
     
     void Print();
     TTree* GetTree();
