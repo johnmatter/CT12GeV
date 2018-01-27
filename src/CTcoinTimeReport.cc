@@ -14,12 +14,14 @@
 #include <TLeaf.h>
 #include <TSystem.h>
 #include <TCut.h>
+#include "CTRun.h"
 #include "Constants.h"
 
 using namespace std;
 
-void CTcoinTimeReport(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
+void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int_t analyzedEvents)
 {
+  /*
     TString fileName = ROOT_FILE_PATH;
     fileName += "coin_replay_production_";
     fileName += runNumber;
@@ -37,7 +39,11 @@ void CTcoinTimeReport(Int_t runNumber,  TString shms_particle, Int_t analyzedEve
     TFile *file = new TFile(fileName);
     TTree *tree = (TTree*)file->Get("T");    
     //tree->Print();
-    
+*/    
+
+    CTRun *ct = new CTRun(firstRun, lastRun);
+    TTree *tree = ct->GetTree();
+
     Double_t SHMSpartMass; 
     Double_t HMSpartMass;
     Double_t SHMSbetaMin;
@@ -177,7 +183,7 @@ void CTcoinTimeReport(Int_t runNumber,  TString shms_particle, Int_t analyzedEve
     Int_t nEvents = tree->GetEntries();
     cout << "Number of events: "<< nEvents <<endl;
 
-    if(analyzedEvents != -1 && analyzedEvents <= nEvents)
+    if(analyzedEvents > 0 && analyzedEvents <= nEvents)
 	nEvents = analyzedEvents;
     
     TCut evtCut;

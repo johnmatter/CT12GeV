@@ -5,4 +5,4 @@
 // URL: jlab.org/~latif
 
 #include <TString.h>
-void CTcoinTimeReport(Int_t runNumber, TString shms_particle = "p", Int_t analyzedEvents = -1);
+void CTcoinTimeReport(Int_t firstRun, Int_t lastRun, TString shms_particle = "p", Int_t analyzedEvents = -1);
