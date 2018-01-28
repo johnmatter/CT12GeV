@@ -4,5 +4,5 @@
 // Also needs normfac from SIMC and the simc root file name
 
 #include <TString.h>
-void Plot_kine_compare(Int_t numruns = 8, TString shms_part = "p", TString simfile = "h1_1.root", Double_t normfac = 1.0);
+void Plot_kine_compare_carbon(Int_t numruns = 8, TString shms_part = "p", TString simfile = "c12_q8.root", Double_t normfac = 1.0);
 

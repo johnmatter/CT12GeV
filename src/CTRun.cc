@@ -108,8 +108,8 @@ void CTRun::Init()
     if(fRunCounter < 1)
 	return;
 
-    SetBranchAddressCT();
     fRunExist = kTRUE;
+    SetBranchAddressCT();
 }
 
 
@@ -163,8 +163,8 @@ void CTRun::Init(TString file_name)
     if(fRunCounter < 1)
 	return;
 
-    SetBranchAddressCT();
     fRunExist = kTRUE;
+    SetBranchAddressCT();
 }
 
 
@@ -199,6 +199,9 @@ Int_t CTRun::GetRunNumber()
 
 void CTRun::AddSimc(TString SimcFileName, Int_t makeFriend)
 {
+    if(!fRunExist)
+	return;
+    
     fSimcChain = new TChain("simc_chain","Simc Chain");
     Bool_t runNotFound = kTRUE;    
     fSimcFileName = SimcFileName;
@@ -217,8 +220,8 @@ void CTRun::AddSimc(TString SimcFileName, Int_t makeFriend)
 
     if(fSimcFileCounter == 1)
     {
-	SetBranchAddressSimc();
 	fSimcExist = kTRUE;
+	SetBranchAddressSimc();
 	if(fRunExist && makeFriend != -1)
 	    fChain->AddFriend(fSimcChain);
     }
@@ -290,6 +293,9 @@ void CTRun::DefineHPreShCut(Double_t min, Double_t max)
 
 void CTRun::ApplyCut()
 {
+    if(!fRunExist)
+	return;
+
     fChain->SetEventList(0); // Unset previously set event list
     fCTcut.Clear();
     
@@ -393,6 +399,9 @@ void CTRun::ApplyCut()
 
 void CTRun::ActivateCTBranches()
 {
+    if(!fRunExist)
+	return;
+
     fChain->SetBranchStatus("*",0);
     fChain->SetBranchStatus("P.kin.primary.*",1);
     fChain->SetBranchStatus("H.kin.secondary.*",1);
@@ -421,14 +430,27 @@ void CTRun::ActivateCTBranches()
 
 void CTRun::SetBranchAddressSimc()
 {
+    //HMS
+    fSimcChain->SetBranchAddress("hsdelta", &fHSdelta);
+    fSimcChain->SetBranchAddress("hsxptar", &fHSxptar);
+    fSimcChain->SetBranchAddress("hsyptar", &fHSyptar);
+    fSimcChain->SetBranchAddress("hsytar", &fHSytar);
 
+    //SHMS
+    fSimcChain->SetBranchAddress("ssdelta", &fPSdelta);
+    fSimcChain->SetBranchAddress("ssxptar", &fPSxptar);
+    fSimcChain->SetBranchAddress("ssyptar", &fPSyptar);
+    fSimcChain->SetBranchAddress("ssytar", &fPSytar);
 
-    
+    fSimcChain->SetBranchAddress("Weight", &fWeight);
 }
 
 // For the buffer fCTEventData
 void CTRun::SetBranchAddressCT()
 {
+    if(!fRunExist)
+	return;
+
    //=============================== Set branch addresses.==================
     //------------ Kinematics ----------------------------
     //SHMS
@@ -453,6 +475,20 @@ void CTRun::SetBranchAddressCT()
     fChain->SetBranchAddress("H.gtr.dp", &fH_gtr_dp);
     fChain->SetBranchAddress("H.gtr.beta", &fH_gtr_beta);
 
+    //--------- Vertex/Target Coord --------------  
+    //SHMS
+    fChain->SetBranchAddress("P.gtr.x",  &fP_gtr_x);
+    fChain->SetBranchAddress("P.gtr.th", &fP_gtr_th);    
+    fChain->SetBranchAddress("P.gtr.y",  &fP_gtr_y);
+    fChain->SetBranchAddress("P.gtr.ph", &fP_gtr_ph);
+
+     //HMS
+    fChain->SetBranchAddress("H.gtr.x", &fH_gtr_x);
+    fChain->SetBranchAddress("H.gtr.th", &fH_gtr_th);    
+    fChain->SetBranchAddress("H.gtr.y", &fH_gtr_y);
+    fChain->SetBranchAddress("H.gtr.ph", &fH_gtr_ph);
+
+    
     // ---------------- Drift Chamber ---------------
     //SHMS
     fChain->SetBranchAddress("P.dc.x_fp", &fP_dc_x_fp);

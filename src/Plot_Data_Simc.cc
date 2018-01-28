@@ -1,13 +1,14 @@
 // Filename: Plot_Data_Simc.cc
 // Description: Plot, delta, xptar and yptar distributions for SHMS and HMS to compare between data and SIMC
 
-// Needs input of runnumber, e/p in SHMS, root filename and  normfac from SIMC
+// Needs input of runnumber, target h/c, e/p in SHMS, root filename and  normfac from SIMC
 
 
 #include <iostream>
 #include <TFile.h>
 #include <TTree.h>
 #include <TLeaf.h>
+#include <TChain.h>
 #include <TString.h>
 #include <TH1D.h>
 #include <TH2D.h>
@@ -20,20 +21,13 @@
 
 using namespace std;
 
-//const double normfac = 0.950677E+07; //SIMC normfac
-//const char* fileeM2 = "h1_3.root"; // SIMC file name
 
-void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double_t normfac){
+void Plot_Data_Simc(Int_t numruns, TString targ, TString shms_part, TString simfile, Double_t normfac){
 
-  TString fileNameD = ROOT_FILE_PATH;
-  fileNameD += "ep_"; //read the root file from data
-  fileNameD += runNumber; //read the root file from data
-  fileNameD += ".root"; //read the root file from data
-  TFile *f1 = new TFile(fileNameD);
-  TTree *tt = (TTree*)f1->Get("T");
-  //get the relevant branch
-  int nentriesD = tt->GetEntries();
-  cout<<"Entries:\t"<<nentriesD<<endl;
+
+  //    const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052};
+  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198};
+
 
   TString fileNameM = ROOT_FILE_PATH;
   fileNameM += simfile; //read the root file from SIMC
@@ -42,21 +36,15 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
   //get the relevant branch
   int nentriesM = ts->GetEntries();
   cout<<"Simc Entries:\t"<<nentriesM<<endl;
-
-  TFile *fout = new TFile("run_hists_comp.root","RECREATE");
-
-  TString fileO;
-   fileO += "run_"; //read the root file from data
-   fileO += runNumber; //read the root file from data
-   fileO += "_data_simc_comp.pdf"; //read the root file from data
-  TString fileO1;
-   fileO1 += "run_"; //read the root file from data
-   fileO1 += runNumber; //read the root file from data
-   fileO1 += "_data_simc_comp.pdf["; //read the root file from data
-  TString fileO2;
-   fileO2 += "run_"; //read the root file from data
-   fileO2 += runNumber; //read the root file from data
-   fileO2 += "_data_simc_comp.pdf]"; //read the root file from data
+  TString ofilename = targ; 
+  ofilename += "_hists_comp.root";
+  TString fileO = targ;
+  TString fileO1 = targ;
+  TString fileO2 = targ;
+  fileO += "_data_simc_comp.pdf";
+  fileO1 += "_data_simc_comp.pdf[";
+  fileO2 += "_data_simc_comp.pdf]";
+  TFile *fout = new TFile(ofilename,"RECREATE");
 
 
   gROOT->SetBatch(kTRUE);
@@ -98,6 +86,25 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
   TH1D *s_pytar = new TH1D("s_sytar","SHMS YTAR (cm)",100,-12.0,12.0);
 
   TH1D *s_tmp = new TH1D("s_delta","stmp",100,-12,12);  //tmp hist to get integral
+
+  TChain *tt = new TChain("T");
+
+  for (int i=0;i<numruns;i++){
+    cout << "opening run number: " <<  runnumber[i] <<"\n";
+ //read the input file from data
+    TString fileNameD = ROOT_FILE_PATH;
+    fileNameD += "coin_replay_production_"; //read the root file from data
+    fileNameD += runnumber[i]; //read the root file from data
+    fileNameD += "_-1.root"; //read the root file from data
+
+    tt->Add(fileNameD);
+  }
+  //  TFile *f1 = new TFile(fileNameD);
+  //  TTree *tt = (TTree*)f1->Get("T");
+    //get the relevant branch
+   int nentriesD = tt->GetEntries();
+   cout<<"Entries:\t"<<nentriesD<<endl;
+
  
   double hcernpe, hbeta, deltap, pxptar, pyptar, pcalepr, pcaletot, pcernpe;
   double pbeta, deltae, exptar, eyptar, pytar, eytar, hcaletot, hcalepr;
@@ -155,7 +162,7 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
      pyptar = tt->GetLeaf("P.gtr.ph")->GetValue();    
      pytar = tt->GetLeaf("P.gtr.y")->GetValue();
 
-     if (pbeta>0.6 && pbeta<1.4 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.1 && hcaletot >0.8 && hcaletot<1.2) { //cuts to select the electrons and protons
+     if (pbeta>0.6 && pbeta<1.4 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.5 && hcernpe>0. && hcaletot >0.7 && hcaletot<1.65) { //cuts to select the electrons and protons
       cnts++;
       h_hdelta->Fill(deltae);
       h_hxptar->Fill(exptar);
@@ -218,11 +225,11 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
  
   cc->cd(1);
   h_hdelta->SetFillStyle(1001);
-  h_hdelta->SetMarkerColor(kRed);
-  h_hdelta->SetLineColor(kRed);
+  h_hdelta->SetMarkerColor(kBlue);
+  h_hdelta->SetLineColor(kBlue);
   hs1->Add(h_hdelta);
-  s_hdelta->SetFillColor(kBlue);
-  s_hdelta->SetMarkerColor(kBlue);
+  s_hdelta->SetFillColor(kRed);
+  s_hdelta->SetMarkerColor(kRed);
   hs1->Add(s_hdelta);
   hs1->Draw("pfc nostack");
   
@@ -230,33 +237,33 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
   cc->cd(1);
 
   h_hxptar->SetFillStyle(1);
-  h_hxptar->SetMarkerColor(kRed);
-  h_hxptar->SetLineColor(kRed);
+  h_hxptar->SetMarkerColor(kBlue);
+  h_hxptar->SetLineColor(kBlue);
   hs2->Add(h_hxptar);
-  s_hxptar->SetFillColor(kBlue);
-  s_hxptar->SetMarkerColor(kBlue);
+  s_hxptar->SetFillColor(kRed);
+  s_hxptar->SetMarkerColor(kRed);
   hs2->Add(s_hxptar);
   hs2->Draw("pfc nostack");
   cc->Print(fileO);
  
   cc->cd(1);
   h_hyptar->SetFillStyle(1);
-  h_hyptar->SetMarkerColor(kRed);
-  h_hyptar->SetLineColor(kRed);
+  h_hyptar->SetMarkerColor(kBlue);
+  h_hyptar->SetLineColor(kBlue);
   hs3->Add(h_hyptar);
-  s_hyptar->SetFillColor(kBlue);
-  s_hyptar->SetMarkerColor(kBlue);
+  s_hyptar->SetFillColor(kRed);
+  s_hyptar->SetMarkerColor(kRed);
   hs3->Add(s_hyptar);
   hs3->Draw("pfc nostack");
   cc->Print(fileO);
 
   cc->cd(1);
   h_hytar->SetFillStyle(1);
-  h_hytar->SetMarkerColor(kRed);
-  h_hytar->SetLineColor(kRed);
+  h_hytar->SetMarkerColor(kBlue);
+  h_hytar->SetLineColor(kBlue);
   hs4->Add(h_hytar);
-  s_hytar->SetFillColor(kBlue);
-  s_hytar->SetMarkerColor(kBlue);
+  s_hytar->SetFillColor(kRed);
+  s_hytar->SetMarkerColor(kRed);
   hs4->Add(s_hytar);
   hs4->Draw("pfc nostack");
   cc->Print(fileO);
@@ -264,11 +271,11 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
 
   cc->cd(1);
   h_pdelta->SetFillStyle(1);
-  h_pdelta->SetMarkerColor(kRed);
-  h_pdelta->SetLineColor(kRed);
+  h_pdelta->SetMarkerColor(kBlue);
+  h_pdelta->SetLineColor(kBlue);
   hs5->Add(h_pdelta);
-  s_pdelta->SetFillColor(kBlue);
-  s_pdelta->SetMarkerColor(kBlue);
+  s_pdelta->SetFillColor(kRed);
+  s_pdelta->SetMarkerColor(kRed);
   hs5->Add(s_pdelta);
   hs5->Draw("pfc nostack");
   cc->Print(fileO);
@@ -276,33 +283,33 @@ void Plot_Data_Simc(Int_t runNumber,  TString shms_part, TString simfile, Double
 
   cc->cd(1);
   h_pxptar->SetFillStyle(1);
-  h_pxptar->SetMarkerColor(kRed);
-  h_pxptar->SetLineColor(kRed);
+  h_pxptar->SetMarkerColor(kBlue);
+  h_pxptar->SetLineColor(kBlue);
   hs6->Add(h_pxptar);
-  s_pxptar->SetFillColor(kBlue);
-  s_pxptar->SetMarkerColor(kBlue);
+  s_pxptar->SetFillColor(kRed);
+  s_pxptar->SetMarkerColor(kRed);
   hs6->Add(s_pxptar);
   hs6->Draw("pfc nostack");
   cc->Print(fileO);
 
   cc->cd(1);
   h_pyptar->SetFillStyle(1);
-  h_pyptar->SetMarkerColor(kRed);
-  h_pyptar->SetLineColor(kRed);
+  h_pyptar->SetMarkerColor(kBlue);
+  h_pyptar->SetLineColor(kBlue);
   hs7->Add(h_pyptar);
-  s_pyptar->SetFillColor(kBlue);
-  s_pyptar->SetMarkerColor(kBlue);
+  s_pyptar->SetFillColor(kRed);
+  s_pyptar->SetMarkerColor(kRed);
   hs7->Add(s_pyptar);
   hs7->Draw("pfc nostack");
   cc->Print(fileO);
 
   cc->cd(1);
   h_pytar->SetFillStyle(1);
-  h_pytar->SetMarkerColor(kRed);
-  h_pytar->SetLineColor(kRed);
+  h_pytar->SetMarkerColor(kBlue);
+  h_pytar->SetLineColor(kBlue);
   hs8->Add(h_pytar);
-  s_pytar->SetFillColor(kBlue);
-  s_pytar->SetMarkerColor(kBlue);
+  s_pytar->SetFillColor(kRed);
+  s_pytar->SetMarkerColor(kRed);
   hs8->Add(s_pytar);
   hs8->Draw("pfc nostack");
   cc->Print(fileO);

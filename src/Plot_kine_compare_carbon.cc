@@ -1,4 +1,4 @@
-// Filename: Plot_kine_compare.cc
+// Filename: Plot_kine_compare_carbon.cc
 // Description: W, Em, Pm and Cointime distributions for SHMS and HMS to compare between data and SIMC (except for Pm_per).
 // Needs number of runs, particle in SHMS, target
 // Also needs normfac from SIMC and the simc root file name
@@ -24,12 +24,11 @@
 using namespace std;
 
 
-void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double_t normfac){
+void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile, Double_t normfac){
 
 
-  const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052, 2066};
+  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198, 2199};
 
- 
   TString fileNameM = ROOT_FILE_PATH;
   fileNameM += simfile; //read the root file from SIMC
   TFile *f2 = new TFile(fileNameM);
@@ -38,10 +37,10 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   int nentriesM = ts->GetEntries();
   cout<<"Simc Entries:\t"<<nentriesM<<endl;
   
-  TFile *fout = new TFile("run_LH2_kine.pdf","RECREATE");
-  TString filecO = "LH2_kine.pdf";
-  TString filecO1 = "LH2_kine.pdf[";
-  TString filecO2 = "LH2_kine.pdf]";
+  TFile *fout = new TFile("run_C12_kine.pdf","RECREATE");
+  TString filecO = "C12_kine.pdf";
+  TString filecO1 = "C12_kine.pdf[";
+  TString filecO2 = "C12_kine.pdf]";
 
   gROOT->SetBatch(kTRUE);
   gROOT->ForceStyle(); 
@@ -54,13 +53,13 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   THStack *hs3 = new THStack("hs3","Missing Momentum (GeV/c)");
   THStack *hs4 = new THStack("hs4","Corrected Cointime (ns) ");
 
-   TH1D *h_Emd = new TH1D("h_Emd","Missing Energy (GeV)",200,-0.1,0.1);
-   TH1D *h_Emshow = new TH1D("h_Emshow","Missing Energy (GeV)",200,-0.2,0.2);
-   TH1D *h_Ems = new TH1D("h_Ems","Missing Energy (GeV)",200,-0.1,0.1);
-   TH1D *h_Wd = new TH1D("h_Wdh","W (GeV)", 150, 0.5, 1.5);
-   TH1D *h_Ws = new TH1D("h_Wsh","W (GeV)", 150, 0.5, 1.5);
-   TH1D *h_pmd = new TH1D("h_pmd","Pm (GeV/c)", 100, -0.1, 0.1);
-   TH1D *h_pms = new TH1D("h_pms","Pm (GeV/c)", 100, -0.1, 0.1);
+   TH1D *h_Emd = new TH1D("h_Emd","Missing Energy (GeV)",200,-0.15,0.25);
+   TH1D *h_Emshow = new TH1D("h_Emshow","Missing Energy (GeV)",200,-0.15,0.25);
+   TH1D *h_Ems = new TH1D("h_Ems","Missing Energy (GeV)",200,-0.15,0.25);
+   TH1D *h_Wd = new TH1D("h_Wdh","W (GeV)", 150, 0.0, 2.0);
+   TH1D *h_Ws = new TH1D("h_Wsh","W (GeV)", 150, 0.0, 2.0);
+   TH1D *h_pmd = new TH1D("h_pmd","Pm (GeV/c)", 100, -0.02, 0.35);
+   TH1D *h_pms = new TH1D("h_pms","Pm (GeV/c)", 100, -0.02, 0.35);
    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 200, -10, 10);    
   TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 200, -10, 10); 
  
@@ -242,7 +241,7 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
     else if (shms_part == "p") 
     {
 
-      if (pbeta>0.8 && pbeta<1.3 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.5 && hcaletot >0.8 && hcaletot<1.2 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -8 && hdelta < 8 && pdelta > -10 && pdelta < 10) 
+      if (pbeta>0.75 && pbeta<1.35 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.5 && hcaletot >0.8 && hcaletot<1.2 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -8 && hdelta < 8 && pdelta > -10 && pdelta < 10) 
       { 
 	DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
       PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);        
@@ -276,13 +275,13 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
     }
     else if (shms_part == "p") 
     {
-      if (pbeta>0.8 && pbeta<1.3 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.1 && hcaletot >0.8 && hcaletot<1.2 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -10 && hdelta < 10 && pdelta > -12 && pdelta < 12 && pkinW > 0.75 && pkinW < 1.15)     { //cuts to select the electrons and protons
+      if (pbeta>0.6 && pbeta<1.4 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0. && hcaletot>0.6 && hcaletot<2.0 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -10 && hdelta < 10 && pdelta > -15 && pdelta < 15 && sqrt(pPm*pPm) < 0.4)     { //cuts to select the electrons and protons
         cnts++;
         modPm = sqrt(pPm*pPm);
         h_Emd->Fill(pEm+0.03);
         h_Emshow->Fill(pEm+0.03);
-        h_Wd->Fill(pkinW+0.027);
-        h_pmd->Fill(modPm-0.02);
+        h_Wd->Fill(pkinW+0.03);
+        h_pmd->Fill(modPm);
       }
     }
   }
@@ -320,7 +319,7 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
     sW = ts->GetLeaf("W")->GetValue();
     wt = ts->GetLeaf("Weight")->GetValue();
     normwt = wt*normfac*sfac/nentriesM;
-    if (sW > 0.75 && sW < 1.15 && sdelta < 10 && sdelta > -10 && spdelta > -12 && spdelta < 12 )
+    if (sPm < 0.4 && sdelta < 10 && sdelta > -10 && spdelta > -15 && spdelta < 15 )
     {
      h_Ems->Fill(sEm,normwt);
      h_pms->Fill(sPm,normwt);
@@ -346,7 +345,7 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   h_Emshow->SetMarkerColor(kBlue);
   h_Emshow->SetLineColor(kBlue);
   h_Emshow->Draw();
-  ccshow->SaveAs("showEm.pdf");
+  ccshow->SaveAs("showEm_c12.pdf");
 
   TCanvas *cc = new TCanvas ("cc","cc",800,600);
   cc->SetGrid();
@@ -428,7 +427,7 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   hs4->Draw("pfc nostack");
 
 
-  c1->SaveAs("tmp1.pdf");
+  c1->SaveAs("tmpc12.pdf");
 
   fout->Write();
   //  fout->Close();

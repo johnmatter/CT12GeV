@@ -96,7 +96,7 @@ public:
     
     void ApplyCut();
     //==========================================================================
-    //                      All branch/Leaf Variables
+    //                      All branch/Leaf Variables from Data
     //==========================================================================
     //------------ Kinematics ----------------------------
     //SHMS
@@ -119,6 +119,19 @@ public:
     Double_t fH_gtr_dp;
     Double_t fH_gtr_beta;
 
+    //--------- Vertex/Target Coord --------------
+    //SHMS
+    Double_t fH_gtr_x;
+    Double_t fH_gtr_th;    
+    Double_t fH_gtr_y;
+    Double_t fH_gtr_ph;
+
+    //HMS
+    Double_t fP_gtr_x;
+    Double_t fP_gtr_th;    
+    Double_t fP_gtr_y;
+    Double_t fP_gtr_ph;
+    
     // --------- Drift Chamber ----------------
     //SHMS
     Double_t fP_dc_x_fp;
@@ -175,8 +188,24 @@ public:
     //----------- Event Type ---------------
     //Int_t EvtType;
     Double_t EvtType;  // GetLeaf()->GetValue() returns double only
+
     //==========================================================================
-           
+    //                      All branch/Leaf Variables from Simc
+    //==========================================================================
+    //HMS
+    Float_t fHSdelta;
+    Float_t fHSxptar;
+    Float_t fHSyptar;
+    Float_t fHSytar;
+
+    //SHMS
+    Float_t fPSdelta;
+    Float_t fPSxptar;
+    Float_t fPSyptar;
+    Float_t fPSytar;
+
+    Float_t fWeight;
+    
     ClassDef(CTRun,0)
 };
 

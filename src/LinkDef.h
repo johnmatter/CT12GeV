@@ -8,6 +8,9 @@
 #pragma link C++ function CTcoinTime;                // Calculate coincidence time
 #pragma link C++ function CTmissEngCorr;             // Missing Energy Correlation
 #pragma link C++ function CTdemoDraw;                // Demo Draw Using CTRun class
+#pragma link C++ function CTdemoLoop;                // Loop over events Using CTRun class
+#pragma link C++ function CTdataVsSimc;              // Compare SIMC with data e in SHMS and HMS
+
 
 
 #pragma link C++ function Plot_Data_Simc_eSHMS;      // Compare SIMC with data e in SHMS
@@ -16,6 +19,7 @@
 #pragma link C++ function Plot_kine_compare_eSHMS;   // Compare kinematics for SIMC with data e in SHMS
 #pragma link C++ function Plot_kine_compare_pSHMS;   // Compare kinematics for SIMC with data e in SHMS
 #pragma link C++ function Plot_kine_compare;         // Compare kinematics for SIMC with data for either e or p
+#pragma link C++ function Plot_kine_compare_carbon;  // Compare kinematics for Carbon target SIMC with data for either e or p
 
 
 

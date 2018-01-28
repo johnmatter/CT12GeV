@@ -3,5 +3,5 @@
 // enter runumber and whether e or p in SHMS 
 
 #include <TString.h>
-void Plot_Data_Simc(Int_t runNumber, TString shms_part = "p", TString simfile = "h1_1.root", Double_t normfac = 1.0);
+void Plot_Data_Simc(Int_t numruns=7, TString targ = "c", TString shms_part = "p", TString simfile = "h1_1.root", Double_t normfac = 1.0);
 
