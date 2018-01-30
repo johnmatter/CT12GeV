@@ -57,7 +57,6 @@ class CTRun: public TObject
     Double_t fPPreShMax;
     Double_t fHPreShMin;
     Double_t fHPreShMax;
-
     
 public:
     
@@ -92,7 +91,7 @@ public:
     void DefineHCalCut(Double_t min = -1, Double_t max = -1);
     void DefinePPreShCut(Double_t min = -1, Double_t max =-1);
     void DefineHPreShCut(Double_t min = -1, Double_t max = -1);
-
+    void SetDefaultCut();
     
     void ApplyCut();
     //==========================================================================
@@ -102,6 +101,8 @@ public:
     //SHMS
     Double_t fP_kin_secondary_pmiss;
     Double_t fP_kin_secondary_pmiss_x;
+    Double_t fP_kin_secondary_pmiss_y;
+    Double_t fP_kin_secondary_pmiss_z;
     Double_t fP_kin_secondary_emiss;
 
     //HMS
@@ -205,6 +206,13 @@ public:
     Float_t fPSytar;
 
     Float_t fWeight;
+    
+    Float_t fW;
+    Float_t fEm;
+    Float_t fPm;
+    Float_t fPmx;
+    Float_t fPmy;
+    Float_t fPmz;
     
     ClassDef(CTRun,0)
 };

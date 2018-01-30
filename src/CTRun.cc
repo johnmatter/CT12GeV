@@ -1,5 +1,5 @@
 // Filename: CTRun.cc
-// Description: Main CTRun class. 
+// Description: Main CTRun class for the CT experiment. Assumes SHMS as p arm and HMS as e arm.
 // Author: Latiful Kabir < latif@jlab.org >
 // Created: Fri Apr 10 14:50:00 2017 (-0400)
 // URL: jlab.org/~latif
@@ -397,6 +397,18 @@ void CTRun::ApplyCut()
     fChain->SetEventList(fCTEvents);
 }
 
+void CTRun::SetDefaultCut()
+{
+    DefinePBetaCut(0.5,1.5);
+    DefineHBetaCut(0.5,1.5);
+    DefinePCerCut(-1,0.1);
+    DefineHCerCut(0.1);
+    DefineHCalCut(0.8,1.5);
+    DefineHPreShCut(0.2);
+
+    ApplyCut();
+}
+
 void CTRun::ActivateCTBranches()
 {
     if(!fRunExist)
@@ -443,6 +455,12 @@ void CTRun::SetBranchAddressSimc()
     fSimcChain->SetBranchAddress("ssytar", &fPSytar);
 
     fSimcChain->SetBranchAddress("Weight", &fWeight);
+    fSimcChain->SetBranchAddress("W", &fW);
+    fSimcChain->SetBranchAddress("Em", &fEm);
+    fSimcChain->SetBranchAddress("Pm", &fPm);
+    fSimcChain->SetBranchAddress("Pmx", &fPmx);
+    fSimcChain->SetBranchAddress("Pmy", &fPmy);
+    fSimcChain->SetBranchAddress("Pmz", &fPmz);    
 }
 
 // For the buffer fCTEventData
@@ -456,6 +474,8 @@ void CTRun::SetBranchAddressCT()
     //SHMS
     fChain->SetBranchAddress("P.kin.secondary.pmiss", &fP_kin_secondary_pmiss);
     fChain->SetBranchAddress("P.kin.secondary.pmiss_x", &fP_kin_secondary_pmiss_x);
+    fChain->SetBranchAddress("P.kin.secondary.pmiss_y", &fP_kin_secondary_pmiss_y);
+    fChain->SetBranchAddress("P.kin.secondary.pmiss_z", &fP_kin_secondary_pmiss_z);
     fChain->SetBranchAddress("P.kin.secondary.emiss", &fP_kin_secondary_emiss);
 
     //HMS
