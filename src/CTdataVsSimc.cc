@@ -6,7 +6,8 @@
 
 /*
 Quantities to compare:
-delta, ytar, xptar, yptar for Both HMS and SHMS, for both data and Simc = 4 x 2 x 2 = 16 Plots. Simc and data histos are super layed on each other
+delta, ytar, xptar, yptar for Both HMS and SHMS, for both data and Simc = 4 x 2 x 2 = 16 Plots. Simc and data histos are super layed on each other.
+In order to compare data and simc histograms must have same range and binning and drawn normalized.
 */
 
 #include <iostream>
@@ -22,8 +23,12 @@ delta, ytar, xptar, yptar for Both HMS and SHMS, for both data and Simc = 4 x 2 
 #include "CTRun.h"
 using namespace std;
 
-void CTdataVsSimc(Int_t firstRun, Int_t lastRun)
+void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName)
 {
+    //-----These offsets (for data) to be removed once SHMS is betetr calibrated ----------
+    Double_t OffsetEm = 0.035;
+    Double_t OffsetPdelta = -1.2;
+    Double_t OffsetPmz = 0.025;
     //--------- Histograms from the data -----------
     //HMS
     //Reconstructed quantities
@@ -113,20 +118,23 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun)
 	hYptar->Fill(ct->fH_gtr_ph);
 	hYtar->Fill(ct->fH_gtr_y);
 	//SHMS
-	pDelta->Fill(ct->fP_gtr_dp);
+	pDelta->Fill(ct->fP_gtr_dp + OffsetPdelta);
 	pXptar->Fill(ct->fP_gtr_th);
 	pYptar->Fill(ct->fP_gtr_ph);
 	pYtar->Fill(ct->fP_gtr_y);
 	
 	//--- Kinematic quantities ----	
 	hW->Fill(ct->fH_kin_primary_W);
-	pEm->Fill(ct->fP_kin_secondary_emiss);
+	pEm->Fill(ct->fP_kin_secondary_emiss + OffsetEm);
 	pPm->Fill(ct->fP_kin_secondary_pmiss);
-	pPmz->Fill(ct->fP_kin_secondary_pmiss_z);	
+	pPmz->Fill(ct->fP_kin_secondary_pmiss_z + OffsetPmz);	
     }
 
-    //------------------ Plot from Simc data --------------------------
-    ct->AddSimc("c12_q8_1.root");
+    //------------------ Plot from Simc --------------------------
+    ct->AddSimc(SimcFileName);
+
+    if(!ct->fSimcExist)
+	return;
     
     TTree *simc = ct->GetSimcTree();
 
