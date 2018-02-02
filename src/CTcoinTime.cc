@@ -65,8 +65,8 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     TH1D *h1HhodfpHitsTime = new TH1D("H.hod.fpHitsTime", "H.hod.fpHitsTime; HMS fp Hits Time [ns]", 500, 0, 40);
 
     //----------------------- Histogram for coincidence time ----------------------------
-    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 200, -20, 20);
-    TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 300, -15, 15);
+    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 400, -20, 20);
+    TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 400, -20, 20);
     TH1D *h1HcointimeROC1 = new TH1D("HMS ROC1 Corrected Coin Time","HMS ROC1 Corrected Coin Time; cointime [ns]", 400, -60, 60);
     TH1D *h1HcointimeROC2 = new TH1D("HMS ROC2 Corrected Coin Time","HMS ROC2 Corrected Coin Time; cointime [ns]", 400, -100, 150);
 
@@ -108,12 +108,17 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     Double_t HdcYfp;
     Double_t HdcYpfp;
  
-    //Track coord
+    //Vertex coord
+    Double_t PgtrX;
+    Double_t PgtrTh;
+    Double_t PgtrY;
+    Double_t PgtrPh;
+   
     Double_t HgtrX;
     Double_t HgtrTh;
     Double_t HgtrY;
     Double_t HgtrPh;
-        
+    
     //Trigger 
     Double_t TcoinpTRIG1_ROC1_tdcTimeRaw;
     Double_t TcoinpTRIG4_ROC1_tdcTimeRaw;
@@ -148,6 +153,11 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     tree->SetBranchAddress("H.hod.goodstarttime", &HhodStatus);    
     tree->SetBranchAddress("H.hod.starttime", &HhodStartTime);    
     tree->SetBranchAddress("H.hod.fpHitsTime", &HhodfpHitsTime);
+
+    tree->SetBranchAddress("P.gtr.x", &PgtrX);
+    tree->SetBranchAddress("P.gtr.th", &PgtrTh);
+    tree->SetBranchAddress("P.gtr.y", &PgtrY);
+    tree->SetBranchAddress("P.gtr.ph", &PgtrPh);
     
     tree->SetBranchAddress("H.gtr.x", &HgtrX);
     tree->SetBranchAddress("H.gtr.th", &HgtrTh);
@@ -223,7 +233,8 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     Double_t SHMScentralPathLen = 18.1*100;  // SHMS Target to focal plane path length converted to cm
     Double_t SHMSpathLength = 18.1*100;      // For now assume that it's same as SHMScentralPathLen
     Double_t HMScentralPathLen = 22*100;     // HMS Target to focal plane path length converted to cm
-    Double_t DeltaHMSpathLength;             // For now assume that it's same as HMScentralPathLen
+    Double_t DeltaHMSpathLength;    
+    Double_t DeltaSHMSpathLength;    
 
     Double_t SHMScoinCorr = 0.0;
     Double_t HMScoinCorr = 0.0;
@@ -278,11 +289,12 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 	    continue;
 
 	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
+	DeltaSHMSpathLength = -0.11*atan2(PgtrTh,1)*1000 - 0.057*PgtrdP;  // See elog entry: 3517525
 	
 	PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);
 	HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);
 	
-	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
+	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
 	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / speedOfLight*HgtrBetaCalc + (HhodoStartTimeMean - HhodfpHitsTime); 
 	
 	SHMScorrCoinTimeROC1 = (TcoinpTRIG1_ROC1_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC1_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset; // 0.1 to convert to ns
@@ -305,6 +317,12 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 	h1HcointimeROC2->Fill(HMScorrCoinTimeROC2);
 
 	++totEvents;
+
+	if(totEvents<10)
+	{
+	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / speedOfLight*HgtrBetaCalc <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
+	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc<< " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
+	}
     }
     cout << "Total number of events passing the PID cuts (looping over events): "<< totEvents <<endl;
 
@@ -318,7 +336,6 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     h1PgtrBetaMes->Draw();
     c1->cd(4);
     h1HgtrBetaMes->Draw();
-
     
     TCanvas *c2 = new TCanvas("c2", "Coincidence Time");
     c2->Divide(2,1);

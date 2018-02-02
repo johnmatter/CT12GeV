@@ -59,8 +59,8 @@ void CTcoinTimeRaw(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
     }
     
     //----------------------- Histogram for coincidence time ----------------------------
-    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 200, -40, 40);
-    TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 300, -30, 30);
+    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 800, -40, 40);
+    TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 800, -40, 40);
 
     Double_t PgtrP;
     Double_t HgtrP;
@@ -86,7 +86,6 @@ void CTcoinTimeRaw(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
     
     Double_t PhodfpHitsTime;
     Double_t HhodfpHitsTime;
-
         
     //Trigger 
     Double_t TcoinpTRIG1_ROC1_tdcTimeRaw;
@@ -252,14 +251,6 @@ void CTcoinTimeRaw(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents
 
 	if(PhodStatus == 0 || HhodStatus ==0)
 	    continue;
-
-	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
-	
-	PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);
-	HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);
-	
-	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
-	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / speedOfLight*HgtrBetaCalc + (HhodoStartTimeMean - HhodfpHitsTime); 
 	
 	SHMScorrCoinTimeROC1 = TcoinpTRIG1_ROC1_tdcTimeRaw*0.1 - TcoinpTRIG4_ROC1_tdcTimeRaw*0.1;
 	SHMScorrCoinTimeROC2 = TcoinpTRIG1_ROC2_tdcTimeRaw*0.1 - TcoinpTRIG4_ROC2_tdcTimeRaw*0.1; 

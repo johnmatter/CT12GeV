@@ -1,5 +1,5 @@
 // Filename: CTtrkingEffi.C
-// Description: Calculate tracking efficiency. A quick approach.
+// Description: Calculate tracking efficiency. A quick (on the fly) approach.
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Wed Jan 31 14:04:38 2018 (-0500)
 // URL: jlab.org/~latif

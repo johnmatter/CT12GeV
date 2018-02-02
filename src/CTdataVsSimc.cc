@@ -6,7 +6,7 @@
 
 /*
 Quantities to compare:
-delta, ytar, xptar, yptar for Both HMS and SHMS, for both data and Simc = 4 x 2 x 2 = 16 Plots. Simc and data histos are super layed on each other.
+delta, ytar, xptar, yptar for Both HMS and SHMS, for both data and Simc. Simc and data histos are super layed on each other. For kinematics Em, W, Pm, Pmz.
 In order to compare data and simc histograms must have same range and binning and drawn normalized.
 */
 
@@ -23,7 +23,7 @@ In order to compare data and simc histograms must have same range and binning an
 #include "CTRun.h"
 using namespace std;
 
-void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName)
+void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString target)
 {
     //-----These offsets (for data) to be removed once SHMS is betetr calibrated ----------
     Double_t OffsetEm = 0.035;
@@ -106,11 +106,27 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName)
 	      && ct->fH_gtr_beta > 0.8 &&  ct->fH_gtr_beta < 1.2                         // e beta cut
 	      && ct->fH_cer_npeSum > 0.0 && ct->fP_hgcer_npeSum < 0.6                    // Cerenkov counter cut for e- and proton
 	      && ct->fH_cal_etottracknorm > 0.6 && ct->fH_cal_etottracknorm < 2.0        // HMS Calorimeter cut 
-   	      && ct->fH_cal_eprtracknorm > 0.1                                           // HMS Preshower cut
-	      && fabs(ct->fP_kin_secondary_pmiss)<0.4                                    // Kinematic cut
+   	      && ct->fH_cal_eprtracknorm > 0.1                                           // HMS Preshower cut	 
 	      && ct->fH_gtr_dp > -10 && ct->fH_gtr_dp < 10                               // e Delta cut
 	      && ct->fP_gtr_dp > -15 && ct->fP_gtr_dp < 15))                             // p Delta cut	     	
 	    continue;
+
+	// Target specific kinematic cut
+	if(target == "c")       // For carbon-12
+	{
+	    if(!(fabs(ct->fP_kin_secondary_pmiss)<0.4))                                    // Kinematic cut
+		continue;
+	}
+	else if(target == "h")  // For hydrogen-1
+	{
+	    if(!(ct->fH_kin_primary_W>=0.75 && ct->fH_kin_primary_W<=1.15))                // Kinematic cut
+		continue;	    
+	}
+	else
+	{
+	    cout << "Invalid target type" <<endl;
+	    return;
+	}
 	//--- reconstructed quantities ---
 	//HMS
 	hDelta->Fill(ct->fH_gtr_dp);

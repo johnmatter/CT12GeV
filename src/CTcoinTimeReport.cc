@@ -21,25 +21,6 @@ using namespace std;
 
 void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int_t analyzedEvents)
 {
-  /*
-    TString fileName = ROOT_FILE_PATH;
-    fileName += "coin_replay_production_";
-    fileName += runNumber;
-    fileName += "_";
-    fileName += analyzedEvents;
-    fileName += ".root";
-
-    Bool_t runNotFound = gSystem->AccessPathName(fileName);
-    if(runNotFound)
-    {	    
-	cout << "Requested file " << fileName << " does NOT exist" <<endl;
-	return;
-    }
-    
-    TFile *file = new TFile(fileName);
-    TTree *tree = (TTree*)file->Get("T");    
-    //tree->Print();
-*/    
 
     CTRun *ct = new CTRun(firstRun, lastRun);
     TTree *tree = ct->GetTree();
@@ -72,8 +53,8 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
     TH1D *h1HhodfpHitsTime = new TH1D("H.hod.fpHitsTime", "H.hod.fpHitsTime; HMS fp Hits Time [ns]", 500, 0, 40);
 
     //----------------------- Histogram for coincidence time ----------------------------
-    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 200, -20, 20);
-    TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 300, -15, 15);
+    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 400, -20, 20);
+    TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 400, -20, 20);
     TH1D *h1HcointimeROC1 = new TH1D("HMS ROC1 Corrected Coin Time","HMS ROC1 Corrected Coin Time; cointime [ns]", 400, -60, 60);
     TH1D *h1HcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 400, -100, 150);
     TH2D *h2PcoinTimeVsXfp = new TH2D("coinTimeVsXfp","coinTime Vs Xfp; Xfp; coinTime [ns]",100,-30,30,100,-20,20);
@@ -83,12 +64,15 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
     TH2D *h2PcoinTimeVsdP = new TH2D("coinTimeVsdP","coinTime Vs delta; SHMS dP; coinTime [ns]",100,-20,20,100,-20,20);
     TH2D *h2HcoinTimeVsdP = new TH2D("coinTimeVsdP","coinTime Vs delta; HMS dP;  coinTime [ns]",100,-12,12,100,-20,20);
 
-    Double_t PgtrP;
-    Double_t HgtrP;
     Double_t PgtrBetaMes;    
     Double_t HgtrBetaMes;        
     Double_t PgtrBetaCalc;    
     Double_t HgtrBetaCalc;        
+
+    Double_t PgtrP;
+    Double_t HgtrP;
+    Double_t PgtrdP;
+    Double_t HgtrdP;
     
     //Detector Response
     Double_t PcalEprTrackNorm;
@@ -108,12 +92,28 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
     Double_t PhodfpHitsTime;
     Double_t HhodfpHitsTime;
 
-    //Focal Plane coord
+    //Focal Plane coord    
+    Double_t PdcXfp;
+    Double_t PdcXpfp;
+    Double_t PdcYfp;
+    Double_t PdcYpfp;
+
     Double_t HdcXfp;
     Double_t HdcXpfp;
     Double_t HdcYfp;
     Double_t HdcYpfp;
-        
+
+   //Vertex coord
+    Double_t PgtrX;
+    Double_t PgtrTh;
+    Double_t PgtrY;
+    Double_t PgtrPh;
+   
+    Double_t HgtrX;
+    Double_t HgtrTh;
+    Double_t HgtrY;
+    Double_t HgtrPh;
+    
     //Trigger 
     Double_t TcoinpTRIG1_ROC1_tdcTimeRaw;
     Double_t TcoinpTRIG4_ROC1_tdcTimeRaw;
@@ -127,13 +127,6 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
         
     //Int_t EvtType;
     Double_t EvtType;  // GetLeaf()->GetValue() returns double only
-
-    Double_t PdcXfp;
-    Double_t PdcXpfp;
-    Double_t PdcYfp;
-    Double_t PdcYpfp;
-    Double_t PgtrdP;
-    Double_t HgtrdP;
     
     tree->SetBranchAddress("P.gtr.p", &PgtrP);    
     tree->SetBranchAddress("P.gtr.dp", &PgtrdP);            
@@ -157,6 +150,16 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
     tree->SetBranchAddress("H.hod.goodstarttime", &HhodStatus);    
     tree->SetBranchAddress("H.hod.starttime", &HhodStartTime);    
     tree->SetBranchAddress("H.hod.fpHitsTime", &HhodfpHitsTime);
+
+    tree->SetBranchAddress("P.gtr.x", &PgtrX);
+    tree->SetBranchAddress("P.gtr.th", &PgtrTh);
+    tree->SetBranchAddress("P.gtr.y", &PgtrY);
+    tree->SetBranchAddress("P.gtr.ph", &PgtrPh);
+    
+    tree->SetBranchAddress("H.gtr.x", &HgtrX);
+    tree->SetBranchAddress("H.gtr.th", &HgtrTh);
+    tree->SetBranchAddress("H.gtr.y", &HgtrY);
+    tree->SetBranchAddress("H.gtr.ph", &HgtrPh);
     
     tree->SetBranchAddress("H.dc.x_fp", &HdcXfp);
     tree->SetBranchAddress("H.dc.xp_fp", &HdcXpfp);
@@ -225,9 +228,9 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
     Double_t speedOfLight = 29.9792; // in cm/ns
     
     Double_t SHMScentralPathLen = 18.1*100;  // SHMS Target to focal plane path length converted to cm
-    Double_t SHMSpathLength = 18.1*100;      // For now assume that it's same as SHMScentralPathLen
     Double_t HMScentralPathLen = 22*100;     // HMS Target to focal plane path length converted to cm
-    Double_t DeltaHMSpathLength;             // For now assume that it's same as HMScentralPathLen
+    Double_t DeltaHMSpathLength;             
+    Double_t DeltaSHMSpathLength;             
 
     Double_t SHMScoinCorr = 0.0;
     Double_t HMScoinCorr = 0.0;
@@ -287,15 +290,13 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
 	if(PhodStatus == 0 || HhodStatus ==0)
 	    continue;
 
-	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
+	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;	
+	DeltaSHMSpathLength = -0.11*atan2(PgtrTh,1)*1000 - 0.057*PgtrdP;  // See elog entry: 3517525
 	
 	PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);
 	HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);
 	
-	// if(totEvents < 20)
-	//     cout << PgtrPc << "\t" << HgtrPc <<"\t"<< PgtrBetaMes<<endl;
-
-	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
+	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
 	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / speedOfLight*HgtrBetaCalc + (HhodoStartTimeMean - HhodfpHitsTime); 
 	
 	SHMScorrCoinTimeROC1 = (TcoinpTRIG1_ROC1_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC1_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset; // 0.1 to convert to ns
@@ -303,10 +304,6 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
 	HMScorrCoinTimeROC1 = (TcoinhTRIG1_ROC1_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinhTRIG4_ROC1_tdcTimeRaw*0.1 - HMScoinCorr) - hOffset;
 	HMScorrCoinTimeROC2 = (TcoinhTRIG1_ROC2_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinhTRIG4_ROC2_tdcTimeRaw*0.1 - HMScoinCorr) - hOffset;
        	
-	// Printing for debugging
-	// if(totEvents<20)
-	//     cout << "SHMS: "<<SHMScoinCorr<<" HMS: "<<HMScoinCorr <<" Delta Path Length: "<<DeltaHMSpathLength <<" pStatus: " << PhodStatus <<" HStatus: "<<HhodStatus <<endl;
-
 	//------ Fill the hostograms -------
 	h1PgtrBetaMes->Fill(PgtrBetaMes);	
 	h1HgtrBetaMes->Fill(HgtrBetaMes);
@@ -329,6 +326,13 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
 	h2HcoinTimeVsdP->Fill(HgtrdP,SHMScorrCoinTimeROC1);
 
 	++totEvents;
+	
+	if(totEvents<10)
+	{
+	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / speedOfLight*HgtrBetaCalc <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
+	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc<< " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
+	}
+
     }
     cout << "Total number of events passing the PID cuts (looping over events): "<< totEvents <<endl;
 
