@@ -141,9 +141,13 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 	
 	//--- Kinematic quantities ----	
 	hW->Fill(ct->fH_kin_primary_W);
-	pEm->Fill(ct->fP_kin_secondary_emiss + OffsetEm);
 	pPm->Fill(ct->fP_kin_secondary_pmiss);
-	pPmz->Fill(ct->fP_kin_secondary_pmiss_z + OffsetPmz);	
+	pPmz->Fill(ct->fP_kin_secondary_pmiss_z + OffsetPmz);
+
+	if(target == "h")
+	    pEm->Fill(ct->fP_kin_secondary_emiss + OffsetEm);
+	else
+	    pEm->Fill(ct->fP_kin_secondary_emiss_nuc + OffsetEm);
     }
 
     //------------------ Plot from Simc --------------------------

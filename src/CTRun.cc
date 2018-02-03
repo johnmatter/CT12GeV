@@ -477,6 +477,7 @@ void CTRun::SetBranchAddressCT()
     fChain->SetBranchAddress("P.kin.secondary.pmiss_y", &fP_kin_secondary_pmiss_y);
     fChain->SetBranchAddress("P.kin.secondary.pmiss_z", &fP_kin_secondary_pmiss_z);
     fChain->SetBranchAddress("P.kin.secondary.emiss", &fP_kin_secondary_emiss);
+    fChain->SetBranchAddress("P.kin.secondary.emiss_nuc", &fP_kin_secondary_emiss_nuc);
 
     //HMS
     fChain->SetBranchAddress("H.kin.primary.W", &fH_kin_primary_W);

@@ -104,6 +104,7 @@ public:
     Double_t fP_kin_secondary_pmiss_y;
     Double_t fP_kin_secondary_pmiss_z;
     Double_t fP_kin_secondary_emiss;
+    Double_t fP_kin_secondary_emiss_nuc;
 
     //HMS
     Double_t fH_kin_primary_W;
