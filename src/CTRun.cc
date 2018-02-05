@@ -297,7 +297,7 @@ void CTRun::ApplyCut()
 	return;
 
     fChain->SetEventList(0); // Unset previously set event list
-    fCTcut.Clear();
+    fCTcut.Clear();    
     
     fCTcut = " 1 ";
 
@@ -409,6 +409,44 @@ void CTRun::SetDefaultCut()
     ApplyCut();
 }
 
+void CTRun::PrintCut()
+{
+    cout<<fCTcut<<endl;
+}
+void CTRun::ClearCut()
+{
+    if(!fRunExist)
+	return;
+
+    fChain->SetEventList(0); // Unset previously set event list
+    fCTcut.Clear();
+    
+    //---Cut values ----
+    //beta cut
+    fPBetaMin = -1;
+    fPBetaMax = -1;
+    fHBetaMin = -1;
+    fHBetaMax = -1;
+
+    //Cerenkov Counter cut
+    fPCerMin = -1;
+    fPCerMax = -1;
+    fHCerMin = -1;
+    fHCerMax = -1;
+
+    // Calorimeter Cut
+    fPCalMin = -1;
+    fPCalMax = -1;
+    fHCalMin = -1;
+    fHCalMax = -1;
+
+    //Pre-shower counter
+    fPPreShMin = -1;
+    fPPreShMax = -1;
+    fHPreShMin = -1;
+    fHPreShMax = -1;
+
+}
 void CTRun::ActivateCTBranches()
 {
     if(!fRunExist)

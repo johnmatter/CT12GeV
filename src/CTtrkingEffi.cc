@@ -51,12 +51,12 @@ void CTtrkingEffi(Int_t runNumber)
     if(pNumShouldHadron == 0)
         cout << "SHMS hadron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-        cout << "SHMS hadron tracking efficiency: "<< (Double_t)pNumDidHadron*100/pNumShouldHadron <<" %"<<endl;
+        cout << "SHMS hadron tracking efficiency: "<<pNumDidHadron<<" / "<<pNumShouldHadron<< " = "<<(Double_t)pNumDidHadron*100/pNumShouldHadron <<" %"<<endl;
     
     if(pNumShouldElectron == 0)
         cout << "SHMS electron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-       cout << "SHMS electron tracking efficiency: "<< (Double_t)pNumDidElectron*100/pNumShouldElectron <<" %"<<endl;
+	cout << "SHMS electron tracking efficiency: "<<pNumDidElectron<< " / "<<pNumShouldElectron<< " = "<< (Double_t)pNumDidElectron*100/pNumShouldElectron <<" %"<<endl;
 
     TCut HMSScinGood    =   "H.hod.goodscinhit == 1";
     TCut HMSScinShould  =   HMSScinGood; 
@@ -93,10 +93,10 @@ void CTtrkingEffi(Int_t runNumber)
     if(hNumShouldElectron == 0)
        cout << "HMS electron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-       cout << "HMS electron tracking efficiency: "<< (Double_t)hNumDidElectron*100/hNumShouldElectron <<" %"<<endl;
+	cout << "HMS electron tracking efficiency: "<<hNumDidElectron<< " / "<<hNumShouldElectron << " = "<<(Double_t)hNumDidElectron*100/hNumShouldElectron <<" %"<<endl;
     if(hNumShouldHadron == 0)
        cout << "HMS hadron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-       cout << "HMS hadron tracking efficiency: "<< (Double_t)hNumDidHadron*100/hNumShouldHadron <<" %"<<endl;
+	cout << "HMS hadron tracking efficiency: "<<hNumDidHadron<< " / "<<hNumShouldHadron<<" = "<<(Double_t)hNumDidHadron*100/hNumShouldHadron <<" %"<<endl;
     cout << "===============================================================" <<endl;
 }

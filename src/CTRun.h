@@ -92,6 +92,8 @@ public:
     void DefinePPreShCut(Double_t min = -1, Double_t max =-1);
     void DefineHPreShCut(Double_t min = -1, Double_t max = -1);
     void SetDefaultCut();
+    void PrintCut();
+    void ClearCut();
     
     void ApplyCut();
     //==========================================================================
