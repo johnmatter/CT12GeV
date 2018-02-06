@@ -85,6 +85,13 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     pSimcEm->SetMarkerColor(kRed);  
     pSimcPm->SetMarkerColor(kRed);  
     pSimcPmz->SetMarkerColor(kRed);  
+    // if (target == "h")
+    // {
+    // 	pPm->GetXaxis()->SetRangeUser(-0.02,0.05);
+    // 	pEm->GetXaxis()->SetRangeUser(-0.02,0.05);
+    // 	pSimcPm->GetXaxis()->SetRangeUser(-0.02,0.05);
+    // 	pSimcEm->GetXaxis()->SetRangeUser(-0.02,0.05);         
+    // }
     
     CTRun *ct = new CTRun(firstRun,lastRun);
     if(!ct->fRunExist)
