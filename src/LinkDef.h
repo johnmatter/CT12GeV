@@ -11,6 +11,7 @@
 #pragma link C++ function CTdemoLoop;                // Loop over events Using CTRun class
 #pragma link C++ function CTdataVsSimc;              // Compare SIMC with data e in SHMS and HMS
 #pragma link C++ function CTtrkingEffi;              // Calculate Tracking Efficiency           
+#pragma link C++ function CTdataCorrelations;         // 2D plots of different quantities            
 
 
 

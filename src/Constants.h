@@ -12,6 +12,7 @@
 
 // -- on cdaql1 ---
 //#define ROOT_FILE_PATH "/net/cdaq/cdaql3data/cdaq/hallc-online/ROOTfiles/"
+//#define ROOT_FILE_PATH "/home/cdaq/hallc-online/hallc_replay/ROOTfiles/"
 
 //#define FILE_PREFIX "ep_"
 #define FILE_PREFIX "coin_replay_production_"
