@@ -1,10 +1,38 @@
 Color Transparency Experiment in Hall-C at JLab
 ==================================================
 
-This repo is meant to contain codes for offline analysis for the color transparency experiment at 12 GeV in Hall C. 
+This repo is meant to contain codes for offline analysis for the color transparency (CT) experiment at 12 GeV in Hall C. 
 
-Instructions
---------------
+
+Directory Structure
+-------------------
+
+The three components of CT reconstruction (replay) and analysis are:
+
+-- `hcana` (The hall C Analyzer)
+-- `ct_replay`
+-- CTAnalyzer
+
+The directory `ct_replay` has `hallc_replay` as submodule, while `hcana` is a clone of original `hcana`. 
+
+source root and other libraries as:
+```
+source /site/12gev_phys/production.csh 2.0
+```
+
+To run replay:
+
+From top level directory of CT12GeV do:
+
+```
+source setup_replay.csh
+```
+
+This will setup necessary environment and take you to the `ct_replay` directory. Start hall C analyzer by typing `hcana` and run your desired replay script. 
+
+
+Instructions for CTAnalyzer
+----------------------------
 * Modify `src/Constants.h` file to reflect correct data file path.
 
 * Compile from the top level directory by typing `make`.

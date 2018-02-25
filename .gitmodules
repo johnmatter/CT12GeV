@@ -1,0 +1,3 @@
+[submodule "ct_replay/hallc_replay"]
+	path = ct_replay/hallc_replay
+	url = https://github.com/JeffersonLab/hallc_replay.git
