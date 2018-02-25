@@ -26,7 +26,7 @@ source /site/12gev_phys/production.csh 2.0
 - Note: Depending on which version of `ROOT` you are using, you might need to re-compile `libCT` or `hcana` again, specially if your version is different than the one used to compile earlier by any other user.
 
 
-**To run replay:**
+**Running replay**
 
 From top level directory of `CT12GeV` do:
 
@@ -65,12 +65,14 @@ But if you want to use the database/parameters from `hall_replay`, just use `hal
 
 **Updating `hallc_replay`**
 
+
 If you want to update the `hallc_replay` directory from the main git repository maintained by Hall C, use the following command from the top level directory `CT12GeV`:
 ```
 git submodule update --init --recursive
 ```
 
 **Updating `hcana`**
+
 `hcana` is a clone copy. To update, from the `CT12GeV/hcana/` directory do:
 
 ```
