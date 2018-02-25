@@ -7,14 +7,17 @@ echo "Setting environment for CT on cdaql1 ........"
 set called=($_)
 if ("$called" != "") then
   set scriptdir=$called[2]
-  set GEM_DATAEXPO_DIR=`dirname $scriptdir`
-  set GEM_DATAEXPO_DIR=`c\d $GEM_DATAEXPO_DIR && pwd`    # ensure absolute path
+  set CT_ANALYSIS_DIR=`dirname $scriptdir`
+  set CT_ANALYSIS_DIR=`c\d $CT_ANALYSIS_DIR && pwd`    # ensure absolute path
 else
   set scriptdir=$1
-  set GEM_DATAEXPO_DIR=$scriptdir
+  set CT_ANALYSIS_DIR=$scriptdir
 endif
-setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${GEM_DATAEXPO_DIR}/coda/Linux-x86_64/lib"
 
+setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${CT_ANALYSIS_DIR}/lib"
+setenv PATH "${PATH}:${CT_ANALYSIS_DIR}/bin"
+
+    
 
 #----------------- Setup for ROOT 6----------------------------
 module load gcc_5.2.0
@@ -35,7 +38,8 @@ setenv PATH /apps/cmake/cmake-3.5.1/bin:/apps/python/python-2.7.1/bin:$PATH
 setenv PYTHON /apps/python/python-2.7.1
 
 # For csh family
-setenv ROOTSYS /u/apps/root/6.08.00/root
+#setenv ROOTSYS /u/apps/root/6.08.00/root
+setenv ROOTSYS /site/12gev_phys/2.0/Linux_CentOS7.2.1511-x86_64-gcc5.2.0/root/6.08.00/bin/root
 setenv PATH ${PYTHON}/bin/:${ROOTSYS}/bin:${PATH}
 
 if (!($?LD_LIBRARY_PATH)) then
