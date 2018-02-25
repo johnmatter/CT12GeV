@@ -13,7 +13,7 @@ The three components of CT reconstruction (replay) and analysis are:
 - `ct_replay` : CT Replay with CT specific scripts, calibration and parameters/database. The directory `ct_replay` has `hallc_replay` as submodule. The files inside `hallc_replay` are fork from original `hallc_replay` repository.
 - CTAnalyzer : Analysis library/scripts for CT data.
 
-If want to setup a personal copy, just clone/download this repository. Add a clone of `hcana` inside `CT12GeV` and create appropriate (`raw`,`ROOTfiles` etc) symbolic links inside `ct_replay`. The following instructions are based on shared setup under `/work` directory on `ifarm`.
+If you want to setup a personal copy, just clone/download this repository. Add a clone of `hcana` inside `CT12GeV` and create appropriate (`raw`,`ROOTfiles` etc) symbolic links inside `ct_replay`. The following instructions are based on the shared setup under `/work` disk on `ifarm`.
 
 
 Instruction for CT Replay under `/work` directory on ifarm
