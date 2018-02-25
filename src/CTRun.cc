@@ -475,6 +475,8 @@ void CTRun::ActivateCTBranches()
 
     fChain->SetBranchStatus("T.coin.pTRIG*",1);
     fChain->SetBranchStatus("T.coin.hTRIG*",1);
+    fChain->SetBranchStatus("T.coin.pDCREF1_tdcTime",1);
+    fChain->SetBranchStatus("T.coin.pDCREF1_tdcMultiplicity",1);
 }
 
 
@@ -499,6 +501,7 @@ void CTRun::SetBranchAddressSimc()
     fSimcChain->SetBranchAddress("Pmx", &fPmx);
     fSimcChain->SetBranchAddress("Pmy", &fPmy);
     fSimcChain->SetBranchAddress("Pmz", &fPmz);    
+    fSimcChain->SetBranchAddress("corrsing", &fHcorsi);    
 }
 
 // For the buffer fCTEventData
@@ -516,7 +519,8 @@ void CTRun::SetBranchAddressCT()
     fChain->SetBranchAddress("P.kin.secondary.pmiss_z", &fP_kin_secondary_pmiss_z);
     fChain->SetBranchAddress("P.kin.secondary.emiss", &fP_kin_secondary_emiss);
     fChain->SetBranchAddress("P.kin.secondary.emiss_nuc", &fP_kin_secondary_emiss_nuc);
-
+    fChain->SetBranchAddress("T.coin.pDCREF1_tdcTime", &fP_DC_reftime);
+    fChain->SetBranchAddress("T.coin.pDCREF1_tdcMultiplicity", &fP_DC_tdcmultipl);
     //HMS
     fChain->SetBranchAddress("H.kin.primary.W", &fH_kin_primary_W);
     fChain->SetBranchAddress("H.kin.primary.Q2", &fH_kin_primary_Q2);
@@ -570,6 +574,10 @@ void CTRun::SetBranchAddressCT()
     fChain->SetBranchAddress("P.hod.goodstarttime", &fP_hod_goodstarttime);
     fChain->SetBranchAddress("P.hod.starttime", &fP_hod_starttime);
     fChain->SetBranchAddress("P.hod.fpHitsTime", &fP_hod_fpHitsTime);
+    fChain->SetBranchAddress("P.hod.1x.nhits", &fP_hod_1xnhits);
+    fChain->SetBranchAddress("P.hod.1y.nhits", &fP_hod_1ynhits);
+    fChain->SetBranchAddress("P.hod.2x.nhits", &fP_hod_2xnhits);
+    fChain->SetBranchAddress("P.hod.2y.nhits", &fP_hod_2ynhits);
 
     //HMS
     fChain->SetBranchAddress("H.hod.goodstarttime", &fH_hod_goodstarttime);  

@@ -26,9 +26,19 @@ using namespace std;
 void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString target)
 {
     //-----These offsets (for data) to be removed once SHMS is betetr calibrated ----------
-    Double_t OffsetEm = 0.035;
-    Double_t OffsetPdelta = -1.2;
-    Double_t OffsetPmz = 0.025;
+    Double_t OffsetEm = 0.0;
+    Double_t OffsetPdelta = 0.0;
+    Double_t OffsetPmz = 0.0;
+    Double_t OffsetW = 0.015;
+    int cnts = 0;
+    Double_t ebeam=10.6;
+    Double_t etheta=39.3*3.141592/180.;
+    Double_t ptheta=12.8*3.141592/180.;
+    Double_t eP0=2.982;
+    Double_t pP0=8.377;
+    Double_t mass_p=0.938272;
+    Double_t mass_e=0.000511;
+    Double_t hms_corsi, shms_corsi, hE, hP, pP, htheta, stheta;
     //--------- Histograms from the data -----------
     //HMS
     //Reconstructed quantities
@@ -38,7 +48,7 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     TH1D *hYtar = new TH1D("hYtar","HMS YTAR (cm); y_{tar} (cm); Normalized counts",100,-12.0,12.0);
     //Kinematic quantities
     TH1D *hW = new TH1D("hW","W (GeV); W(GeV); Normalized counts", 150, 0.0, 2.0);
-    
+    TH1D *hcorsi = new TH1D("hcorsi","(E_hms - E')[GeV]; h_energy diff(GeV); Normalized counts", 150, -1.5, 1.5);
     //SHMS
     //Reconstructed quantities
     TH1D *pDelta = new TH1D("pDelta","SHMS DELTA (%); SHMS dp (%); Normalized counts",100,-12,12);
@@ -47,9 +57,10 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     TH1D *pYtar = new TH1D("pYtar","SHMS YTAR (cm); y_{tar} (cm); Normalized counts",100,-12.0,12.0);
     //Kinematic quantities
     TH1D *pEm = new TH1D("pEm","Missing Energy (GeV); E_{m} (GeV); Normalized counts",200,-0.15,0.25);
-    TH1D *pPm = new TH1D("pPm","Pm (GeV/c); |P_{m}|(GeV/c); Normalized counts", 100, 0.0, 0.4);
+    TH1D *pPm = new TH1D("pPm","Pm (GeV/c); |P_{m}|(GeV/c); Normalized counts", 100, 0.0, 0.6);
     TH1D *pPmz = new TH1D("pPmz","Pmz (GeV/c); P_{mz} (GeV/c); Normalized counts", 100, -0.4, 0.4);
-    
+    TH1D *scorsi = new TH1D("scorsi","(P_shms - P')[GeV]; p_mom diff(GeV); Normalized counts", 150, -1.5, 1.5);
+
     //--------- Histograms from the Simc -----------
     //HMS
     //Reconstructed quantities
@@ -59,12 +70,14 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     TH1D *hSimcYtar = new TH1D("hSimcYtar","HMS YTAR (SIMC) (cm)",100,-12.0,12.0);
     //Kinematic quantities
     TH1D *hSimcW = new TH1D("hSimcW","W (GeV)", 150, 0.0, 2.0);
+    TH1D *hSimcorsi = new TH1D("hSimcorsi","hmsE - E' (GeV); h_energy diff(GeV); Normalized counts", 150, -1.5, 1.5);
    
     hSimcDelta->SetMarkerColor(kRed);  
     hSimcXptar->SetMarkerColor(kRed);  
     hSimcYptar->SetMarkerColor(kRed);  
     hSimcYtar->SetMarkerColor(kRed);  
     hSimcW->SetMarkerColor(kRed);  
+    hSimcorsi->SetMarkerColor(kRed);  
 
     //SHMS
     //Reconstructed quantities
@@ -75,8 +88,9 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     //Kinematic quantities
     TH1D *pSimcW = new TH1D("pSimcW","W (GeV)", 150, 0.0, 2.0);
     TH1D *pSimcEm = new TH1D("pSimcEm","Missing Energy (GeV)",200,-0.15,0.25);
-    TH1D *pSimcPm = new TH1D("pSimcPm","|P_{m}| (GeV/c)", 100, 0.0, 0.4);
+    TH1D *pSimcPm = new TH1D("pSimcPm","|P_{m}| (GeV/c)", 100, 0.0, 0.6);
     TH1D *pSimcPmz = new TH1D("pSimcPmz","P_{mz} (GeV/c)", 100, -0.4, 0.4);
+
 
     pSimcDelta->SetMarkerColor(kRed);  
     pSimcXptar->SetMarkerColor(kRed);  
@@ -85,13 +99,6 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     pSimcEm->SetMarkerColor(kRed);  
     pSimcPm->SetMarkerColor(kRed);  
     pSimcPmz->SetMarkerColor(kRed);  
-    // if (target == "h")
-    // {
-    // 	pPm->GetXaxis()->SetRangeUser(-0.02,0.05);
-    // 	pEm->GetXaxis()->SetRangeUser(-0.02,0.05);
-    // 	pSimcPm->GetXaxis()->SetRangeUser(-0.02,0.05);
-    // 	pSimcEm->GetXaxis()->SetRangeUser(-0.02,0.05);         
-    // }
     
     CTRun *ct = new CTRun(firstRun,lastRun);
     if(!ct->fRunExist)
@@ -103,17 +110,22 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 
     for (Int_t event = 0; event < nEvents; ++ event)
     {
-	if(event%5000 == 0)
+	if(event%50000 == 0)
 	    cout << (Int_t)(100*event/nEvents) <<" % Done"<< endl;
 
 	tree->GetEntry(event);
+        // 4/4 trigger cut to check consequences.
+	//        if(!(ct->fP_hod_1xnhits > 0 && ct->fP_hod_1ynhits > 0 && ct->fP_hod_2xnhits > 0 && ct->fP_hod_2ynhits > 0))
+	//	  continue;
 
 	// PID & Kinematic Cut
 	if( !(ct->fP_gtr_beta > 0.6 && ct->fP_gtr_beta < 1.4                             // proton beta cut
 	      && ct->fH_gtr_beta > 0.8 &&  ct->fH_gtr_beta < 1.2                         // e beta cut
-	      && ct->fH_cer_npeSum > 0.0 && ct->fP_hgcer_npeSum < 0.6                    // Cerenkov counter cut for e- and proton
+	      && ct->fH_cer_npeSum > 0.0 && ct->fP_hgcer_npeSum < 0.1                    // Cerenkov counter cut for e- and proton
 	      && ct->fH_cal_etottracknorm > 0.6 && ct->fH_cal_etottracknorm < 2.0        // HMS Calorimeter cut 
-   	      && ct->fH_cal_eprtracknorm > 0.1                                           // HMS Preshower cut	 
+	      //   	      && ct->fH_cal_eprtracknorm > 0.1                                           // HMS Preshower cut	
+              && ct->fH_hod_goodstarttime == 1                                           // good hms start time
+              && ct->fP_hod_goodstarttime == 1                                           // good shms stat time
 	      && ct->fH_gtr_dp > -10 && ct->fH_gtr_dp < 10                               // e Delta cut
 	      && ct->fP_gtr_dp > -15 && ct->fP_gtr_dp < 15))                             // p Delta cut	     	
 	    continue;
@@ -145,17 +157,39 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 	pXptar->Fill(ct->fP_gtr_th);
 	pYptar->Fill(ct->fP_gtr_ph);
 	pYtar->Fill(ct->fP_gtr_y);
-	
+
+        if (target == "h")
+	 {
+	   pPm->GetXaxis()->SetRangeUser(-0.15,0.25);
+           pEm->GetXaxis()->SetRangeUser(-0.15,0.25);
+         }
+
 	//--- Kinematic quantities ----	
-	hW->Fill(ct->fH_kin_primary_W);
-	pPm->Fill(ct->fP_kin_secondary_pmiss);
+	hW->Fill(ct->fH_kin_primary_W + OffsetW);
+	pPm->Fill(fabs(ct->fP_kin_secondary_pmiss));
 	pPmz->Fill(ct->fP_kin_secondary_pmiss_z + OffsetPmz);
 
 	if(target == "h")
+	  {
 	    pEm->Fill(ct->fP_kin_secondary_emiss + OffsetEm);
+            hP = eP0*(1.+ (ct->fH_gtr_dp)/100.);
+	    hE = sqrt(pow(hP,2) + pow(mass_e,2));
+            htheta = etheta - (ct->fH_gtr_th);
+	    hms_corsi = hE - ebeam/(1.+ebeam/mass_p*(1-cos(htheta)));
+            pP = pP0*(1.+ (ct->fP_gtr_dp)/100.);
+            stheta = ptheta + (ct->fP_gtr_th);
+            shms_corsi = pP - 2.*mass_p*ebeam*cos(stheta)/(ebeam+mass_p)/(1-pow(ebeam*cos(stheta)/(ebeam+mass_p),2));
+            hcorsi->Fill(hms_corsi);
+            scorsi->Fill(shms_corsi);
+          }       
 	else
+          {
 	    pEm->Fill(ct->fP_kin_secondary_emiss_nuc + OffsetEm);
+          }
+        cnts++;
     }
+    cout << cnts <<" events passed all cuts" << endl;
+
 
     //------------------ Plot from Simc --------------------------
     ct->AddSimc(SimcFileName);
@@ -169,15 +203,25 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 
     for (Int_t event = 0; event < nEventsSimc; ++event)
     {
-	if(event%5000 == 0)
+	if(event%50000 == 0)
 	    cout << (Int_t)(100*event/nEventsSimc) <<" % Done"<< endl;
 
 	simc->GetEntry(event);
 	//Kinematic Cut
 	if( !(ct->fHSdelta > -10 && ct->fHSdelta < 10
-	      && ct->fPSdelta > -15 && ct->fPSdelta < 15
-	      && fabs(ct->fPm) < 0.4))
+	      && ct->fPSdelta > -15 && ct->fPSdelta < 15))
 	    continue;	
+	if(target == "c")       // For carbon-12
+	{
+	    if(!(fabs(ct->fPm)<0.4))                                    // Kinematic cut
+		continue;
+	}
+	else if(target == "h")  // For hydrogen-1
+	{
+	    if(!(ct->fW>=0.75 && ct->fW<=1.15))                // Kinematic cut
+		continue;	    
+	}
+
 	//------- Reconstructed quantities ------
 	//HMS
 	hSimcDelta->Fill(ct->fHSdelta, ct->fWeight);
@@ -191,6 +235,12 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 	pSimcYptar->Fill(ct->fPSyptar, ct->fWeight);
 	pSimcXptar->Fill(ct->fPSxptar, ct->fWeight);
 
+        if (target == "h")
+	 {
+	   pSimcPm->GetXaxis()->SetRangeUser(-0.15,0.25);
+           pSimcEm->GetXaxis()->SetRangeUser(-0.15,0.25);
+           hSimcorsi->Fill(ct->fHcorsi,ct->fWeight);         
+         }
 	//------ Kinematic quanties ---------
 	hSimcW->Fill(ct->fW, ct->fWeight);
 	pSimcEm->Fill(ct->fEm, ct->fWeight);
@@ -247,6 +297,7 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     c3->Divide(2,2);
     c3->cd(1);
     hW->DrawNormalized("prof");
+    //    hW->Fit("gaus");
     hSimcW->DrawNormalized("same");
     // textSimc->DrawText(1.6,0.07,"Simc");
     // textData->DrawText(1.6,0.065,"Data");
@@ -261,4 +312,18 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     pSimcPmz->DrawNormalized("same");
 
     c3->Print("Report.pdf)","pdf");
+
+    TCanvas *c4 = new TCanvas("Singles","Singles");
+    c4->Divide(2,2);
+
+    c4->cd(1);
+    hcorsi->DrawNormalized("prof");
+    hSimcorsi->DrawNormalized("same");
+    // textSimc->DrawText(8.0,0.05,"Simc");
+    // textData->DrawText(8.0,0.045,"Data");
+    c4->cd(2);
+    scorsi->DrawNormalized("prof");
+
+    c4->Print("Report.pdf)","pdf");
+
 }

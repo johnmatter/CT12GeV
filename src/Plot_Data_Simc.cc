@@ -25,9 +25,13 @@ using namespace std;
 void Plot_Data_Simc(Int_t numruns, TString targ, TString shms_part, TString simfile, Double_t normfac){
 
 
-  //    const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052};
-  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198};
-
+  //     const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052};
+  //  const Int_t runnumber[numruns]={2406, 2407, 2408, 2409, 2410, 2411};
+  const Int_t runnumber[numruns]={2452, 2453, 2464};
+  //  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198, 2199, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2208, 2209, 2211, 2212};
+  //  const Int_t runnumber[numruns]={2278, 2279, 2280};
+  //    const Int_t runnumber[numruns]={2283};
+       //  const Int_t runnumber[numruns]={2284, 2285, 2286, 2290, 2291, 2292, 2293, 2294, 2295, 2296, 2297, 2298, 2299, 2300, 2301, 2303, 2304, 2305, 2306, 2308, 2309, 2310, 2311, 2312, 2313, 2314, 2315, 2316, 2317, 2318, 2319, 2320, 2321, 2322, 2324, 2325, 2343, 2344, 2345, 2346, 2347};
 
   TString fileNameM = ROOT_FILE_PATH;
   fileNameM += simfile; //read the root file from SIMC

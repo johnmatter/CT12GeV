@@ -11,7 +11,7 @@
 #define ROOT_FILE_PATH "/work/hallc/e1206107/hallc_replay/ROOTfiles/"
 
 // -- on cdaql1 ---
-//#define ROOT_FILE_PATH "/net/cdaq/cdaql3data/cdaq/hallc-online/ROOTfiles/"
+// #define ROOT_FILE_PATH "/net/cdaq/cdaql3data/cdaq/hallc-online/ROOTfiles/"
 //#define ROOT_FILE_PATH "/home/cdaq/hallc-online/hallc_replay/ROOTfiles/"
 
 //#define FILE_PREFIX "ep_"

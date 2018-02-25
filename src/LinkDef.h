@@ -9,11 +9,13 @@
 #pragma link C++ function CTmissEngCorr;             // Missing Energy Correlation
 #pragma link C++ function CTdemoDraw;                // Demo Draw Using CTRun class
 #pragma link C++ function CTdemoLoop;                // Loop over events Using CTRun class
-#pragma link C++ function CTdataVsSimc;              // Compare SIMC with data e in SHMS and HMS
+#pragma link C++ function CTdataVsSimc;              // Compare Reconstructed and Kinematic Quantities from data and Simc
+#pragma link C++ function CTgrass;                   // test grass
 #pragma link C++ function CTtrkingEffi;              // Calculate Tracking Efficiency           
 #pragma link C++ function CTdataCorrelations;        // 2D plots of different quantities against Em            
 #pragma link C++ function CTWCorrelations;           // 2D plots of different quantities against W           
-
+#pragma link C++ function CTcoinTimeReport;          // Calculate coincidence time  with cdifferent orrelation
+#pragma link C++ function CTcoinTimeRaw;             // Calculate raw coincidence time
 
 
 #pragma link C++ function Plot_Data_Simc_eSHMS;      // Compare SIMC with data e in SHMS
@@ -26,9 +28,6 @@
 
 
 
-//--------- Following functions are for testing/temporary and will be depricated ----------------------
-#pragma link C++ function CTcoinTimeReport;          // Calculate coincidence time  with correlation
-#pragma link C++ function CTcoinTimeRaw;             // Calculate raw coincidence time
 
 
 #endif

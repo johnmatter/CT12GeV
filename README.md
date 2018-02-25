@@ -22,13 +22,13 @@ fi
 ```
 The above syntax is for `sh` shell. If you use `csh` shell, modify the `if statement` syntax accordingly.
 
-If you want to do the setup for the current session only, then just source as follows:
+However if you want to do the setup for the current session only, then just source as follows:
 
 ```
 source bin/thisCT.(c)sh
 ```
 
-* Now copy the rootlogon.C file in the directory 'macros' under ROOT installation directory.  
+* Now copy the rootlogon.C file in the directory `macros` under ROOT installation directory.  
 	  
 * From a new terminal start root doing `root -l`.
 

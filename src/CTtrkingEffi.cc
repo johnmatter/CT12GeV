@@ -1,5 +1,5 @@
 // Filename: CTtrkingEffi.C
-// Description: Calculate tracking efficiency. A quick (on the fly) approach.
+// Description: Calculate tracking efficiency. A quick approach.
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Wed Jan 31 14:04:38 2018 (-0500)
 // URL: jlab.org/~latif
@@ -16,7 +16,7 @@ void CTtrkingEffi(Int_t runNumber)
     TCut shmsScinGood    =  "P.hod.goodscinhit == 1";
     TCut shmsScinShould  =  shmsScinGood;
     TCut shmsScinShoulde =  shmsScinGood &&  "P.cal.etotnorm > 0.6 && P.cal.etotnorm < 1.6 && P.hgcer.npeSum > 0.5";
-    TCut shmsScinShouldh =  shmsScinGood && "P.cal.etotnorm <= 0.6 && P.cal.etotnorm > 0. && P.hgcer.npeSum < 0.5";
+    TCut shmsScinShouldh =  shmsScinGood && "P.hod.betanotrack > 0.6 && P.hod.betanotrack < 1.5 && P.cal.etotnorm > 0. && P.hgcer.npeSum < 0.5";
     TCut shmsScinDid     =  shmsScinShould && "P.dc.ntrack > 0";
     TCut shmsScinDide    =  shmsScinShoulde && "P.dc.ntrack > 0";
     TCut shmsScinDidh    =  shmsScinShouldh && "P.dc.ntrack > 0";
@@ -31,6 +31,7 @@ void CTtrkingEffi(Int_t runNumber)
     TH1D *pDidElectron;  
     
     tree->Draw("P.hod.goodscinhit>>pShouldHadron", shmsScinShouldh,"goff");
+    //tree->Draw("P.hod.betanotrack>>pShouldHadron", shmsScinShouldh);
     pShouldHadron = (TH1D*)gDirectory->Get("pShouldHadron");
 
     tree->Draw("P.hod.goodscinhit>>pDidHadron", shmsScinDidh,"goff");
@@ -51,16 +52,16 @@ void CTtrkingEffi(Int_t runNumber)
     if(pNumShouldHadron == 0)
         cout << "SHMS hadron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-        cout << "SHMS hadron tracking efficiency: "<<pNumDidHadron<<" / "<<pNumShouldHadron<< " = "<<(Double_t)pNumDidHadron*100/pNumShouldHadron <<" %"<<endl;
+        cout << "SHMS hadron tracking efficiency: "<< (Double_t)pNumDidHadron*100/pNumShouldHadron <<" %"<<endl;
     
     if(pNumShouldElectron == 0)
         cout << "SHMS electron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-	cout << "SHMS electron tracking efficiency: "<<pNumDidElectron<< " / "<<pNumShouldElectron<< " = "<< (Double_t)pNumDidElectron*100/pNumShouldElectron <<" %"<<endl;
+       cout << "SHMS electron tracking efficiency: "<< (Double_t)pNumDidElectron*100/pNumShouldElectron <<" %"<<endl;
 
     TCut HMSScinGood    =   "H.hod.goodscinhit == 1";
     TCut HMSScinShould  =   HMSScinGood; 
-    TCut HMSScinShoulde =   HMSScinGood && "H.cal.etotnorm > 0.6&& H.cal.etotnorm < 2.0&& H.cer.npeSum > 0.5";
+    TCut HMSScinShoulde =   HMSScinGood && "H.hod.betanotrack > 0.8 && H.hod.betanotrack < 1.2 && H.cal.etotnorm > 0.6&& H.cal.etotnorm < 2.0&& H.cer.npeSum > 0.5";
     TCut HMSScinShouldh =   HMSScinGood && "H.cal.etotnorm <0.6&& H.cal.etotnorm>0.0&& H.cer.npeSum < 0.5";
     TCut HMSScinDid     =   HMSScinShould && "H.dc.ntrack > 0";
     TCut HMSScinDide    =   HMSScinShoulde && "H.dc.ntrack > 0";
@@ -72,6 +73,7 @@ void CTtrkingEffi(Int_t runNumber)
     TH1D *hDidHadron;  
     
     tree->Draw("H.hod.goodscinhit>>hShouldElectron", HMSScinShoulde,"goff");
+    //    tree->Draw("H.hod.betanotrack>>hShouldElectron", HMSScinShoulde);
     hShouldElectron = (TH1D*)gDirectory->Get("hShouldElectron");
 
     tree->Draw("H.hod.goodscinhit>>hDidElectron", HMSScinDide,"goff");
@@ -93,10 +95,10 @@ void CTtrkingEffi(Int_t runNumber)
     if(hNumShouldElectron == 0)
        cout << "HMS electron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-	cout << "HMS electron tracking efficiency: "<<hNumDidElectron<< " / "<<hNumShouldElectron << " = "<<(Double_t)hNumDidElectron*100/hNumShouldElectron <<" %"<<endl;
+       cout << "HMS electron tracking efficiency: "<< (Double_t)hNumDidElectron*100/hNumShouldElectron <<" %"<<endl;
     if(hNumShouldHadron == 0)
        cout << "HMS hadron tracking efficiency: "<< 0 <<" %"<<endl;
     else
-	cout << "HMS hadron tracking efficiency: "<<hNumDidHadron<< " / "<<hNumShouldHadron<<" = "<<(Double_t)hNumDidHadron*100/hNumShouldHadron <<" %"<<endl;
+       cout << "HMS hadron tracking efficiency: "<< (Double_t)hNumDidHadron*100/hNumShouldHadron <<" %"<<endl;
     cout << "===============================================================" <<endl;
 }

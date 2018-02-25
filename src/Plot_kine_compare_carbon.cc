@@ -27,7 +27,9 @@ using namespace std;
 void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile, Double_t normfac){
 
 
-  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198, 2199};
+  //  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198, 2199, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2208, 2209, 2211, 2212};
+  //  const Int_t runnumber[numruns]={2284, 2285, 2286, 2290, 2291, 2292, 2293, 2294, 2295, 2296, 2297, 2298, 2299, 2300, 2301, 2303, 2304, 2305, 2306, 2308, 2309, 2310, 2311, 2312, 2313, 2314, 2315, 2316, 2317, 2318, 2319, 2320, 2321, 2322, 2324, 2325, 2343, 2344, 2345, 2346, 2347};
+  const Int_t runnumber[numruns]={2441, 2442, 2443, 2444, 2445, 2446, 2447, 2448, 2449};
 
   TString fileNameM = ROOT_FILE_PATH;
   fileNameM += simfile; //read the root file from SIMC
@@ -58,8 +60,8 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
    TH1D *h_Ems = new TH1D("h_Ems","Missing Energy (GeV)",200,-0.15,0.25);
    TH1D *h_Wd = new TH1D("h_Wdh","W (GeV)", 150, 0.0, 2.0);
    TH1D *h_Ws = new TH1D("h_Wsh","W (GeV)", 150, 0.0, 2.0);
-   TH1D *h_pmd = new TH1D("h_pmd","Pm (GeV/c)", 100, -0.02, 0.35);
-   TH1D *h_pms = new TH1D("h_pms","Pm (GeV/c)", 100, -0.02, 0.35);
+   TH1D *h_pmd = new TH1D("h_pmd","Pm (GeV/c)", 100, -0.02, 0.6);
+   TH1D *h_pms = new TH1D("h_pms","Pm (GeV/c)", 100, -0.02, 0.6);
    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 200, -10, 10);    
   TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 200, -10, 10); 
  
@@ -91,6 +93,19 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
   Double_t TcoinhTRIG1_ROC1_tdcTimeRaw, TcoinhTRIG1_ROC2_tdcTimeRaw, TcoinhTRIG4_ROC1_tdcTimeRaw;
   Double_t TcoinhTRIG4_ROC2_tdcTimeRaw, TcoinpTRIG4_ROC2_tdcTimeRaw;
 
+    // Foal plane coords
+    Double_t PdcXfp;
+    Double_t PdcXpfp;
+    Double_t PdcYfp;
+    Double_t PdcYpfp;
+
+    Double_t HdcXfp;
+    Double_t HdcXpfp;
+    Double_t HdcYfp;
+    Double_t HdcYpfp;
+
+
+
   int cnts=0;
   TCut hpdelta;
   TCut evtCut;                                                                   
@@ -116,7 +131,7 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
   tt->SetBranchAddress("H.cal.etottracknorm", &hcaletot);                                          
   tt->SetBranchAddress("H.cer.npeSum", &hcernpe); 
   tt->SetBranchAddress("H.kin.primary.W", &pkinW);                                                    
-  tt->SetBranchAddress("P.kin.secondary.emiss", &pEm);                                                    
+  tt->SetBranchAddress("P.kin.secondary.emiss_nuc", &pEm);                                                    
   tt->SetBranchAddress("P.kin.secondary.pmiss", &pPm);                                                    
                                                                                                               
   tt->SetBranchAddress("P.hod.goodstarttime", &PhodStatus);                                              
@@ -131,6 +146,17 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
   tt->SetBranchAddress("H.gtr.th", &HgtrTh);                                                             
   tt->SetBranchAddress("H.gtr.y", &HgtrY);                                                               
   tt->SetBranchAddress("H.gtr.ph", &HgtrPh);                                                             
+    
+    tt->SetBranchAddress("H.dc.x_fp", &HdcXfp);
+    tt->SetBranchAddress("H.dc.xp_fp", &HdcXpfp);
+    tt->SetBranchAddress("H.dc.y_fp", &HdcYfp);
+    tt->SetBranchAddress("H.dc.yp_fp", &HdcYpfp);    
+
+    tt->SetBranchAddress("P.dc.x_fp", &PdcXfp);
+    tt->SetBranchAddress("P.dc.xp_fp", &PdcXpfp);
+    tt->SetBranchAddress("P.dc.y_fp", &PdcYfp);
+    tt->SetBranchAddress("P.dc.yp_fp", &PdcYpfp);    
+
                                                                                                              
   tt->SetBranchAddress("T.coin.pTRIG1_ROC1_tdcTimeRaw", &TcoinpTRIG1_ROC1_tdcTimeRaw);                   
   tt->SetBranchAddress("T.coin.pTRIG4_ROC1_tdcTimeRaw", &TcoinpTRIG4_ROC1_tdcTimeRaw);
@@ -199,7 +225,7 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
 
   cout << PhodoStartTimeMean <<" shms mean "<< HhodoStartTimeMean  << " hms mean " <<endl;
  
-  Double_t pOffset = 3.0; //9.5 + 10;  // in ns                                  
+  Double_t pOffset = 1.5; //9.5 + 10;  // in ns                                  
   Double_t hOffset = 335;                                                        
   Double_t speedOfLight = 29.9792; // in cm/ns                                   
   Double_t SHMScentralPathLen = 18.1*100;  // SHMS Target to focal plane path length converted to cm  
@@ -243,7 +269,8 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
 
       if (pbeta>0.75 && pbeta<1.35 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.5 && hcaletot >0.8 && hcaletot<1.2 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -8 && hdelta < 8 && pdelta > -10 && pdelta < 10) 
       { 
-	DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
+	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
+	//	DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
       PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);        
       HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);          
       SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime);                                                                   
@@ -275,7 +302,7 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
     }
     else if (shms_part == "p") 
     {
-      if (pbeta>0.6 && pbeta<1.4 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0. && hcaletot>0.6 && hcaletot<2.0 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -10 && hdelta < 10 && pdelta > -15 && pdelta < 15 && sqrt(pPm*pPm) < 0.4)     { //cuts to select the electrons and protons
+      if (pbeta>0.6 && pbeta<1.4 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0. && hcaletot>0.6 && hcaletot<2.0 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -10 && hdelta < 10 && pdelta > -15 && pdelta < 15 && sqrt(pPm*pPm) < 0.6)     { //cuts to select the electrons and protons
         cnts++;
         modPm = sqrt(pPm*pPm);
         h_Emd->Fill(pEm+0.03);
@@ -319,7 +346,7 @@ void Plot_kine_compare_carbon(Int_t numruns, TString shms_part, TString simfile,
     sW = ts->GetLeaf("W")->GetValue();
     wt = ts->GetLeaf("Weight")->GetValue();
     normwt = wt*normfac*sfac/nentriesM;
-    if (sPm < 0.4 && sdelta < 10 && sdelta > -10 && spdelta > -15 && spdelta < 15 )
+    if (sPm < 0.6 && sdelta < 10 && sdelta > -10 && spdelta > -15 && spdelta < 15 )
     {
      h_Ems->Fill(sEm,normwt);
      h_pms->Fill(sPm,normwt);

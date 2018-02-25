@@ -107,6 +107,8 @@ public:
     Double_t fP_kin_secondary_pmiss_z;
     Double_t fP_kin_secondary_emiss;
     Double_t fP_kin_secondary_emiss_nuc;
+    Double_t fP_DC_reftime;
+    Double_t fP_DC_tdcmultipl;
 
     //HMS
     Double_t fH_kin_primary_W;
@@ -161,6 +163,10 @@ public:
     Double_t fP_hod_goodstarttime;
     Double_t fP_hod_starttime;
     Double_t fP_hod_fpHitsTime;
+    Double_t fP_hod_1xnhits;
+    Double_t fP_hod_1ynhits;
+    Double_t fP_hod_2xnhits;
+    Double_t fP_hod_2ynhits;
 
     //HMS
     Double_t fH_hod_goodstarttime;    
@@ -216,6 +222,7 @@ public:
     Float_t fPmx;
     Float_t fPmy;
     Float_t fPmz;
+    Float_t fHcorsi;
     
     ClassDef(CTRun,0)
 };

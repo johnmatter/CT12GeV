@@ -27,9 +27,12 @@ using namespace std;
 void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double_t normfac){
 
 
-  const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052, 2066};
+  //  const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052, 2054, 2066};
 
- 
+  //  const Int_t runnumber[numruns]={2278, 2279, 2280};
+  //  const Int_t runnumber[numruns]={2406,2407,2408,2409,2410,2411};
+  const Int_t runnumber[numruns]={2452,2453,2464};
+
   TString fileNameM = ROOT_FILE_PATH;
   fileNameM += simfile; //read the root file from SIMC
   TFile *f2 = new TFile(fileNameM);
@@ -54,13 +57,13 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   THStack *hs3 = new THStack("hs3","Missing Momentum (GeV/c)");
   THStack *hs4 = new THStack("hs4","Corrected Cointime (ns) ");
 
-   TH1D *h_Emd = new TH1D("h_Emd","Missing Energy (GeV)",200,-0.1,0.1);
-   TH1D *h_Emshow = new TH1D("h_Emshow","Missing Energy (GeV)",200,-0.2,0.2);
-   TH1D *h_Ems = new TH1D("h_Ems","Missing Energy (GeV)",200,-0.1,0.1);
-   TH1D *h_Wd = new TH1D("h_Wdh","W (GeV)", 150, 0.5, 1.5);
-   TH1D *h_Ws = new TH1D("h_Wsh","W (GeV)", 150, 0.5, 1.5);
-   TH1D *h_pmd = new TH1D("h_pmd","Pm (GeV/c)", 100, -0.1, 0.1);
-   TH1D *h_pms = new TH1D("h_pms","Pm (GeV/c)", 100, -0.1, 0.1);
+   TH1D *h_Emd = new TH1D("h_Emd","Missing Energy (GeV)",200,-0.15,0.25);
+   TH1D *h_Emshow = new TH1D("h_Emshow","Missing Energy (GeV)",200,-0.15,0.25);
+   TH1D *h_Ems = new TH1D("h_Ems","Missing Energy (GeV)",200,-0.15,0.25);
+   TH1D *h_Wd = new TH1D("h_Wdh","W (GeV)", 150, 0.0, 2.0);
+   TH1D *h_Ws = new TH1D("h_Wsh","W (GeV)", 150, 0.0, 2.0);
+   TH1D *h_pmd = new TH1D("h_pmd","Pm (GeV/c)", 100, -0.02, 0.1);
+   TH1D *h_pms = new TH1D("h_pms","Pm (GeV/c)", 100, -0.02, 0.1);
    TH1D *h1PcointimeROC1 = new TH1D("SHMS ROC1 Corrected Coin Time","SHMS ROC1 Corrected Coin Time; cointime [ns]", 200, -10, 10);    
   TH1D *h1PcointimeROC2 = new TH1D("SHMS ROC2 Corrected Coin Time","SHMS ROC2 Corrected Coin Time; cointime [ns]", 200, -10, 10); 
  
@@ -91,6 +94,17 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   Double_t TcoinpTRIG1_ROC1_tdcTimeRaw, TcoinpTRIG4_ROC1_tdcTimeRaw, TcoinpTRIG1_ROC2_tdcTimeRaw;
   Double_t TcoinhTRIG1_ROC1_tdcTimeRaw, TcoinhTRIG1_ROC2_tdcTimeRaw, TcoinhTRIG4_ROC1_tdcTimeRaw;
   Double_t TcoinhTRIG4_ROC2_tdcTimeRaw, TcoinpTRIG4_ROC2_tdcTimeRaw;
+    // Foal plane coords
+    Double_t PdcXfp;
+    Double_t PdcXpfp;
+    Double_t PdcYfp;
+    Double_t PdcYpfp;
+
+    Double_t HdcXfp;
+    Double_t HdcXpfp;
+    Double_t HdcYfp;
+    Double_t HdcYpfp;
+
 
   int cnts=0;
   TCut hpdelta;
@@ -132,6 +146,18 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
   tt->SetBranchAddress("H.gtr.th", &HgtrTh);                                                             
   tt->SetBranchAddress("H.gtr.y", &HgtrY);                                                               
   tt->SetBranchAddress("H.gtr.ph", &HgtrPh);                                                             
+
+    
+    tt->SetBranchAddress("H.dc.x_fp", &HdcXfp);
+    tt->SetBranchAddress("H.dc.xp_fp", &HdcXpfp);
+    tt->SetBranchAddress("H.dc.y_fp", &HdcYfp);
+    tt->SetBranchAddress("H.dc.yp_fp", &HdcYpfp);    
+
+    tt->SetBranchAddress("P.dc.x_fp", &PdcXfp);
+    tt->SetBranchAddress("P.dc.xp_fp", &PdcXpfp);
+    tt->SetBranchAddress("P.dc.y_fp", &PdcYfp);
+    tt->SetBranchAddress("P.dc.yp_fp", &PdcYpfp);    
+
                                                                                                              
   tt->SetBranchAddress("T.coin.pTRIG1_ROC1_tdcTimeRaw", &TcoinpTRIG1_ROC1_tdcTimeRaw);                   
   tt->SetBranchAddress("T.coin.pTRIG4_ROC1_tdcTimeRaw", &TcoinpTRIG4_ROC1_tdcTimeRaw);
@@ -200,7 +226,7 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
 
   cout << PhodoStartTimeMean <<" shms mean "<< HhodoStartTimeMean  << " hms mean " <<endl;
  
-  Double_t pOffset = 3.0; //9.5 + 10;  // in ns                                  
+  Double_t pOffset = 1.5; //9.5 + 10;  // in ns                                  
   Double_t hOffset = 335;                                                        
   Double_t speedOfLight = 29.9792; // in cm/ns                                   
   Double_t SHMScentralPathLen = 18.1*100;  // SHMS Target to focal plane path length converted to cm  
@@ -227,7 +253,8 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
     {
      if (pbeta>0.8 && pbeta<1.3 && hbeta>0.8 && hbeta<1.3 && pcernpe>0.1 && hcernpe<0.1 && pcaletot >0.8 && pcaletot<1.5 && pcalepr>0.1 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -8 && hdelta < 8 && pdelta > -10 && pdelta < 10) 
      { //cuts to select the electrons and protons
-       DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
+	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
+	//       DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
       PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);        
       HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);          
       SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime);                                                                   
@@ -242,9 +269,11 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
     else if (shms_part == "p") 
     {
 
-      if (pbeta>0.8 && pbeta<1.3 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.5 && hcaletot >0.8 && hcaletot<1.2 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -8 && hdelta < 8 && pdelta > -10 && pdelta < 10) 
+      if (pbeta>0.8 && pbeta<1.3 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.5 && hcaletot >0.8 && hcaletot<1.2  && hdelta > -8 && hdelta < 8 && pdelta > -10 && pdelta < 10) 
       { 
-	DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
+	if (PhodStatus == 1 || HhodStatus ==1){
+	DeltaHMSpathLength = 12.462*HdcXpfp + 0.1138*HdcXpfp*HdcXfp - 0.0154*HdcXfp - 72.292*HdcXpfp*HdcXpfp - 0.0000544*HdcXfp*HdcXfp - 116.52*HdcYpfp*HdcYpfp;
+	//	DeltaHMSpathLength = 12.462*HgtrTh + 0.1138*HgtrTh*HgtrX - 0.0154*HgtrX - 72.292*HgtrTh*HgtrTh - 0.0000544*HgtrX*HgtrX - 116.52*HgtrPh*HgtrPh;               
       PgtrBetaCalc = PgtrP/sqrt(PgtrP*PgtrP + SHMSpartMass*SHMSpartMass);        
       HgtrBetaCalc = HgtrP/sqrt(HgtrP*HgtrP + HMSpartMass*HMSpartMass);          
       SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + (SHMSpathLength - SHMScentralPathLen) / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime);                                                                   
@@ -253,7 +282,8 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
       SHMScorrCoinTimeROC2 = (TcoinpTRIG1_ROC2_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC2_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset;                         
       h1PcointimeROC1->Fill(SHMScorrCoinTimeROC1);                               
       h1PcointimeROC2->Fill(SHMScorrCoinTimeROC2);
-      }
+	}
+     }
     }  
   }
   h1PcointimeROC1->GetXaxis()->SetTitle("Corrected Coincidence Time (ns)");
@@ -276,12 +306,12 @@ void Plot_kine_compare(Int_t numruns, TString shms_part, TString simfile, Double
     }
     else if (shms_part == "p") 
     {
-      if (pbeta>0.8 && pbeta<1.3 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0.1 && hcaletot >0.8 && hcaletot<1.2 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -10 && hdelta < 10 && pdelta > -12 && pdelta < 12 && pkinW > 0.75 && pkinW < 1.15)     { //cuts to select the electrons and protons
+      if (pbeta>0.6 && pbeta<1.4 && hbeta>0.8 && hbeta<1.2 && pcernpe<0.1 && hcernpe>0. && hcaletot >0.6 && hcaletot<2.0 && PhodStatus == 1 && HhodStatus ==1 && hdelta > -10 && hdelta < 10 && pdelta > -12 && pdelta < 12 && pkinW > 0.75 && pkinW < 1.15)     { //cuts to select the electrons and protons
         cnts++;
-        modPm = sqrt(pPm*pPm);
-        h_Emd->Fill(pEm+0.03);
-        h_Emshow->Fill(pEm+0.03);
-        h_Wd->Fill(pkinW+0.027);
+        modPm = sqrt((pPm)*(pPm));
+        h_Emd->Fill(pEm+0.01);
+        h_Emshow->Fill(pEm+0.01);
+        h_Wd->Fill(pkinW+0.015);
         h_pmd->Fill(modPm-0.02);
       }
     }
