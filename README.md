@@ -67,14 +67,7 @@ But if you want to use the database/parameters from `hall_replay`, just use `hal
 
 **Updating `hallc_replay`**
 
-
-If you want to update the `hallc_replay` directory from the main git repository maintained by Hall C, use the following command from the `hallc_replay` directory:
-```
-git pull
-```
-
-Another alternative to run following command from the top level directory:
-
+If you want to update the `hallc_replay` directory from the main git repository maintained by Hall C, use the following command from the top level directory `CT12GeV`:
 ```
 git submodule update --init --recursive
 ```
