@@ -177,6 +177,9 @@ public:
     //SHMS
     Double_t fP_cal_eprtracknorm;
     Double_t fP_cal_etottracknorm;
+    Double_t fP_cal_eprtrack;
+    Double_t fP_cal_etrack;
+    Double_t fP_cal_etot;
 
     //HMS
     Double_t fH_cal_eprtracknorm;

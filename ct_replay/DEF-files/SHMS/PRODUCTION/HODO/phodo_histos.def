@@ -97,3 +97,13 @@ TH2F phodo_1x_diffdistrack_v_xtrack 'SHMS Hodo Diff Distance track (cm) versus T
 TH2F phodo_1y_diffdistrack_v_ytrack 'SHMS Hodo Diff Distance track (cm) versus Track Y (cm)'  P.hod.1y.DiffDisTrack P.hod.1y.TrackYPos 100 -10. 10. 240 -60 60
 TH2F phodo_2x_diffdistrack_v_xtrack 'SHMS Hodo Diff Distance track (cm) versus Track X (cm)'  P.hod.2x.DiffDisTrack P.hod.2x.TrackXPos 100 -10. 10. 240 -60 60
 TH2F phodo_2y_diffdistrack_v_ytrack 'SHMS Hodo Diff Distance track (cm) versus Track Y (cm)'  P.hod.2y.DiffDisTrack P.hod.2y.TrackXPos 100 -10. 10. 240 -60 60
+#sTH2F phodo_1x_vs_1y_good_adc_occ_pos 'SHMS Hodo 1x vs 1y adc_occ_pos' P.hod.1x.numGoodPosAdcHits P.hod.1y.numGoodPosAdcHits 13 0.5 13.5 13 0.5 13.5
+#sTH2F phodo_1x_vs_1y_good_adc_occ_neg 'SHMS Hodo 1x vs 1y adc_occ_neg' P.hod.1x.numGoodNegAdcHits P.hod.1y.numGoodNegAdcHits 13 0.5 13.5 13 0.5 13.5
+TH2F phodo_1x_vs_1y_neg_adc_counter 'SHMS Hodo 1x vs 1y neg adc_counter' P.hod.1y.negAdcCounter P.hod.1x.negAdcCounter 13 0.5 13.5 13 0.5 13.5
+TH2F phodo_1x_vs_1y_pos_adc_counter 'SHMS Hodo 1x vs 1y pos adc_counter' P.hod.1y.posAdcCounter P.hod.1x.posAdcCounter 13 0.5 13.5 13 0.5 13.5
+TH2F phodo_2x_vs_2y_neg_adc_counter 'SHMS Hodo 2x vs 2y neg adc_counter' P.hod.2y.negAdcCounter P.hod.2x.negAdcCounter 16 2.5 18.5 14 0.5 14.5
+TH2F phodo_2x_vs_2y_pos_adc_counter 'SHMS Hodo 2x vs 2y pos adc_counter' P.hod.2y.posAdcCounter P.hod.2x.posAdcCounter 16 2.5 18.5 14 0.5 14.5
+TH2F phodo_1x_trackX_vs_Y 'SHMS Hodo 1x track X vs Y' P.hod.1x.TrackYPos P.hod.1x.TrackXPos 13 -42 42 13 -42 42
+TH2F phodo_1y_trackX_vs_Y 'SHMS Hodo 1y track X vs Y' P.hod.1y.TrackYPos P.hod.1y.TrackXPos 13 -42 42 13 -42 42
+
+

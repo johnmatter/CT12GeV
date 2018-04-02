@@ -8,7 +8,7 @@
 #define CONSTANTS_H
 
 //-- For CT work directory --
-#define ROOT_FILE_PATH "/work/hallc/e1206107/hallc_replay/ROOTfiles/"
+#define ROOT_FILE_PATH "/work/hallc/e1206107/CT12GeV/ct_replay/ROOTfiles/"
 
 // -- on cdaql1 ---
 // #define ROOT_FILE_PATH "/net/cdaq/cdaql3data/cdaq/hallc-online/ROOTfiles/"

@@ -588,6 +588,9 @@ void CTRun::SetBranchAddressCT()
     //SHMS
     fChain->SetBranchAddress("P.cal.eprtracknorm", &fP_cal_eprtracknorm);
     fChain->SetBranchAddress("P.cal.etottracknorm", &fP_cal_etottracknorm);
+    fChain->SetBranchAddress("P.cal.eprtrack", &fP_cal_eprtrack);
+    fChain->SetBranchAddress("P.cal.etrack", &fP_cal_etrack);
+    fChain->SetBranchAddress("P.cal.etot", &fP_cal_etot);
     
     //HMS
     fChain->SetBranchAddress("H.cal.eprtracknorm", &fH_cal_eprtracknorm);

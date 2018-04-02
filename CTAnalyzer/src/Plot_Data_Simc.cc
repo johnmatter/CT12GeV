@@ -27,7 +27,8 @@ void Plot_Data_Simc(Int_t numruns, TString targ, TString shms_part, TString simf
 
   //     const Int_t runnumber[numruns]={2023, 2046, 2047, 2048, 2050, 2051, 2052};
   //  const Int_t runnumber[numruns]={2406, 2407, 2408, 2409, 2410, 2411};
-  const Int_t runnumber[numruns]={2452, 2453, 2464};
+  //const Int_t runnumber[numruns]={2452, 2453, 2464};
+  const Int_t runnumber[numruns]={3179};
   //  const Int_t runnumber[numruns]={2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198, 2199, 2200, 2201, 2202, 2203, 2204, 2205, 2206, 2207, 2208, 2209, 2211, 2212};
   //  const Int_t runnumber[numruns]={2278, 2279, 2280};
   //    const Int_t runnumber[numruns]={2283};

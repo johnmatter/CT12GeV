@@ -10,6 +10,7 @@
 #pragma link C++ function CTdemoDraw;                // Demo Draw Using CTRun class
 #pragma link C++ function CTdemoLoop;                // Loop over events Using CTRun class
 #pragma link C++ function CTdataVsSimc;              // Compare Reconstructed and Kinematic Quantities from data and Simc
+#pragma link C++ function CTexample;                // quick plotter example
 #pragma link C++ function CTgrass;                   // test grass
 #pragma link C++ function CTtrkingEffi;              // Calculate Tracking Efficiency           
 #pragma link C++ function CTdataCorrelations;        // 2D plots of different quantities against Em            
@@ -25,6 +26,7 @@
 #pragma link C++ function Plot_kine_compare_pSHMS;   // Compare kinematics for SIMC with data e in SHMS
 #pragma link C++ function Plot_kine_compare;         // Compare kinematics for SIMC with data for either e or p
 #pragma link C++ function Plot_kine_compare_carbon;  // Compare kinematics for Carbon target SIMC with data for either e or p
+
 
 
 
