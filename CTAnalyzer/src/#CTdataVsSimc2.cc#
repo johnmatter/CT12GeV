@@ -1,4 +1,4 @@
-// Filename: CTdataVsSimc.cc
+// Filename: CTdataVsSimc2.cc
 // Description: Compare Data vs Simc. This script exclusively for CT expt and assumes SHMS as proton arm and HMS as electron arm
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Thu Jan  4 17:03:26 2018 (-0500)
@@ -24,10 +24,12 @@ In order to compare data and simc histograms must have same range and binning an
 #include "CTRun.h"
 using namespace std;
 
-void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString target)
+void CTdataVsSimc2(Int_t numruns, TString SimcFileName, TString target)
 {
 
-    gStyle->SetOptStat(1); 
+    gStyle->SetOptStat(0);
+    const Int_t runnumber[numruns]={3179,3180,3181,3201};
+ 
    //-----These offsets (for data) to be removed once SHMS is betetr calibrated ----------
     Double_t OffsetEm = 0.0;
     Double_t OffsetPdelta = 0.0;
@@ -133,11 +135,27 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     pSimcPm->SetLineColor(kRed);  
     pSimcPmz->SetLineColor(kRed);  
     
-    CTRun *ct = new CTRun(firstRun,lastRun);
-    if(!ct->fRunExist)
-	return;
+    CTRun *ct = new CTRun(,lastRun);
+    //if(!ct->fRunExist)
+    //	return;
+
     //------------------------------------ Fill histograms from data ------- 
-    TTree * tree = ct->GetTree();
+    TChain *tree = new TChain("T");
+
+    for (int i=0;i<numruns;i++){
+      cout << "opening run number: " <<  runnumber[i] <<"\n";
+      //read the input file from data                                                            
+
+      TString fileNameD = ROOT_FILE_PATH;
+      fileNameD += "coin_replay_production_"; //read the root file from data                               
+      fileNameD += runnumber[i]; //read the root file from data                                          
+      fileNameD += "_-1.root"; //read the root file from data                                             
+
+      tree->Add(fileNameD);
+    }
+
+
+    //    TTree * tree = ct->GetTree();
 
     Int_t nEvents = tree->GetEntries();
 
@@ -382,14 +400,14 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     // textSimc->DrawText(1.6,0.07,"Simc");
     // textData->DrawText(1.6,0.065,"Data");
     c3->cd(2);
-    pSimcEm->DrawNormalized();
-    pEm->DrawNormalized("prof same");
+    pEm->DrawNormalized("prof");
+    pSimcEm->DrawNormalized("same");
     c3->cd(3);
     pPm->DrawNormalized("prof");
     pSimcPm->DrawNormalized("same");
     c3->cd(4);
-    pSimcPmz->DrawNormalized();
-    pPmz->DrawNormalized("prof same");
+    pPmz->DrawNormalized("prof");
+    pSimcPmz->DrawNormalized("same");
 
     if(target == "c")       // For carbon-12
      {

@@ -97,9 +97,9 @@ ppartmass = 0.00051099
 1884-1892
 gpbeam = 6.430
 gtargmass_amu = 1.00794
-htheta_lab = -20.0
+htheta_lab = -27.51
 ptheta_lab = 20.0
-hpcentral = 3.609
+hpcentral = 3.0
 ppcentral = 2.5*0.985
 ppartmass = 0.93827231
 hpartmass = 0.00051099

@@ -6,7 +6,7 @@
 void Bean_counter(Int_t runNumber, Int_t targ){
 
  //read the input file from data
-  TString fileNameD = "/net/cdaq/cdaql3data/cdaq/hallc-online/ROOTfiles/" ;
+  TString fileNameD = "/volatile/hallc/comm2017/e1206107/ROOTfiles/" ;
   fileNameD += "coin_replay_production_"; //read the root file from data
   fileNameD += runNumber; //read the root file from data
   fileNameD += "_-1.root"; //read the root file from data

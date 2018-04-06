@@ -67,6 +67,8 @@ void CTRun::Init()
     //Cerenkov Counter cut
     fPCerMin = -1;
     fPCerMax = -1;
+    fPnCerMin = -1;
+    fPnCerMax = -1;
     fHCerMin = -1;
     fHCerMax = -1;
 
@@ -130,6 +132,8 @@ void CTRun::Init(TString file_name)
     //Cerenkov Counter cut
     fPCerMin = -1;
     fPCerMax = -1;
+    fPnCerMin = -1;
+    fPnCerMax = -1;
     fHCerMin = -1;
     fHCerMax = -1;
 
@@ -260,6 +264,12 @@ void CTRun::DefinePCerCut(Double_t min, Double_t max)
     fPCerMin = min;
 }
 
+void CTRun::DefinePnCerCut(Double_t min, Double_t max)
+{
+    fPnCerMax = max;
+    fPnCerMin = min;
+}
+
 void CTRun::DefineHCerCut(Double_t min, Double_t max)
 {
     fHCerMax = max;
@@ -334,6 +344,17 @@ void CTRun::ApplyCut()
 	fCTcut += " && P.hgcer.npeSum <=";
 	fCTcut += fPCerMax;
     }
+    if(fPnCerMin != -1)
+    {
+	fCTcut += "&& P.ngcer.npeSum >=";
+	fCTcut += fPnCerMin;
+    }
+    if(fPnCerMax != -1)
+    {
+	fCTcut += " && P.ngcer.npeSum <=";
+	fCTcut += fPnCerMax;
+    }
+
     if(fHCerMin != -1)
     {
 	fCTcut += " && H.cer.npeSum >=";
@@ -465,6 +486,7 @@ void CTRun::ActivateCTBranches()
     fChain->SetBranchStatus("H.dc.y*",1);
 
     fChain->SetBranchStatus("P.hgcer.*",1);
+    fChain->SetBranchStatus("P.ngcer.*",1);
     fChain->SetBranchStatus("H.cer.*",1);
 
     fChain->SetBranchStatus("P.hod.*",1);
@@ -487,12 +509,20 @@ void CTRun::SetBranchAddressSimc()
     fSimcChain->SetBranchAddress("hsxptar", &fHSxptar);
     fSimcChain->SetBranchAddress("hsyptar", &fHSyptar);
     fSimcChain->SetBranchAddress("hsytar", &fHSytar);
+    fSimcChain->SetBranchAddress("hsxfp", &fHSxfp);
+    fSimcChain->SetBranchAddress("hsxpfp", &fHSxpfp);
+    fSimcChain->SetBranchAddress("hsyfp", &fHSyfp);
+    fSimcChain->SetBranchAddress("hsypfp", &fHSypfp);
 
     //SHMS
     fSimcChain->SetBranchAddress("ssdelta", &fPSdelta);
     fSimcChain->SetBranchAddress("ssxptar", &fPSxptar);
     fSimcChain->SetBranchAddress("ssyptar", &fPSyptar);
     fSimcChain->SetBranchAddress("ssytar", &fPSytar);
+    fSimcChain->SetBranchAddress("ssxfp", &fPSxfp);
+    fSimcChain->SetBranchAddress("ssxpfp", &fPSxpfp);
+    fSimcChain->SetBranchAddress("ssyfp", &fPSyfp);
+    fSimcChain->SetBranchAddress("ssypfp", &fPSypfp);
 
     fSimcChain->SetBranchAddress("Weight", &fWeight);
     fSimcChain->SetBranchAddress("W", &fW);
@@ -567,6 +597,7 @@ void CTRun::SetBranchAddressCT()
 
     //------------ Cerenkov Counter ----------    
     fChain->SetBranchAddress("P.hgcer.npeSum", &fP_hgcer_npeSum);
+    fChain->SetBranchAddress("P.ngcer.npeSum", &fP_ngcer_npeSum);
     fChain->SetBranchAddress("H.cer.npeSum", &fH_cer_npeSum);
 
     //------------ Hodoscope ----------
@@ -609,7 +640,5 @@ void CTRun::SetBranchAddressCT()
     fChain->SetBranchAddress("T.coin.hTRIG4_ROC1_tdcTimeRaw", &fT_coin_hTRIG4_ROC1_tdcTimeRaw);
     fChain->SetBranchAddress("T.coin.hTRIG1_ROC2_tdcTimeRaw", &fT_coin_hTRIG1_ROC2_tdcTimeRaw);
     fChain->SetBranchAddress("T.coin.hTRIG4_ROC2_tdcTimeRaw", &fT_coin_hTRIG4_ROC2_tdcTimeRaw);
-
-    //fChain->SetBranchAddress("fEvtHdr.fEvtType", &EvtData);  // This branch has some problem at this moment, SetBranchAddress() does not work. It's a nested branch.
    
 }

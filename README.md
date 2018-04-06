@@ -33,7 +33,7 @@ source /site/12gev_phys/production.csh 2.0
 From top level directory of `CT12GeV` do:
 
 ```
-source setup_replay.csh
+source setup_replay.(c)sh
 ```
 
 This will setup necessary environment and take you to the `ct_replay` directory. Start Hall C analyzer by typing `hcana` and run your desired replay script. 

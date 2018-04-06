@@ -43,6 +43,8 @@ class CTRun: public TObject
     //Cerenkov Counter cut
     Double_t fPCerMin;
     Double_t fPCerMax;
+    Double_t fPnCerMin;
+    Double_t fPnCerMax;
     Double_t fHCerMin;
     Double_t fHCerMax;
 
@@ -86,6 +88,7 @@ public:
     void DefinePBetaCut(Double_t min = -1, Double_t max = -1); 
     void DefineHBetaCut(Double_t min = -1, Double_t max = -1);
     void DefinePCerCut(Double_t min = -1, Double_t max =-1);
+    void DefinePnCerCut(Double_t min = -1, Double_t max =-1);
     void DefineHCerCut(Double_t min = -1, Double_t max = -1);
     void DefinePCalCut(Double_t min = -1, Double_t max =-1);
     void DefineHCalCut(Double_t min = -1, Double_t max = -1);
@@ -154,6 +157,7 @@ public:
     //------------ Cerenkov Counter ----------
     //SHMS
     Double_t fP_hgcer_npeSum;
+    Double_t fP_ngcer_npeSum;
     
     //HMS
     Double_t fH_cer_npeSum;
@@ -210,12 +214,20 @@ public:
     Float_t fHSxptar;
     Float_t fHSyptar;
     Float_t fHSytar;
+    Float_t fHSxfp;
+    Float_t fHSxpfp;
+    Float_t fHSyfp;
+    Float_t fHSypfp;
 
     //SHMS
     Float_t fPSdelta;
     Float_t fPSxptar;
     Float_t fPSyptar;
     Float_t fPSytar;
+    Float_t fPSxfp;
+    Float_t fPSxpfp;
+    Float_t fPSyfp;
+    Float_t fPSypfp;
 
     Float_t fWeight;
     
