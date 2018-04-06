@@ -1,6 +1,17 @@
 #! /bin/tcsh
-set onlineDir="/work/hallc/e1206107/CT12GeV"
 
+set called=($_)
+if ("$called" != "") then
+  set scriptdir=$called[2]
+  set CT12GEV_DIR=`dirname $scriptdir`
+  set CT12GEV_DIR=`c\d $CT12GEV_DIR && pwd` 
+else
+  set scriptdir=$1
+  set CT12GEV_DIR=$scriptdir
+endif
+setenv onlineDir "${CT12GEV_DIR}"
+    
+    
 echo ""
 echo "Setting up environment for the E1206107 analysis:"
 

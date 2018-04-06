@@ -1,5 +1,8 @@
 #! /bin/bash
-export onlineDir="/work/hallc/e1206107/CT12GeV"
+
+    
+onlineDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"    
+export onlineDir
 
 echo ""
 echo "Setting up environment for the E1206107 analysis:"
