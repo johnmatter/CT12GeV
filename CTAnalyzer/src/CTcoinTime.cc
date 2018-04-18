@@ -97,7 +97,7 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     Double_t PhodfpHitsTime;
     Double_t HhodfpHitsTime;
 
-    // Foal plane coords
+    // Focal plane coords
     Double_t PdcXfp;
     Double_t PdcXpfp;
     Double_t PdcYfp;
@@ -184,8 +184,6 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     tree->SetBranchAddress("T.coin.hTRIG1_ROC2_tdcTimeRaw", &TcoinhTRIG1_ROC2_tdcTimeRaw);
     tree->SetBranchAddress("T.coin.hTRIG4_ROC2_tdcTimeRaw", &TcoinhTRIG4_ROC2_tdcTimeRaw);
 
-    //tree->SetBranchAddress("fEvtHdr.fEvtType", &EvtData);  // This branch has some problem at this moment, SetBranchAddress() does not work. It's a nested branch.
-
     Int_t nEvents = tree->GetEntries();
     cout << "Number of events: "<< nEvents <<endl;
 
@@ -226,7 +224,7 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     h1PhodoStartTime->GetXaxis()->SetTitle("SHMS hodo start time [ns]");
     h1HhodoStartTime->GetXaxis()->SetTitle("HMS hodo start time [ns]");
 
-    Double_t pOffset = 1.5;  // in ns
+    Double_t pOffset = 2.5;  // in ns
     Double_t hOffset = 335;
     Double_t speedOfLight = 29.9792; // in cm/ns
     
@@ -297,8 +295,8 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 	if(PgtrBetaCalc == 0 || HgtrBetaCalc == 0)
 	    continue;
 	
-	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
-	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / speedOfLight*HgtrBetaCalc + (HhodoStartTimeMean - HhodfpHitsTime); 
+	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + DeltaSHMSpathLength / (speedOfLight*PgtrBetaCalc) + (PhodoStartTimeMean - PhodfpHitsTime); 
+	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / (speedOfLight*HgtrBetaCalc) + (HhodoStartTimeMean - HhodfpHitsTime); 
 	
 	SHMScorrCoinTimeROC1 = (TcoinpTRIG1_ROC1_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC1_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset; // 0.1 to convert to ns
 	SHMScorrCoinTimeROC2 = (TcoinpTRIG1_ROC2_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC2_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset; 
@@ -323,8 +321,8 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 
 	if(totEvents<10)
 	{
-	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / speedOfLight*HgtrBetaCalc <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
-	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc<< " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
+	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / (speedOfLight*HgtrBetaCalc) <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
+	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / (speedOfLight*PgtrBetaCalc) << " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
 	}
     }
     cout << "Total number of events passing the PID cuts (looping over events): "<< totEvents <<endl;

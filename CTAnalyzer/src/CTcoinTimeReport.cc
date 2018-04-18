@@ -259,12 +259,6 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
 
 	tree->GetEntry(event);
 
-	EvtType = tree->GetLeaf("fEvtHdr.fEvtType")->GetValue();
-	
-	// ----- Coincidence events cut ------
-	// if(EvtType != 7) // EvtType 7 is coincidene events only
-	//     continue;
-
         //----- PID Cut -------
 	if(shms_particle == "e")
 	{
@@ -299,8 +293,8 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
 	if(PgtrBetaCalc == 0 || HgtrBetaCalc == 0)
 	    continue;
 	
-	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc + (PhodoStartTimeMean - PhodfpHitsTime); 
-	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / speedOfLight*HgtrBetaCalc + (HhodoStartTimeMean - HhodfpHitsTime); 
+	SHMScoinCorr = SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) + DeltaSHMSpathLength / (speedOfLight*PgtrBetaCalc) + (PhodoStartTimeMean - PhodfpHitsTime); 
+	HMScoinCorr = HMScentralPathLen / (speedOfLight*HgtrBetaCalc) + DeltaHMSpathLength / (speedOfLight*HgtrBetaCalc) + (HhodoStartTimeMean - HhodfpHitsTime); 
 	
 	SHMScorrCoinTimeROC1 = (TcoinpTRIG1_ROC1_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC1_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset; // 0.1 to convert to ns
 	SHMScorrCoinTimeROC2 = (TcoinpTRIG1_ROC2_tdcTimeRaw*0.1 - SHMScoinCorr) - (TcoinpTRIG4_ROC2_tdcTimeRaw*0.1 - HMScoinCorr) - pOffset; 
@@ -332,8 +326,8 @@ void CTcoinTimeReport(Int_t firstRun, Int_t lastRun,  TString shms_particle, Int
 	
 	if(totEvents<10)
 	{
-	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / speedOfLight*HgtrBetaCalc <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
-	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / speedOfLight*PgtrBetaCalc<< " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
+	    cout << "HMS 1st Corr: "<< HMScentralPathLen / (speedOfLight*HgtrBetaCalc)<<" 2nd Corr: "<<DeltaHMSpathLength / (speedOfLight*HgtrBetaCalc) <<" 3rd Corr: "<< (HhodoStartTimeMean - HhodfpHitsTime)<<endl;
+	    cout << "SHMS 1st Corr: "<<SHMScentralPathLen / (speedOfLight*PgtrBetaCalc) <<" 2nd Corr: "<<DeltaSHMSpathLength / (speedOfLight*PgtrBetaCalc) << " 3rd Corr: "<<(PhodoStartTimeMean - PhodfpHitsTime) <<endl;
 	}
 
     }

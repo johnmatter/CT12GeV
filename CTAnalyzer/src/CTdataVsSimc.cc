@@ -28,7 +28,7 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 {
 
     gStyle->SetOptStat(1); 
-   //-----These offsets (for data) to be removed once SHMS is betetr calibrated ----------
+   //-----These offsets (for data) to be removed once SHMS is better calibrated ----------
     Double_t OffsetEm = 0.0;
     Double_t OffsetPdelta = 0.0;
     Double_t OffsetPmz = 0.0;
