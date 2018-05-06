@@ -11,3 +11,5 @@ PLOTS/
 hcana/
 *#*
 *#
+.roothistory
+.nfs*

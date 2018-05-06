@@ -29,6 +29,7 @@
 #pragma link C++ function Plot_kine_compare_pSHMS;   // Compare kinematics for SIMC with data e in SHMS
 #pragma link C++ function Plot_kine_compare;         // Compare kinematics for SIMC with data for either e or p
 #pragma link C++ function Plot_kine_compare_carbon;  // Compare kinematics for Carbon target SIMC with data for either e or p
+#pragma link C++ function CTPlotPcal;  // Plot SHMS CAL quality plots
 
 
 

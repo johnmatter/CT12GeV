@@ -200,7 +200,7 @@ void THcPShowerCalib::Init() {
 
   gROOT->Reset();
 
-  char* fname = Form("ROOTfiles/shms_replay_%s.root",fRunNumber.c_str());
+  char* fname = Form("/volatile/hallc/comm2017/e1206107/ROOTfiles/detector_calibration/shms_replay_%s.root",fRunNumber.c_str());
   cout << "THcPShowerCalib::Init: Root file name = " << fname << endl;
 
   TFile *f = new TFile(fname);
