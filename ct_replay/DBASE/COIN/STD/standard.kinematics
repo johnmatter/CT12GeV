@@ -370,7 +370,7 @@ hpartmass = 0.0005109
 
 #Ct Experiment (E12-06-107)
 2282-2283
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  1.00794
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -381,7 +381,7 @@ hpartmass = 0.0005109
 
 #Ct Experiment (E12-06-107)
 2284-2396
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  12.0107
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -391,7 +391,7 @@ ppartmass = 0.93827231
 hpartmass = 0.0005109
 
 2397
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  1.00794
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -408,7 +408,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 13/H singles run
 2404-2405
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  1.00794
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -419,7 +419,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 14/H coincidence run
 2406-2437
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  1.00794
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -430,7 +430,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 17/Al coincidence run
 2438-2438
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  26.98
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -441,7 +441,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 17/C singles
 2439-2440
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  12.0107
 htheta_lab = -39.280
 ptheta_lab = 12.800
@@ -452,7 +452,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 17/C coincidence run
 2441-2451
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  12.0107
 htheta_lab = -28.505
 ptheta_lab = 17.830
@@ -463,7 +463,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 18/H coincidence run
 2452-2454
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  1.00794
 htheta_lab = -28.505
 ptheta_lab = 17.830
@@ -474,7 +474,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 18/Al coincidence run
 2455
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu =  26.98
 htheta_lab = -28.505
 ptheta_lab = 17.830
@@ -485,7 +485,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 18/C coincidence run
 2456-2463
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 12.0107
 htheta_lab = -28.505
 ptheta_lab = 17.830
@@ -496,7 +496,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Feb 18/H coincidence run
 2464
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 1.00794
 htheta_lab = -28.505
 ptheta_lab = 17.830
@@ -507,7 +507,7 @@ hpartmass = 0.0005109
 
 #Color Transparency --Q^2 9.5 run
 3179-3187
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 12.0107
 htheta_lab = -23.19
 ptheta_lab = 21.595
@@ -517,7 +517,7 @@ ppartmass = 0.93827231
 hpartmass = 0.0005109
 
 3188-3191
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 1.00794
 htheta_lab = -23.19
 ptheta_lab = 21.595
@@ -527,7 +527,7 @@ ppartmass = 0.93827231
 hpartmass = 0.0005109
 
 3192
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 26.98
 htheta_lab = -23.19
 ptheta_lab = 21.595
@@ -537,7 +537,7 @@ ppartmass = 0.93827231
 hpartmass = 0.0005109
 
 3193-3199
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 12.0107
 htheta_lab = -23.19
 ptheta_lab = 21.595
@@ -547,7 +547,7 @@ ppartmass = 0.93827231
 hpartmass = 0.0005109
 
 3200
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 26.98
 htheta_lab = -23.19
 ptheta_lab = 21.595
@@ -557,7 +557,7 @@ ppartmass = 0.93827231
 hpartmass = 0.0005109
 
 3201
-gpbeam = 10.600
+gpbeam = 10.598
 gtargmass_amu = 12.0107
 htheta_lab = -23.19
 ptheta_lab = 21.595
