@@ -33,8 +33,7 @@
   Double_t BETA_MIN= 0.5;
   Double_t BETA_MAX= 1.5;
 
-  Double_t HGCER_NPE_MIN= 3;
-  Double_t NGCER_NPE_MIN= 1.; 
+  Double_t CER_NPE_MIN= 3;
 
   UInt_t fNentries;
   UInt_t fNstart;
@@ -50,8 +49,7 @@
   Double_t        H_tr_y;   //Y FP
   Double_t        H_tr_yp;
 
-  Double_t        H_hgcer_npe;
-  Double_t        H_ngcer_npe;
+  Double_t        H_cer_npe;
   Double_t        H_tr_beta;
 
   Double_t        hdelta; 
@@ -76,7 +74,7 @@
 
    TChain *fTree = new TChain("T");
    for (int i=0;i<numruns;i++){
-   TString fname = "/volatile/hallc/e1206107/ROOTfiles/detector_calibration/shms_replay_";
+   TString fname = "/volatile/hallc/e1206107/ROOTfiles/detector_calibration/hms_replay_1638_300000.root";
    fname += RunNumber;
    fname +="_";
    fname +=nstop;
@@ -94,8 +92,7 @@
   fTree->SetBranchAddress("H.dc.xp_fp",&H_tr_xp);
   fTree->SetBranchAddress("H.dc.yp_fp",&H_tr_yp);
  
-  fTree->SetBranchAddress("H.hgcer.npeSum", &H_hgcer_npe);
-  fTree->SetBranchAddress("H.ngcer.npeSum", &H_ngcer_npe);
+  fTree->SetBranchAddress("H.cer.npeSum", &H_cer_npe);
 
   fTree->SetBranchAddress("H.gtr.beta", &H_tr_beta);
   fTree->SetBranchAddress("H.gtr.dp", &hdelta); 
@@ -133,11 +130,8 @@
 		    H_tr_y + H_tr_yp*D_CALO_FP < YMAX ;
    if (!good_trk) continue;
 
-   bool good_ngcer = H_ngcer_npe > NGCER_NPE_MIN ;
-   if(!good_ngcer) continue;
-
-   bool good_hgcer = H_hgcer_npe > HGCER_NPE_MIN ;
-   if(!good_hgcer) continue;
+   bool good_cer = H_cer_npe > CER_NPE_MIN ;
+   if(!good_cer) continue;
 
    bool good_beta = H_tr_beta > BETA_MIN &&
                    H_tr_beta < BETA_MAX ;

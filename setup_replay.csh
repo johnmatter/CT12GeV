@@ -15,6 +15,8 @@ setenv onlineDir "${CT12GEV_DIR}"
 echo ""
 echo "Setting up environment for the E1206107 analysis:"
 
+echo " -> sourcing the libCT.so environment"
+source "${onlineDir}/CTAnalyzer/bin/thislibCT.csh"
 
 echo " -> sourcing hcana environment"
 source "${onlineDir}/hcana/setup.csh" "${onlineDir}/hcana"

@@ -19,7 +19,7 @@
 
 // A Root script for the SHMS calorimeter quality plots
 
-  void plot_pcal(int numruns=1, int RunNumber=1791, int nstop=9999999) {
+  void cal_cal_shms(int numruns=1, int RunNumber=1791, int nstop=9999999) {
 
   Double_t D_CALO_FP= 275. ;
   Double_t XMIN= -60.;

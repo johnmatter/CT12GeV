@@ -16,6 +16,7 @@ In order to compare data and simc histograms must have same range and binning an
 #include <TString.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TF1.h>
 #include <TCanvas.h>
 #include <TSystem.h>
 #include <TStyle.h>
@@ -34,14 +35,14 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     Double_t OffsetPmz = 0.0;
     Double_t OffsetW = 0.0;
     int cnts = 0;
-    Double_t ebeam=10.6;
-    Double_t etheta=-23.19*3.141592/180.;
-    Double_t ptheta=21.6*3.141592/180.;
-    Double_t eP0=5.539;
-    Double_t pP0=5.925*0.985;
-    Double_t mass_p=0.938272;
+    Double_t ebeam= 6.4302;  //10.57527; 
+    Double_t etheta=-45.1*3.141592/180.;
+    Double_t ptheta=17.12*3.141592/180.;
+    Double_t eP0=2.131;
+    Double_t pP0=5.122*0.985;
+    Double_t mass_p=0.9382720813;
     Double_t mass_e=0.000511;
-    Double_t hms_corsi, shms_corsi, ssim_corsi, hE, hP, pP, psimP, htheta, stheta, ssimtheta;
+    Double_t hms_corsi, shms_corsi, ssim_corsi, hE, hP, pP, esimP, psimP, htheta, stheta, hsimtheta, ssimtheta, Emcalc, SimEmcalc,sxp;
     Double_t r;
     //--------- Histograms from the data -----------
     //HMS
@@ -55,19 +56,20 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     TH2D *pxxpfp2 = new TH2D("pxvsxp2","SHMS x vs xp; x_fp (cm); xp_fp (rad)",100,-40,40,100,-0.1,0.1);
     TH2D *pxxpfp3 = new TH2D("pxvsxp3","SHMS x vs xp; x_fp (cm); xp_fp (rad)",100,-40,40,100,-0.1,0.1);
     //Kinematic quantities
-    TH1D *hW = new TH1D("hW","W (GeV); W(GeV); Normalized counts", 150, 0.0, 2.0);
+    TH1D *hW = new TH1D("hW","W (GeV); W(GeV); Normalized counts", 150, 0.75, 1.15);
     //SHMS
     //Reconstructed quantities
     TH1D *pDelta = new TH1D("pDelta","SHMS DELTA (%); SHMS dp (%); Normalized counts",100,-12,12);
     TH1D *pXptar = new TH1D("pXptar","SHMS XPTAR (rad);x^{'}_{tar} (rad); Normalized counts",100,-0.06,0.06);
+    TH2D *pdeltaxptar = new TH2D("pdeltaxptar","SHMS xptar vs delta; pxptar; delta)",100,-0.04,0.04,100,-12,12);
     TH1D *pYptar = new TH1D("pYptar","SHMS YPTAR (rad);y^{'}_{tar}(rad); Normalized counts",100,-0.06,0.06);
     TH1D *pYtar = new TH1D("pYtar","SHMS YTAR (cm); y_{tar} (cm); Normalized counts",100,-12.0,12.0);      
     TH1D *pYtarc = new TH1D("pYtarc","SHMS YTAR (cm); y_{tar} (cm); Normalized counts",100,-1.5,1.5);      
   
     //Kinematic quantities
-    TH1D *pEm = new TH1D("pEm","Missing Energy (GeV); E_{m} (GeV); Normalized counts",200,-0.15,0.25);
-    TH1D *pPm = new TH1D("pPm","Pm (GeV/c); |P_{m}|(GeV/c); Normalized counts", 100, 0.0, 0.6);
-    TH1D *pPmz = new TH1D("pPmz","Pmz (GeV/c); P_{mz} (GeV/c); Normalized counts", 100, -0.4, 0.4);
+    TH1D *pEm = new TH1D("pEm","Missing Energy (GeV); E_{m} (GeV); Normalized counts",150,-0.05,0.1);
+    TH1D *pPm = new TH1D("pPm","Pm (GeV/c); |P_{m}|(GeV/c); Normalized counts", 100, 0.0, 0.1);
+    TH1D *pPmz = new TH1D("pPmz","Pmz (GeV/c); P_{mz} (GeV/c); Normalized counts", 100, -0.1, 0.05);
 
     //--------- Histograms from the Simc -----------
     //HMS
@@ -78,7 +80,7 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     TH1D *hSimcYtar = new TH1D("hSimcYtar","HMS YTAR (SIMC) (cm)",100,-12.0,12.0);
     TH1D *hSimcYtarc = new TH1D("hSimcYtarc","HMS YTAR (SIMC) (cm)",100,-1.5,1.5);
     //Kinematic quantities
-    TH1D *hSimcW = new TH1D("hSimcW","W (GeV)", 150, 0.0, 2.0);
+    TH1D *hSimcW = new TH1D("hSimcW","W (GeV)", 150, 0.75, 1.15);
    
     hSimcDelta->SetMarkerColor(kRed);  
     hSimcXptar->SetMarkerColor(kRed);  
@@ -93,6 +95,7 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     hSimcYtarc->SetLineColor(kRed);  
     hSimcW->SetLineColor(kRed);  
 
+
     //SHMS
     //Reconstructed quantities
     TH1D *pSimcDelta = new TH1D("pSimcDelta","SHMS DELTA (SIMC) (%)",100,-12,12);
@@ -101,17 +104,41 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     TH1D *pSimcYtar = new TH1D("pSimcYtar","SHMS YTAR (SIMC) (cm)",100,-12.0,12.0);
     TH1D *pSimcYtarc = new TH1D("pSimcYtarc","SHMS YTAR (SIMC) (cm)",100,-1.5,1.5);
     //Kinematic quantities
-    TH1D *pSimcW = new TH1D("pSimcW","W (GeV)", 150, 0.0, 2.0);
-    TH1D *pSimcEm = new TH1D("pSimcEm","Missing Energy (GeV)",200,-0.15,0.25);
-    TH1D *pSimcPm = new TH1D("pSimcPm","|P_{m}| (GeV/c)", 100, 0.0, 0.6);
-    TH1D *pSimcPmz = new TH1D("pSimcPmz","P_{mz} (GeV/c)", 100, -0.4, 0.4);
+    TH1D *pSimcW = new TH1D("pSimcW","W (GeV)", 150, 0.6, 1.4);
+    TH1D *pSimcEm = new TH1D("pSimcEm","Missing Energy (GeV)",150,-0.05,0.1);
+    TH1D *pSimcPm = new TH1D("pSimcPm","|P_{m}| (GeV/c)", 100, 0.0, 0.1);
+    TH1D *pSimcPmz = new TH1D("pSimcPmz","P_{mz} (GeV/c)", 100, -0.1, 0.05);
 
-    TH1D *hcorsi = new TH1D("hcorsi","(E_hms - E')[GeV]; h_energy diff(GeV); Normalized counts", 100, -0.2, 0.2);
-    TH1D *scorsi = new TH1D("scorsi","(P_shms - P')[GeV]; p_mom diff(GeV); Normalized counts", 100, -0.2, 0.2);
-    TH1D *hSimcorsi = new TH1D("hSimcorsi","hmsE - E' (GeV); h_energy diff(GeV); Normalized counts", 100, -0.2, 0.2);
-    TH1D *sSimcorsi = new TH1D("sSimcorsi","P_shms - P' (GeV); p_mom diff(GeV); Normalized counts", 100, -0.2, 0.2);
+    TH1D *hcorsi = new TH1D("hcorsi","(E_hms - E')[GeV]; h_energy diff(GeV); Normalized counts", 100, -0.1, 0.1);
+    TH1D *scorsi = new TH1D("scorsi","(P_shms - P')[GeV]; p_mom diff(GeV); Normalized counts", 100, -0.1, 0.1);
+    TH1D *hSimcorsi = new TH1D("hSimcorsi","hmsE - E' (GeV); h_energy diff(GeV); Normalized counts", 100, -0.1, 0.1);
+    TH1D *sSimcorsi = new TH1D("sSimcorsi","P_shms - P' (GeV); p_mom diff(GeV); Normalized counts", 100, -0.1, 0.1);
+    TH1D *heP = new TH1D("heP","(eP)[GeV/c]; elec mom(GeV/c); Normalized counts", 100, 1.85, 2.35);
+    TH1D *hsimeP = new TH1D("hsimeP"," eP [GeV/c]; elec mom (GeV/c); Normalized counts", 100, 1.85, 2.35);
+    TH1D *hetht = new TH1D("hetht"," etheta [deg]; elec angle; Normalized counts", 100, -0.9, -0.7);
+    TH1D *hsimetht = new TH1D("hsimetht"," etheta [deg]; elec angle; Normalized counts", 100, -0.9, -0.7);
+    TH2D *hcorsidelta = new TH2D("hcorsidelta","HMS corsi vs delta; hcorsi; delta)",100,-8,8,100,-0.1,0.1);
+    TH2D *hcorsixptar = new TH2D("hcorsixptar","HMS corsi vs xptar; hcorsi; xptar (rad)",100,-0.06,0.06,100,-0.1,0.1);
+    TH2D *hcorsiyptar = new TH2D("hcorsiyptar","HMS corsi vs yptar; hcorsi; yptar (rad)",100,-0.04,0.04,100,-0.1,0.1);
+    TH1D *hpP = new TH1D("hpP","(pP)[GeV/c]; prot mom(GeV/c); Normalized counts", 100, 4.5, 5.5);
+    TH1D *hsimpP = new TH1D("hsimpP"," pP [GeV/c]; prot mom (GeV/c); Normalized counts", 100, 4.5, 5.5);
+    TH1D *hptht = new TH1D("hptht"," ptheta [deg]; prot angle; Normalized counts", 100, 0.27, 0.33);
+    TH1D *hsimptht = new TH1D("hsimptht"," ptheta [deg]; prot angle; Normalized counts", 100, 0.27, 0.33);
+    TH2D *scorsidelta = new TH2D("scorsidelta","SHMS corsi vs delta; scorsi; delta)",100,-4,4,100,-0.1,0.1);
+    TH2D *scorsixptar = new TH2D("scorsixptar","SHMS corsi vs xptar; scorsi; xptar (rad)",100,-0.03,0.03,100,-0.1,0.1);
+    TH2D *scorsiyptar = new TH2D("scorsiyptar","SHMS corsi vs yptar; scorsi; yptar (rad)",100,-0.02,0.02,100,-0.1,0.1);
+    TH2D *scorsiEm = new TH2D("scorsiEm","SHMS corsi vs Em; scorsi; Em",150,-0.05,0.15,100,-0.1,0.1);
+    TH2D *pPEm = new TH2D("pPEm","SHMS pP vs Em; pP; Em",150,-0.05,0.15,100,4.9,5.3);
+    TH2D *pthEm = new TH2D("pthEm","SHMS pth vs Em; pth; Em",150,-0.05,0.15,100,0.27,0.33);
+    TH2D *emdelta = new TH2D("emdelta","SHMS Em vs delta; Em; delta",100,-4,4,150,-0.05,0.15);
+    TH2D *emxptar = new TH2D("emxptar","SHMS Em vs xptar; Em; xptar (rad)",100,-0.03,0.03,150,-0.05,0.15);
+    TH2D *emyptar = new TH2D("emyptar","SHMS Em vs yptar; Em; yptar (rad)",100,-0.02,0.02,150,-0.05,0.15);
+    //        TF1 *f1 = new TF1("f1","[0]+[1]*x-[2]*x*x",-0.024,0.021);
+    //f1->SetParameters(0.02,0.,1.);
+    //f1->SetLineColor(kRed);    
 
-
+    hsimpP->SetMarkerColor(kRed);
+    hsimptht->SetMarkerColor(kRed);
     hSimcorsi->SetMarkerColor(kRed);  
     sSimcorsi->SetMarkerColor(kRed);  
     pSimcDelta->SetMarkerColor(kRed);  
@@ -122,6 +149,10 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     pSimcEm->SetMarkerColor(kRed);  
     pSimcPm->SetMarkerColor(kRed);  
     pSimcPmz->SetMarkerColor(kRed);  
+    hsimpP->SetMarkerColor(kRed);
+    hsimptht->SetMarkerColor(kRed);
+    hsimeP->SetMarkerColor(kRed);
+    hsimetht->SetMarkerColor(kRed);
     hSimcorsi->SetLineColor(kRed);  
     sSimcorsi->SetLineColor(kRed);  
     pSimcDelta->SetLineColor(kRed);  
@@ -132,7 +163,8 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     pSimcEm->SetLineColor(kRed);  
     pSimcPm->SetLineColor(kRed);  
     pSimcPmz->SetLineColor(kRed);  
-    
+   
+ 
     CTRun *ct = new CTRun(firstRun,lastRun);
     if(!ct->fRunExist)
 	return;
@@ -205,11 +237,11 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 	pYptar->Fill(ct->fP_gtr_ph);
 	pYtar->Fill(ct->fP_gtr_y);
         pxxpfp2->Fill(ct->fP_dc_x_fp,ct->fP_dc_xp_fp);
-
+	//        pdeltaxptar->Fill(ct->fP_gtr_th,ct->fP_gtr_dp);
         if (target == "h")
 	 {
-	   pPm->GetXaxis()->SetRangeUser(-0.15,0.25);
-           pEm->GetXaxis()->SetRangeUser(-0.15,0.25);
+	   pPm->GetXaxis()->SetRangeUser(0,0.1);
+           pEm->GetXaxis()->SetRangeUser(-0.05,0.05);
          }
 
 	//--- Kinematic quantities ----	
@@ -219,17 +251,49 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 
 	if(target == "h")
 	  {
-	    pEm->Fill(ct->fP_kin_secondary_emiss + OffsetEm);
-            hP = eP0*(1.+ (ct->fH_gtr_dp)/100.);
+            sxp=ct->fP_gtr_th;
+            Emcalc = ct->fP_kin_secondary_emiss;
+	    //	    	    if (ct->fP_kin_secondary_emiss < -0.01) {
+	     Emcalc = Emcalc -(-0.01+0.41*sxp-25.8*sxp*sxp);
+	     // }
+	    //            else if (ct->fP_kin_secondary_emiss > 0.033) {
+	    //  Emcalc = Emcalc -(0.033+0.226*sxp+30.39*sxp*sxp);
+	    // }
+
+	    //    	    pEm->Fill(ct->fP_kin_secondary_emiss + OffsetEm);
+            pEm->Fill(Emcalc);
+            hP = ct->fH_gtr_p; //eP0*(1.+ (ct->fH_gtr_dp)/100.);
             hE = hP;
 	    //            r = sqrt(1. + pow(ct->fH_gtr_th,2) + pow(ct->fH_gtr_ph,2));
             htheta = etheta + (ct->fH_gtr_ph);//acos((cos(etheta) + (ct->fH_gtr_ph)*sin(etheta))/r);
 	    hms_corsi = hE - ebeam/(1.+ebeam*(1-cos(htheta))/mass_p);
-            pP = pP0*(1.+ (ct->fP_gtr_dp)/100.);
+            pP = ct->fP_gtr_p; //pP0*(1.+ (ct->fP_gtr_dp)/100.);
             stheta = ptheta + (ct->fP_gtr_ph);
+
             shms_corsi = pP - 2.*mass_p*ebeam*cos(stheta)/(ebeam+mass_p)/(1-pow(ebeam*cos(stheta)/(ebeam+mass_p),2));
+
             hcorsi->Fill(hms_corsi);
             scorsi->Fill(shms_corsi);
+            hpP->Fill(pP);
+            hptht->Fill(stheta);
+            heP->Fill(hP);
+            hetht->Fill(htheta);
+	    //            Emcalc = ebeam+mass_p-hP-sqrt(pP*pP+mass_p*mass_p);
+    	    //pEm->Fill(Emcalc + OffsetEm);
+	    hcorsidelta->Fill(ct->fH_gtr_dp,hms_corsi);
+	    scorsidelta->Fill(ct->fP_gtr_dp,shms_corsi);
+	    scorsiEm->Fill(ct->fP_kin_secondary_emiss,shms_corsi);
+            pPEm->Fill(ct->fP_kin_secondary_emiss,pP);
+            pthEm->Fill(ct->fP_kin_secondary_emiss,stheta);
+            emdelta->Fill(ct->fP_gtr_dp,Emcalc);//ct->fP_kin_secondary_emiss);
+	    //if (ct->fP_kin_secondary_emiss>0.)
+            emxptar->Fill(ct->fP_gtr_th,Emcalc);//ct->fP_kin_secondary_emiss);
+            emyptar->Fill(ct->fP_gtr_ph,Emcalc);//ct->fP_kin_secondary_emiss);
+	    hcorsixptar->Fill(ct->fH_gtr_th,hms_corsi);
+	    hcorsiyptar->Fill(ct->fH_gtr_ph,hms_corsi);
+	    scorsixptar->Fill(ct->fP_gtr_th,shms_corsi);
+	    scorsiyptar->Fill(ct->fP_gtr_ph,shms_corsi);
+
           }       
 	else
           {
@@ -240,6 +304,7 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
         cnts++;
     }
     cout << cnts <<" events passed all cuts" << endl;
+    //    emxptar->Fit(f1);
 
 
     //------------------ Plot from Simc --------------------------
@@ -296,14 +361,21 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
 
         if (target == "h")
 	 {
-	   pSimcPm->GetXaxis()->SetRangeUser(-0.15,0.25);
-           pSimcEm->GetXaxis()->SetRangeUser(-0.15,0.25);
+	   pSimcPm->GetXaxis()->SetRangeUser(0.0,0.1);
+           pSimcEm->GetXaxis()->SetRangeUser(-0.05,0.05);
+           esimP = eP0*(1.+ (ct->fHSdelta)/100.);
+           hsimtheta = etheta + (ct->fHSyptar);
            psimP = pP0*(1.+ (ct->fPSdelta)/100.);
            ssimtheta = ptheta + (ct->fPSyptar);
            ssim_corsi = psimP - 2.*mass_p*ebeam*cos(ssimtheta)/(ebeam+mass_p)/(1-pow(ebeam*cos(ssimtheta)/(ebeam+mass_p),2));        
-           sSimcorsi->Fill(ssim_corsi,ct->fWeight);
+           sSimcorsi->Fill(ssim_corsi, ct->fWeight);
            hSimcorsi->Fill(ct->fHcorsi,ct->fWeight);
-         
+           hsimeP->Fill(esimP,ct->fWeight);
+           hsimetht->Fill(hsimtheta,ct->fWeight);
+           hsimpP->Fill(psimP,ct->fWeight);
+           hsimptht->Fill(ssimtheta,ct->fWeight);
+	   //	   SimEmcalc=ebeam-0.005+mass_p-esimP-sqrt(psimP*psimP+mass_p*mass_p); //include energy loss
+	   // pSimcEm->Fill(SimEmcalc, ct->fWeight);
          }
 	//------ Kinematic quanties ---------
 	hSimcW->Fill(ct->fW, ct->fWeight);
@@ -321,75 +393,83 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     c1->Divide(2,2);
 
     c1->cd(1);
-    hDelta->DrawNormalized("prof");
-    hSimcDelta->DrawNormalized("same");
+    hSimcDelta->SetFillStyle(1001);
+    hSimcDelta->SetLineColor(kRed);
+    hSimcDelta->SetMarkerColor(kRed);
+    hSimcDelta->SetLineWidth(2);
+    hSimcDelta->DrawNormalized();
+    hDelta->SetFillColor(kBlue);
+    hDelta->SetMarkerColor(kBlue);
+    hDelta->SetLineColor(kBlue);
+    hDelta->DrawNormalized("p e1 same");
     // textSimc->DrawText(8.0,0.05,"Simc");
     // textData->DrawText(8.0,0.045,"Data");
     c1->cd(2);
-    hXptar->DrawNormalized("prof");
-    hSimcXptar->DrawNormalized("same");
+    hSimcXptar->DrawNormalized();
+    hXptar->DrawNormalized("p e1 same");
     c1->cd(3);
-    hYptar->DrawNormalized("prof");
-    hSimcYptar->DrawNormalized("same");
+    hSimcYptar->DrawNormalized();
+    hYptar->DrawNormalized("p e1 same");
     c1->cd(4);
     if(target == "c")       // For carbon-12
      {
         hSimcYtarc->DrawNormalized();
-        hYtarc->DrawNormalized("prof same");
+        hYtarc->DrawNormalized("p e1 same");
      }
     else if(target == "h")  // For hydrogen-1
      {
         hSimcYtar->DrawNormalized();
-        hYtar->DrawNormalized("prof same");
+        hYtar->DrawNormalized("p e1 same");
      }
 
-    c1->Print("Report.pdf(","pdf");
+    //    c1->Print("hms_recon.pdf","pdf");
     
     TCanvas *c2 = new TCanvas("SHMS","SHMS");
     c2->Divide(2,2);
 
     c2->cd(1);
-    pDelta->DrawNormalized("prof");
-    pSimcDelta->DrawNormalized("same");
+    pSimcDelta->DrawNormalized();
+    pDelta->DrawNormalized("p e1 same");
     // textSimc->DrawText(8.0,0.05,"Simc");
     // textData->DrawText(8.0,0.045,"Data");
     c2->cd(2);
-    pXptar->DrawNormalized("prof");
-    pSimcXptar->DrawNormalized("same");
+    pSimcXptar->DrawNormalized();
+    pXptar->DrawNormalized("p e1 same");
     c2->cd(3);
-    pYptar->DrawNormalized("prof");
-    pSimcYptar->DrawNormalized("same");
+    pSimcYptar->DrawNormalized();
+    pYptar->DrawNormalized("p e1 same");
     c2->cd(4);
     if(target == "c")       // For carbon-12
      {
         pSimcYtarc->DrawNormalized();
-        pYtarc->DrawNormalized("prof same");
+        pYtarc->DrawNormalized("p e1 same");
      }
     else if(target == "h")  // For hydrogen-1
      {
+       //       pdeltaxptar->Draw("COLZ");
         pSimcYtar->DrawNormalized();
-        pYtar->DrawNormalized("prof same");
+        pYtar->DrawNormalized("p e1 same");
      }
 
-    c2->Print("Report.pdf","pdf");
+    //c2->Print("shms_recon.pdf","pdf");
 
     TCanvas *c3 = new TCanvas("Kinematic","Kinematic");
     c3->Divide(2,2);
     c3->cd(1);
-    hW->DrawNormalized("prof");
+    hSimcW->DrawNormalized();
+    hW->DrawNormalized("p e1 same");
     //    hW->Fit("gaus");
-    hSimcW->DrawNormalized("same");
     // textSimc->DrawText(1.6,0.07,"Simc");
     // textData->DrawText(1.6,0.065,"Data");
     c3->cd(2);
     pSimcEm->DrawNormalized();
-    pEm->DrawNormalized("prof same");
+    pEm->DrawNormalized("p e1 same");
     c3->cd(3);
-    pPm->DrawNormalized("prof");
-    pSimcPm->DrawNormalized("same");
+    pSimcPm->DrawNormalized();
+    pPm->DrawNormalized("p e1 same");
     c3->cd(4);
     pSimcPmz->DrawNormalized();
-    pPmz->DrawNormalized("prof same");
+    pPmz->DrawNormalized("p e1 same");
 
     if(target == "c")       // For carbon-12
      {
@@ -398,31 +478,84 @@ void CTdataVsSimc(Int_t firstRun, Int_t lastRun, TString SimcFileName, TString t
     else if(target == "h")  // For hydrogen-1
      {
  
-       c3->Print("Report.pdf","pdf");
+       // c3->Print("kinematics.pdf","pdf");
 
-       TCanvas *c4 = new TCanvas("Singles","Singles");
-       c4->Divide(2,2);
+
+       TCanvas *c8 = new TCanvas("HMS Singles","HMS Singles");
+       c8->Divide(3,2);
+
+       c8->cd(1);
+       hSimcorsi->DrawNormalized("lc");
+       hcorsi->DrawNormalized("p e1 same");
+       c8->cd(2);
+       hsimeP->DrawNormalized("l");
+       heP->DrawNormalized("p e1 same");
+       c8->cd(3);
+       hsimetht->DrawNormalized("l");
+       hetht->DrawNormalized("p e1 same");
+       c8->cd(4);
+       hcorsidelta->Draw("COLZ");
+       c8->cd(5);
+       hcorsixptar->Draw("COLZ");
+       c8->cd(6);
+       hcorsiyptar->Draw("COLZ");
+
+       //c8->Print("hms_singles.pdf","pdf");
+
+       TCanvas *c4 = new TCanvas("SHMS Singles","SHMS Singles");
+       c4->Divide(3,2);
 
        c4->cd(1);
-       hSimcorsi->DrawNormalized("L");
-       hcorsi->DrawNormalized("prof same");
+       //       hSimcorsi->DrawNormalized("L");
+       //hcorsi->DrawNormalized("p e1 same");
     // textSimc->DrawText(8.0,0.05,"Simc");
     // textData->DrawText(8.0,0.045,"Data");
-       c4->cd(2);
+       //       c4->cd(2);
        sSimcorsi->DrawNormalized("L");
-       scorsi->DrawNormalized("prof same");
+       scorsi->DrawNormalized("p e1 same");
+       c4->cd(2);
+       hsimpP->DrawNormalized("L");
+       hpP->DrawNormalized("p e1 same");
+       c4->cd(3);
+       hsimptht->DrawNormalized("L");
+       hptht->DrawNormalized("p e1 same");
+       c4->cd(4);
+       scorsidelta->Draw("COLZ");
+       c4->cd(5);
+       scorsixptar->Draw("COLZ");
+       c4->cd(6);
+       scorsiyptar->Draw("COLZ");
 
-       c4->Print("Report.pdf)","pdf");
+       //c4->Print("shms_singles.pdf","pdf");
+
+       TCanvas *c6 = new TCanvas("Em2Ddists","Em2Ddist");
+       c6->Divide(3,2);
+
+       c6->cd(1);
+       scorsiEm->Draw("COLZ");
+       c6->cd(2);
+       pPEm->Draw("COLZ");
+       c6->cd(3);
+       pthEm->Draw("COLZ");
+       c6->cd(4);
+       emdelta->Draw("COLZ");
+       c6->cd(5);
+       emxptar->Draw("COLZ");
+       //              f1->Draw("same");
+       c6->cd(6);
+       emyptar->Draw("COLZ");
+
+       //c6->Print("Em2Ddist.pdf","pdf");
      }
 
-    TCanvas *c5 = new TCanvas("SHMS_fp","SHMS_fp");
-    c5->Divide(3,1);
-    c5->cd(1);
-    pxxpfp->Draw("COLZ");
-    c5->cd(2);
-    pxxpfp3->Draw("COLZ");
-    c5->cd(3);
-    pxxpfp2->Draw("COLZ");
-    c5->Print("Pxxpfp.pdf","pdf");
+    //   TCanvas *c5 = new TCanvas("SHMS_fp","SHMS_fp");
+    //c5->Divide(3,1);
+    //c5->cd(1);
+    //pxxpfp->Draw("COLZ");
+    //c5->cd(2);
+    //pxxpfp3->Draw("COLZ");
+    //c5->cd(3);
+    //pxxpfp2->Draw("COLZ");
+    //c5->Print("Pxxpfp.pdf","pdf");
 
 }

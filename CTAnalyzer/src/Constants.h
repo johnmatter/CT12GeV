@@ -16,7 +16,7 @@
 //#define ROOT_FILE_PATH "/home/cdaq/hallc-online/hallc_replay/ROOTfiles/"
 
 //#define FILE_PREFIX "ep_"
-#define FILE_PREFIX "coin_replay_production"
+#define FILE_PREFIX "coin_replay_production_"
 //#define FILE_PREFIX "shms_replay_"
 #define FILE_SUFFIX "_-1"
 
