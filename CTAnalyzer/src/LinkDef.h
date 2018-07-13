@@ -30,6 +30,8 @@
 #pragma link C++ function Plot_kine_compare;         // Compare kinematics for SIMC with data for either e or p
 #pragma link C++ function Plot_kine_compare_carbon;  // Compare kinematics for Carbon target SIMC with data for either e or p
 #pragma link C++ function CTPlotPcal;  // Plot SHMS CAL quality plots
+#pragma link C++ function CTdataVsSimcFitter; //fit and correct fp in heep runs
+#pragma link C++ function CTemiss;                    //Compare runs with rad corr and non rad corr monte carlo
 
 
 
