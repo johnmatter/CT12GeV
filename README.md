@@ -22,7 +22,7 @@ Instructions for CT Replay under `/work` directory on ifarm
 source root and other libraries as:
 
 ```
-source /site/12gev_phys/production.csh 2.0
+source /site/12gev_phys/softenv.csh 2.0
 ```
 
 - Note: Depending on which version of `ROOT` you are using, you might need to re-compile `libCT` or `hcana` again, specially if your version is different than the one used to compile earlier by any other user.
