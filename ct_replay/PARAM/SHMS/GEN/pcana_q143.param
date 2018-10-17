@@ -1,0 +1,3 @@
+; Parameters we need to keep THcHallCSpectrometer Happy
+p_recon_coeff_filename = "DATFILES/shms-2017-optimized_delta_newfit3_CTq143.dat"
+

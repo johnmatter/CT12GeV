@@ -2,3 +2,21 @@
 g_ctp_parm_filename ="DBASE/COIN/general.param"
 g_ctp_kinematics_filename ="DBASE/COIN/standard.kinematics"
 g_ctp_calib_filename ="DBASE/COIN/default_det_calib_files.param"
+
+2022-2024
+g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
+
+2045-2277
+g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
+
+2278-2281
+g_ctp_parm_filename ="DBASE/COIN/general_q95.param"
+
+2282-2440
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2441-2464
+g_ctp_parm_filename ="DBASE/COIN/general_q115.param"
+
+3179-3201
+g_ctp_parm_filename ="DBASE/COIN/general_q95.param"
