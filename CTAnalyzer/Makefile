@@ -31,7 +31,7 @@ lib/libCT.so: $(libCT_obj)  src/libCT_Dict.o
 	@echo "if [ -f /path/to/libCT/bin/thislibCT.sh ]; then" 
 	@echo ". /path/to/libCT/bin/thislibCT.sh"
 	@echo "fi"
-	@echo "2. Now copy the rootlogon.C file in the directory 'macros' under ROOT installation directory."  
+	@echo "2. Modify .rootrc file to include the directory that has rootlogon.C file."  
 	@echo "-----------------------------------------------------------------------"
 src/%.o:src/%.cc
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -I$(LIB_INCLUDE) $(ROOTFLAGS) $<
