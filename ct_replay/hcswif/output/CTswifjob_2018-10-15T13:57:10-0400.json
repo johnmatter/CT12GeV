@@ -1,0 +1,16 @@
+{"name": "CTswifjob_2018-10-15T13:57:10-0400",
+"jobs": [
+{"stdout": "/w/hallc-scifs17exp/e1206107/CT12GeV/ct_replay/hcswif/output/CTswifjob_2023.out",
+"project": "c-comm2017",
+"ramBytes": 8000000000,
+"os": "centos7",
+"command": "/w/hallc-scifs17exp/e1206107/CT12GeV/ct_replay/hcswif/hcswif.csh SCRIPTS/COIN/PRODUCTION/replay_production_coin_hElec_pProt.C 2023 -1",
+"cpuCores": 8,
+"diskBytes": 10000000000,
+"input": [{"remote": "/lustre/expphy/cache/hallc/spring17/raw/coin_all_02023.dat", "local": "coin_all_02023.dat"}],
+"stderr": "/w/hallc-scifs17exp/e1206107/CT12GeV/ct_replay/hcswif/output/CTswifjob_2023.err",
+"timeSecs": 14400,
+"shell": "/usr/bin/csh",
+"track": "debug",
+"name": "CTswifjob_2023"}
+]}

@@ -1,0 +1,55 @@
+#!/bin/csh
+#
+if ( $# != 3 ) then
+    echo Usage: submit_coin FIRST_RUN LAST_RUN EVENTS
+    exit 1
+endif
+#
+set date=`date -Iseconds`
+setenv c_dir /w/hallc-scifs17exp/e1206107/CT12GeV/ct_replay
+set frun=$1
+set lrun=$2
+set evt=$3
+@ num = $lrun - $frun + 1
+set proj='c-comm2017'
+set ram=8000000000
+set os='centos7'
+set cpu=8
+set diskB=10000000000
+set rtime=14400
+set shn='/usr/bin/csh'
+set track='analysis'
+#set track='debug'
+set cmd=''$c_dir'/hcswif/hcswif.csh'
+set script='SCRIPTS/COIN/PRODUCTION/replay_production_coin_hElec_pProt.C'
+set i=1
+set run=$frun
+  echo '{"name": "CTswifjob_'$date'",' > output/CTswifjob_$date.json
+  echo '"jobs": [' >> output/CTswifjob_$date.json
+  while ( $i <= $num )
+   echo '{"stdout": "'$c_dir'/hcswif/output/CTswifjob_'$run'.out",' >> output/CTswifjob_$date.json
+   echo '"project": "'$proj'",' >> output/CTswifjob_$date.json
+   echo '"ramBytes": '$ram',' >> output/CTswifjob_$date.json
+   echo '"os": "'$os'",' >> output/CTswifjob_$date.json
+   echo '"command": "'$cmd' '$script' '$run' '$evt'",' >> output/CTswifjob_$date.json
+   echo '"cpuCores": '$cpu',' >> output/CTswifjob_$date.json
+   echo '"diskBytes": '$diskB',' >> output/CTswifjob_$date.json
+   echo '"input": [{"remote": "/lustre/expphy/cache/hallc/spring17/raw/coin_all_0'$run'.dat", "local": "coin_all_0'$run'.dat"}],' >> output/CTswifjob_$date.json
+   echo '"stderr": "'$c_dir'/hcswif/output/CTswifjob_'$run'.err",' >> output/CTswifjob_$date.json
+   echo '"timeSecs": '$rtime',' >> output/CTswifjob_$date.json
+   echo '"shell": "'$shn'",' >> output/CTswifjob_$date.json
+   echo '"track": "'$track'",' >> output/CTswifjob_$date.json
+   echo '"name": "CTswifjob_'$run'"}' >> output/CTswifjob_$date.json
+   if ( $i < $num ) then
+    echo ',' >> output/CTswifjob_$date.json
+   endif       
+   @ i = $i + 1
+   @ run = $run + 1
+  end
+  echo ']}' >> output/CTswifjob_$date.json
+
+swif import -file output/CTswifjob_$date.json
+swif run CTswifjob_$date 
+#EOF
+
+ 

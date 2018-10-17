@@ -16,6 +16,18 @@ The three components of CT reconstruction (replay) and analysis are:
 If you want to setup a personal copy, just clone/download this repository. Add a clone of `hcana` inside `CT12GeV` and create appropriate (`raw`,`ROOTfiles` etc) symbolic links inside `ct_replay`. The following instructions are based on the shared setup under `/work` disk on `ifarm`.
 
 
+Downloading
+-----------
+
+To download or clone this repository -
+
+```
+git clone --recurse-submodules https://github.com/JeffersonLab/CT12GeV.git
+```
+
+When you clone or download for the first time, you need to create symbolic links for the directories: `cache, ROOTfiles, REPORT_OUTPUT` under `ct_replay` to appropriate directories.
+
+
 Instructions for CT Replay under `/work` directory on ifarm
 -----------------------------------------------------------
 
@@ -69,7 +81,7 @@ But if you want to use the database/parameters from `hall_replay`, just use `hal
 
 If you want to update the `hallc_replay` directory from the main git repository maintained by Hall C, use the following command from the top level directory `CT12GeV`:
 ```
-git submodule update --init --recursive
+git submodule update --remote --merge
 ```
 
 Alternatively from `hallc_replay` directory do:
