@@ -31,6 +31,7 @@ void replay_production_coin_hElec_pProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
   gHcParms->AddString("g_ctp_database_filename", "DBASE/COIN/standard.database");
   gHcParms->Load(gHcParms->GetString("g_ctp_database_filename"), RunNumber);
   gHcParms->Load(gHcParms->GetString("g_ctp_parm_filename"));
+  gHcParms->Load(gHcParms->GetString("g_ctp_calib_filename"), RunNumber);
   gHcParms->Load(gHcParms->GetString("g_ctp_kinematics_filename"), RunNumber);
   // Load params for COIN trigger configuration
   gHcParms->Load("PARAM/TRIG/tcoin.param");
@@ -43,7 +44,7 @@ void replay_production_coin_hElec_pProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
 
   // Load the Hall C detector map
   gHcDetectorMap = new THcDetectorMap();
-  gHcDetectorMap->Load("MAPS/COIN/DETEC/coin.map");
+  gHcDetectorMap->Load("MAPS/COIN/DETEC/coin_comm18.map");
 
   //=:=:=:=
   // SHMS 

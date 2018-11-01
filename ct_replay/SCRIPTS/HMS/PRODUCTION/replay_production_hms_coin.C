@@ -41,7 +41,8 @@ void replay_production_hms_coin(Int_t RunNumber=0, Int_t MaxEvent=0) {
 
   // Load the Hall C detector map
   gHcDetectorMap = new THcDetectorMap();
-  gHcDetectorMap->Load("MAPS/HMS/DETEC/STACK/hms_stack.map");
+  //gHcDetectorMap->Load("MAPS/HMS/DETEC/STACK/hms_stack.map");
+   gHcDetectorMap->Load("MAPS/HMS/DETEC/STACK/hms_stack_comm18.map");
   
   // Set up the equipment to be analyzed.
   THcHallCSpectrometer* HMS = new THcHallCSpectrometer("H", "HMS");

@@ -3,20 +3,62 @@ g_ctp_parm_filename ="DBASE/COIN/general.param"
 g_ctp_kinematics_filename ="DBASE/COIN/standard.kinematics"
 g_ctp_calib_filename ="DBASE/COIN/default_det_calib_files.param"
 
-2022-2024
+2023
 g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
 
-2045-2277
+2046-2052
+g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
+
+2054-2055
+g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
+
+2062
+g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
+
+2064-2068
+g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
+
+2187-2212
 g_ctp_parm_filename ="DBASE/COIN/general_q8.param"
 
 2278-2281
 g_ctp_parm_filename ="DBASE/COIN/general_q95.param"
 
-2282-2440
-g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+3179-3189
+g_ctp_parm_filename ="DBASE/COIN/general_q95.param"
+
+3191-3201
+g_ctp_parm_filename ="DBASE/COIN/general_q95.param"
 
 2441-2464
 g_ctp_parm_filename ="DBASE/COIN/general_q115.param"
 
-3179-3201
-g_ctp_parm_filename ="DBASE/COIN/general_q95.param"
+2282-2286
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2290-2306
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2308-2325
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2343-2352
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2355-2359
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2361-2362
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2396-2397
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2404-2412
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+2414-2440
+g_ctp_parm_filename ="DBASE/COIN/general_q143.param"
+
+
+

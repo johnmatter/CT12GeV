@@ -5,12 +5,12 @@
 xscalerMapName = 'scaler.map'
 
 cratemap = {
-    "4":{"spec":"H", "firstslot":6, "nslots":7, "roc":5, "offset":0},
-    "5":{"spec":"P", "firstslot":6, "nslots":8, "roc":8, "offset":640}
+    "4":{"spec":"H", "firstslot":6, "nslots":7, "roc":5, "offset":0, "clockChan":31, "clockSlot":12},
+    "5":{"spec":"P", "firstslot":6, "nslots":10, "roc":8, "offset":640, "clockChan":31, "clockSlot":13}
     }
-chandict  = {}
-nperslot  = 32
-clockrate = 1000000
+chandict   = {}
+nperslot   = 32
+clockrate  = 1000000
 
 class Channel:
     def __init__(self, spec, slot, chan, comment=''):
@@ -62,14 +62,16 @@ with open(xscalerMapName, 'r') as fi:
         offset = cratemap[spec]["offset"]
         specprefix = cratemap[spec]["spec"]
         hcanaMapName = 'db_'+specprefix+'Scalevt.dat'
+        clockChan = cratemap[spec]["clockChan"]
+        clockSlot = cratemap[spec]["clockSlot"]
         with open(hcanaMapName, 'w') as fo:
             for slot in range(firstslot,firstslot+nslots):
-                if slot == lastslot:
-                    rateinfo=' {0} {1}'.format(nperslot-1,clockrate)
+                if slot == clockSlot:
+                    rateinfo=' {0} {1}'.format(clockChan,clockrate)
                 else:
                     rateinfo=''
                 print >>fo, 'map 3801 {0} {1} {2:04x}{1:02x}{3:02x} ffffffff {4}'.\
-                format(roc, slot, offset+(slot-firstslot)*nperslot,nperslot,lastslot)\
+                format(roc, slot, offset+(slot-firstslot)*nperslot,nperslot,clockSlot)\
                 +rateinfo
 
             for name in chandict:
@@ -79,7 +81,8 @@ with open(xscalerMapName, 'r') as fi:
                 detPrefix = name[2:5]
                 if specprefix == channel.spec and slot<nslots:
                     chan = channel.chan
-                    slot = channel.slot-firstslot
+                    # slot = channel.slot-firstslot
+                    slot = channel.slot
                     comment = channel.comment
                     if detPrefix == "hod":
                         printHodoName = "." + detPrefix + "." + name[5:10] + "."
@@ -92,5 +95,5 @@ with open(xscalerMapName, 'r') as fi:
                     if name[1:4] == "BCM" or name[1:6] == "Unser":
                         print >>fo, 'variable', slot, chan, 3, printname+'Current', comment
                         print >>fo, 'variable', slot, chan, 4, printname+'Charge', comment
-                    elif name[1:5] == "1Mhz":
+                    elif name[1:5] == "1MHz":
                         print >>fo, 'variable', slot, chan, 5, printname+'Time', comment

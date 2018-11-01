@@ -36,6 +36,7 @@ cminch=2.54
 #include "PARAM/HMS/CER/hcer_calib.param"
 #include "PARAM/HMS/DC/hdc_calib.param"
 #include "PARAM/HMS/DC/hdc_tzero_per_wire.param"
+#include "PARAM/HMS/DC/hdc_sigma_per_wire.param"
 #include "PARAM/HMS/HODO/hhodo_calib.param"
 #include "PARAM/HMS/AERO/haero_calib.param"
 #include "PARAM/HMS/CAL/hcal_calib.param"
