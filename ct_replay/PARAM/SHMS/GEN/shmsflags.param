@@ -22,5 +22,5 @@ pphi_offset = -0.0008681269905
 pthetacentral_offset = 0.0
 p_oopcentral_offset = 0.0
 ppcentral_offset = 0.0
-pmispointing_y = -0.05
+pmispointing_y = 0.05
 pmispointing_x = 0.126
