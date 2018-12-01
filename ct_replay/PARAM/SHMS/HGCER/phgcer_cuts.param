@@ -18,8 +18,8 @@ phgcer_dp_max = 25.0
 phgcer_adc_tdc_offset = 200.0
 
 # Values obtained from SIDIS COIN run 4006
-phgcer_adcTimeWindowMin = -20.5, -22.0, -22.5, -22.0
-phgcer_adcTimeWindowMax =  -5.5,  -7.0,  -7.5,  -7.0
+phgcer_adcTimeWindowMin = -80.0, -80.0, -80.0, -80.0
+phgcer_adcTimeWindowMax =  40.0,  40.0,  40.0,  40.0
 
 ; NPE Threshold for "good" hit (for measureing effic.)
 phgcer_npe_thresh = 0.5
