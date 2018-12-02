@@ -24,7 +24,7 @@ void replay_production_ct (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   pathList.push_back("./cache");
 
   //const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
-  const char* ROOTFileNamePattern = "ROOTfiles/pass0/coin_replay_production_%d_%d.root";
+  const char* ROOTFileNamePattern = "ROOTfiles/pass1/coin_replay_production_%d_%d.root";
   
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
@@ -35,15 +35,15 @@ void replay_production_ct (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Load params for COIN trigger configuration
   gHcParms->Load("PARAM/TRIG/tcoin.param");
   // Load fadc debug parameters
-  gHcParms->Load("hallc_replay/PARAM/HMS/GEN/h_fadc_debug.param");
-  gHcParms->Load("hallc_replay/PARAM/SHMS/GEN/p_fadc_debug.param");
+  gHcParms->Load("PARAM/HMS/GEN/h_fadc_debug.param");
+  gHcParms->Load("PARAM/SHMS/GEN/p_fadc_debug.param");
 
   // const char* CurrentFileNamePattern = "low_curr_bcm/bcmcurrent_%d.param";
   // gHcParms->Load(Form(CurrentFileNamePattern, RunNumber));
 
   // Load the Hall C detector map
   gHcDetectorMap = new THcDetectorMap();
-  gHcDetectorMap->Load("hallc_replay/MAPS/COIN/DETEC/coin_comm18.map");
+  gHcDetectorMap->Load("MAPS/COIN/DETEC/coin_comm18.map");
 
   //=:=:=:=
   // SHMS 
@@ -238,19 +238,19 @@ void replay_production_ct (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   // Set EPICS event type
   analyzer->SetEpicsEvtType(180);
   // Define crate map
-  analyzer->SetCrateMapFileName("hallc_replay/MAPS/db_cratemap.dat");
+  analyzer->SetCrateMapFileName("MAPS/db_cratemap.dat");
   // Define output ROOT file
   analyzer->SetOutFile(ROOTFileName.Data());
   // Define DEF-file+
-  analyzer->SetOdefFile("hallc_replay/DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
+  analyzer->SetOdefFile("DEF-files/COIN/PRODUCTION/coin_production_hElec_pProt.def");
   // Define cuts file
-  analyzer->SetCutFile("hallc_replay/DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def");  // optional
+  analyzer->SetCutFile("DEF-files/COIN/PRODUCTION/CUTS/coin_production_cuts.def");  // optional
   // File to record accounting information for cuts
-  analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/pass0/summary_production_%d_%d.report", RunNumber, MaxEvent));  // optional
+  analyzer->SetSummaryFile(Form("REPORT_OUTPUT/COIN/PRODUCTION/pass1/summary_production_%d_%d.report", RunNumber, MaxEvent));  // optional
   // Start the actual analysis.
   analyzer->Process(run);
   // Create report file from template
   analyzer->PrintReport("TEMPLATES/COIN/PRODUCTION/coin_production.template",
-  			Form("REPORT_OUTPUT/COIN/PRODUCTION/pass0/replay_coin_production_%d_%d.report", RunNumber, MaxEvent));  // optional
+  			Form("REPORT_OUTPUT/COIN/PRODUCTION/pass1/replay_coin_production_%d_%d.report", RunNumber, MaxEvent));  // optional
 
 }
