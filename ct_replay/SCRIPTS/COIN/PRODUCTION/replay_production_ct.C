@@ -33,7 +33,7 @@ void replay_production_ct (Int_t RunNumber = 0, Int_t MaxEvent = 0) {
   gHcParms->Load(gHcParms->GetString("g_ctp_parm_filename"));
   gHcParms->Load(gHcParms->GetString("g_ctp_kinematics_filename"), RunNumber);
   // Load params for COIN trigger configuration
-  gHcParms->Load("hallc_replay/PARAM/TRIG/tcoin.param");
+  gHcParms->Load("PARAM/TRIG/tcoin.param");
   // Load fadc debug parameters
   gHcParms->Load("hallc_replay/PARAM/HMS/GEN/h_fadc_debug.param");
   gHcParms->Load("hallc_replay/PARAM/SHMS/GEN/p_fadc_debug.param");

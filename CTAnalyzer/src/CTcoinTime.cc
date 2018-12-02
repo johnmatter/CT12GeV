@@ -197,7 +197,7 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
     TCut calCut; 
     TCut hodoTimeCut;
 
-     if(shms_particle == "e")
+    if(shms_particle == "e")
     {   
 	eBetaCut = "P.gtr.beta > 0.5 && P.gtr.beta < 1.5";
 	pBetaCut = "H.gtr.beta > 0.5 &&  H.gtr.beta < 1.5";
@@ -205,8 +205,8 @@ void CTcoinTime(Int_t runNumber,  TString shms_particle, Int_t analyzedEvents)
 	calCut = "P.cal.etottracknorm > 0.8 && P.cal.etottracknorm < 1.5 && P.cal.eprtracknorm  > 0.2";
 	hodoTimeCut ="P.hod.goodstarttime == 1 && H.hod.goodstarttime == 1";
     }
-     else
-     {
+    else
+    {
 	 eBetaCut = "P.gtr.beta > 0.5 && P.gtr.beta < 1.5";
 	 pBetaCut = "H.gtr.beta > 0.5 &&  H.gtr.beta < 1.5";
 	 cerCut = "P.hgcer.npeSum < 0.1 && H.cer.npeSum > 0.1";

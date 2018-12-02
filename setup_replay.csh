@@ -19,7 +19,7 @@ echo " -> sourcing the libCT.so environment"
 source "${onlineDir}/CTAnalyzer/bin/thislibCT.csh"
 
 echo " -> sourcing hcana environment"
-source "${onlineDir}/../hcana/setup.csh" "${onlineDir}/hcana"
+source "${onlineDir}/hcana/setup.csh" "${onlineDir}/hcana"
 
 echo " -> sourcing replay environment"
 source "${onlineDir}/ct_replay/setup.csh"
@@ -28,4 +28,5 @@ echo " -> changing to replay folder"
 cd "${onlineDir}/ct_replay"
 
 echo ""
-
+echo "Run './run_coin.sh' to analyze coincidence run"
+echo ""
