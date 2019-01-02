@@ -1,12 +1,4 @@
-;for Q2 of 8.01, 14.3 and 11.5 (Also Q2 of 9.50 Heep check runs)
-;gNumBCMs=3
-;gBCM_Gain = 4574,3847,4166
-;gBCM_Offset = 250200,250100,393000
-;gBCM_Names="BCM1 BCM2 Unser"
-;gBCM_Current_threshold=1.0
-;gBCM_Current_threshold_index=0
 
-;for Q2 of 9.50 (Except Heep check runs)
 gNumBCMs=6
 gBCM_Gain = 5048,4321,4166,13650,6496.,2154.
 gBCM_Offset = 250200,250100,393000,-2994.0,-1148.0,-154.3

@@ -89,4 +89,4 @@ pntracks_max_fp = 10
   pyhiscin  = 11, 14
 ;  ptrack_eff_test_scin_planes is the number of planes nec needed to
 ;  set sweet spot to true. 4 is extra clean, 3 is good enough for e-'s.
-  ptrack_eff_test_num_scin_planes = 3
+  ptrack_eff_test_num_scin_planes = 4

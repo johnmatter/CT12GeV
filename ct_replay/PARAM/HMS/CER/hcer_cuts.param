@@ -10,7 +10,7 @@ hcer_beta_max = 1.8
 
 ; Track matching normalized energy (E/p) cut values
 hcer_enorm_min = 0.0
-hcer_enorm_max = 1.5
+hcer_enorm_max = 1.8
 
 ; Track matching delta p (dp) cut values
 hcer_dp_min = -30.0
