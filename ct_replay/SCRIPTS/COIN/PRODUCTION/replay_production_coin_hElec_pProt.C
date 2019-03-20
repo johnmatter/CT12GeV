@@ -24,7 +24,7 @@ void replay_production_coin_hElec_pProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
   pathList.push_back("./cache");
 
   //const char* RunFileNamePattern = "raw/coin_all_%05d.dat";
-  const char* ROOTFileNamePattern = "ROOTfiles/coin_replay_production_%d_%d.root";
+  const char* ROOTFileNamePattern = "ROOTfiles/pass1.2/coin_replay_production_%d_%d.root";
   
   // Load global parameters
   gHcParms->Define("gen_run_number", "Run Number", RunNumber);
@@ -154,6 +154,10 @@ void replay_production_coin_hElec_pProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
   THcHodoEff* heff = new THcHodoEff("hhodeff", "HMS hodo efficiency", "H.hod");
   gHaPhysics->Add(heff);
 
+  //Adding December data method
+  // THaDecData* decdata= new THaDecData("D","Decoder raw data");
+  //gHaApps->Add(decdata);
+
   // Add event handler for scaler events
   THcScalerEvtHandler *hscaler = new THcScalerEvtHandler("H", "Hall C scaler event type 4");  
   hscaler->AddEvtType(2);
@@ -229,11 +233,7 @@ void replay_production_coin_hElec_pProt (Int_t RunNumber = 0, Int_t MaxEvent = 0
   run->SetDataRequired(0x7);
   run->Print();
 
-  //Adding December data method
-  THaDecData* decdata= new THaDecData("D","Decoder raw data");
-  gHaApps->Add(decdata);
-
-  // Define the analysis parameters
+   // Define the analysis parameters
   TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber, MaxEvent);
   analyzer->SetCountMode(2);  // 0 = counter is # of physics triggers
                               // 1 = counter is # of all decode reads
