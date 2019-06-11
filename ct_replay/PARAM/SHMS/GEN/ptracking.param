@@ -23,7 +23,7 @@ pntracks_max_fp = 10
 
 ; The following four criteria are applied to the stub fit results at the
 ; focal plane position to link stubs to tracks
-  pntracks_max_fp = 10
+  pntracks_max_fp = 100
   pxt_track_criterion = 100.0
   pyt_track_criterion = 20.0
   pxpt_track_criterion = 1.0

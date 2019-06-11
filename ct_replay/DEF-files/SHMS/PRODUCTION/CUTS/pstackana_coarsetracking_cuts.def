@@ -46,7 +46,7 @@ shmsDC1_1hit_v2     P.dc.1v2.nhit == 1
 shmsDC1_1hit_x2     P.dc.1x2.nhit == 1
 
 shmsDC2_1hit_x1     P.dc.2x1.nhit == 1
-shmsDC2_1hit_u1	    P.dc.2u1.nhit == 1
+shmsDC2_1hit_u1	  P.dc.2u1.nhit == 1
 shmsDC2_1hit_u2     P.dc.2u2.nhit == 1
 shmsDC2_1hit_v1     P.dc.2v1.nhit == 1
 shmsDC2_1hit_v2     P.dc.2v2.nhit == 1

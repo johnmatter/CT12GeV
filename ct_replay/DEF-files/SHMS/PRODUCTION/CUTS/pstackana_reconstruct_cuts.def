@@ -2,7 +2,7 @@ Block: Reconstruct
 
 pcut_cer_ng_elec    	  P.ngcer.npeSum > 0.5
 pcut_cer_ng_pi      	  P.ngcer.npeSum <= 0.5
-pcut_cer_hg_elec	  P.hgcer.npeSum > 0.5
+pcut_cer_hg_elec	        P.hgcer.npeSum > 0.5
 pcut_cer_hg_pi	  	  P.hgcer.npeSum <= 0.5
 pcut_cer_pi_both       	  pcut_cer_ng_pi && pcut_cer_hg_pi
 pcut_cer_elec_both     	  pcut_cer_ng_elec && pcut_cer_hg_elec

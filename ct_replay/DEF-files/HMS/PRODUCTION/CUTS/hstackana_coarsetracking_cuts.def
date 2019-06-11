@@ -89,4 +89,3 @@ f1HSpacePoints        hms1HitsLt && hmsDC1PlanesGT && H.dc.Ch1.spacepoints==0 &&
 f2HSpacePoints        hms2HitsLt && hmsDC2PlanesGT && H.dc.Ch2.spacepoints==0 && g.evtyp==1
 hTest1                hmsHitsPlanes && (!hSpacePoints)
 hTest2                hSpacePoints && (!hStubLT)
-

@@ -1,6 +1,10 @@
 block T.coin.*
+#block T.hms.*
+#block T.shms.*
+#block T.helicity.*
+
 block CTime*
-block D.*
+#block D.*
 
 block H.cer.*
 block H.dc.*
@@ -24,6 +28,7 @@ block P.gtr.*
 block P.kin.*
 block P.rb.*
 block P.react.*
+#block P.bcm.*
 
 begin epics
 IBC3H00CRCUR4
@@ -52,7 +57,3 @@ IPM3H07B.YSOF
 IPM3H07C.XSOF
 IPM3H07C.YSOF
 end epics
-
-#include "DEF-files/COIN/PRODUCTION/GTR/coin_gtr_histos.def"
-#include "DEF-files/COIN/PRODUCTION/KIN/coin_hElec_pProt_kin_histos.def"
-#include "DEF-files/COIN/PRODUCTION/TRIG/coin_trig_histos.def"

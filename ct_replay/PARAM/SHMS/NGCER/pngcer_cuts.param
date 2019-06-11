@@ -18,8 +18,11 @@ pngcer_dp_max = 20.0
 pngcer_adc_tdc_offset = 200.
 
 # Values obtained from SIDIS COIN run 4006
-pngcer_adcTimeWindowMin = -90.00, -90.00, -90.00, -90.00
-pngcer_adcTimeWindowMax = 40.00,  40.00, 40.00, 40.00
+;pngcer_adcTimeWindowMin = -90.00, -90.00, -90.00, -90.00
+;pngcer_adcTimeWindowMax = 40.00,  40.00, 40.00, 40.00
 
-; ; NPE Threshold for "good" hit (for measureing effic.)
-pngcer_npe_thresh = 0.5
+pngcer_adcTimeWindowMin = -200.00, -200.00, -200.00, -200.00
+pngcer_adcTimeWindowMax = 100.00,  100.00, 100.00, 100.00
+
+; NPE Threshold for "good" hit (for measureing effic.)
+pngcer_npe_thresh = 0.1
