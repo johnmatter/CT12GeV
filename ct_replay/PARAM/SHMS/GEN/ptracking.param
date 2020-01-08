@@ -60,7 +60,7 @@ pntracks_max_fp = 10
 ; psel_using_scin         uses scintillator for track selection
   psel_using_scin = 0
 ; psel_using_prune         using prune
-  psel_using_prune = 0
+  psel_using_prune = 1
 ; pstat_slop              distance from center of scin. to count as expecting hit
   pstat_slop = 2.
 ; pstat_mineff            warning level for scin. effic.
