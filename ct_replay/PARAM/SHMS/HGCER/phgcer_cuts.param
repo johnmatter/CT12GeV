@@ -21,8 +21,11 @@ phgcer_adc_tdc_offset = 200.0
 ;phgcer_adcTimeWindowMin = -100.00, -100.00, -100.00, -100.00
 ;phgcer_adcTimeWindowMax =  50.00,  50.00,  50.00,  50.00
 
-phgcer_adcTimeWindowMin = -200.00, -200.00, -200.00, -200.00
-phgcer_adcTimeWindowMax =  200.00,  200.00,  200.00,  200.00
+;phgcer_adcTimeWindowMin = -200.00, -200.00, -200.00, -200.00
+;phgcer_adcTimeWindowMax =  200.00,  200.00,  200.00,  200.00
+
+phgcer_adcTimeWindowMin = -30.00, -30.00, -30.00, -30.00
+phgcer_adcTimeWindowMax =  0.00,  0.00,  0.00,  0.00
 
 ; NPE Threshold for "good" hit (for measureing effic.)
 phgcer_npe_thresh = 0.1
