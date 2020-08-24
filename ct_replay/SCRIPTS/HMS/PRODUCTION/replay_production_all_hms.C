@@ -67,6 +67,11 @@ void replay_production_all_hms(Int_t RunNumber=0, Int_t MaxEvent=0) {
   THcShower* cal = new THcShower("cal", "Calorimeter");
   HMS->AddDetector(cal);
 
+  // const char* CurrentFileNamePattern = "/home/jmatter/ct_scripts/analysis/target_boiling/add_bcm_to_rootfiles/hms/bcmcurrent_%d.param";
+  // gHcParms->Load(Form(CurrentFileNamePattern, RunNumber));
+  // THcBCMCurrent* pbc = new THcBCMCurrent("P.bcm", "BCM current check");
+  // gHaPhysics->Add(pbc);
+
   // Add rastered beam apparatus
   THaApparatus* beam = new THcRasteredBeam("H.rb", "Rastered Beamline");
   gHaApps->Add(beam);  

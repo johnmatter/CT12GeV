@@ -264,9 +264,17 @@ ppartmass =  0.00051099
 ptheta_lab =15.0
 ppcentral = 3.0
 
-2001-2013
+2001-2008
 gpbeam = 6.430
 gtargmass_amu= 26.98
+ppartmass =  0.00051099
+ptheta_lab =15.0
+ppcentral = 3.0
+
+
+2009-2013
+gpbeam = 6.430
+gtargmass_amu= 12.0107
 ppartmass =  0.00051099
 ptheta_lab =15.0
 ppcentral = 3.0

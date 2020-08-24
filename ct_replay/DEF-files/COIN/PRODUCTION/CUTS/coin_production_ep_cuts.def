@@ -21,22 +21,22 @@ goodctime         ALL_events        #LOOSE CUT AROUND COINTIME PEAK (3 beam buck
 tightctime        ALL_events        #TIGHT CUT AROUND COINTIME PEAK (1 beam buckets)
 ranctime          ALL_events        #CUT AWAY FROM COINTIME PEAK (4 beam buckets)
 
-ALL_COIN_NO_EDTM  T.coin.hEDTM_tdcTime==0.0&&T.coin.pEDTM_tdcTime==0.0&&ALL_events
+ALL_COIN  T.coin.hEDTM_tdcTime==0.0&&T.coin.pEDTM_tdcTime==0.0&&ALL_events
 
 
-Decode_master     ALL_COIN_NO_EDTM
+Decode_master     ALL_COIN
 
 Block: CoarseTracking
-CoarseTracking_master ALL_COIN_NO_EDTM
+CoarseTracking_master ALL_COIN
 
 Block: CoarseReconstruct
-CoarseReconstruct_master ALL_COIN_NO_EDTM
+CoarseReconstruct_master ALL_COIN
 
 Block: Tracking
-Tracking_master  ALL_COIN_NO_EDTM
+Tracking_master  ALL_COIN
 
 Block: Reconstruct
-Reconstruct_master ALL_COIN_NO_EDTM
+Reconstruct_master ALL_COIN
 
 hcleantrack        H.gtr.index > -1
 pcleantrack        P.gtr.index > -1
